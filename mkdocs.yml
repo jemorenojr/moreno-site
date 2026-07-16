@@ -1,0 +1,10 @@
+site_name: MORENO.ECO.BR
+site_description: Engenharia de Infraestrutura Linux
+site_url: https://moreno.eco.br
+
+theme:
+  name: material
+  language: pt-BR
+
+nav:
+  - Início: index.md
