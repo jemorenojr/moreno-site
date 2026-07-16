@@ -9,3 +9,6 @@ Em breve serão publicados estudos de caso, documentação técnica, scripts e l
 ---
 
 **Contato:** edson.moreno@gmail.com
+
+
+Site publicado em 16 de julho de 2026.
