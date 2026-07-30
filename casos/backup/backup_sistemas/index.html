@@ -1,0 +1,2009 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Engenharia de Infraestrutura Linux">
+      
+      
+      
+        <link rel="canonical" href="https://moreno.eco.br/casos/backup/backup_sistemas/">
+      
+      
+        <link rel="prev" href="../../systemd/systemd-status-127-zabbix-agent2/">
+      
+      
+        <link rel="next" href="../../containers/docker/mariadb/configurando_backup_mariadb_docker/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Backup Linux com rsync e hardlink - MORENO.ECO.BR</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#backup-linux" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../../.." title="MORENO.ECO.BR" class="md-header__button md-logo" aria-label="MORENO.ECO.BR" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            MORENO.ECO.BR
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Backup Linux com rsync e hardlink
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="MORENO.ECO.BR" class="md-nav__button md-logo" aria-label="MORENO.ECO.BR" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    MORENO.ECO.BR
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Início
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Base de Conhecimento
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Base de Conhecimento
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Linux
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../artigos/linux/Linux_Modulo_1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux Módulo 1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../artigos/linux/Samba_LDAP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Samba + OpenLDAP em Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Redes
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Redes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../artigos/DNS/Delegacao_DNS_Reverso_Sub-redes_menores_24/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DNS reverso RFC 2317
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Storage
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Storage
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../artigos/storage/LVM/LVM_na_pratica/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LVM na prática
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../artigos/storage/iSCSI/Storage_iSCSI_Linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Storage iSCSI em Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Casos Reais
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Casos Reais
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PostgreSQL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgresql/postgresql-erro-acesso-remoto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Erro pg_hba.conf em acesso remoto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    systemd
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    systemd
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../systemd/systemd-status-127-zabbix-agent2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Status 127 após instalação do Zabbix Agent 2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    backup
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    backup
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backup Linux com rsync e hardlink
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backup Linux com rsync e hardlink
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#donwloads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Donwloads
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objetivo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objetivo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contexto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contexto
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#visao-geral-da-arquitetura" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Visão geral da arquitetura
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Visão geral da arquitetura">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#script-principal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Script principal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#arquivo-de-configuracao-global" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Arquivo de configuração global
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#arquivo-remoto-de-definicao-do-backup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Arquivo remoto de definição do backup
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pre-requisitos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pré-requisitos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#funcionamento-passo-a-passo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Funcionamento passo a passo
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Funcionamento passo a passo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-carregamento-da-configuracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Carregamento da configuração
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-criacao-de-logs-e-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Criação de logs e status
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-controle-de-execucao-concorrente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Controle de execução concorrente
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-coleta-da-lista-remota" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Coleta da lista remota
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-preparacao-das-exclusoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Preparação das exclusões
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-execucao-do-rsync" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Execução do rsync
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estrutura-dos-backups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Estrutura dos backups
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#retencao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retenção
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#relatorio-por-e-mail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relatório por e-mail
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exemplo-de-execucao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemplo de execução
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validacoes-recomendadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validações recomendadas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#restauracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Restauração
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limitacoes-conhecidas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitações conhecidas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusão
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Containers
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Containers
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../containers/docker/mariadb/configurando_backup_mariadb_docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backup de MariaDB em Docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Migração
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Migração
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../migracao/migracao_k8s_raid_ssd/Estudo_de_Caso_Migracao_Kubernetes_RAID_SSD_v4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes de RAID1 SATA para RAID1 SSD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#donwloads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Donwloads
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objetivo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objetivo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contexto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contexto
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#visao-geral-da-arquitetura" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Visão geral da arquitetura
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Visão geral da arquitetura">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#script-principal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Script principal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#arquivo-de-configuracao-global" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Arquivo de configuração global
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#arquivo-remoto-de-definicao-do-backup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Arquivo remoto de definição do backup
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pre-requisitos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pré-requisitos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#funcionamento-passo-a-passo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Funcionamento passo a passo
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Funcionamento passo a passo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-carregamento-da-configuracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Carregamento da configuração
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-criacao-de-logs-e-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Criação de logs e status
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-controle-de-execucao-concorrente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Controle de execução concorrente
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-coleta-da-lista-remota" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Coleta da lista remota
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-preparacao-das-exclusoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Preparação das exclusões
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-execucao-do-rsync" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Execução do rsync
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estrutura-dos-backups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Estrutura dos backups
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#retencao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retenção
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#relatorio-por-e-mail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relatório por e-mail
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exemplo-de-execucao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemplo de execução
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validacoes-recomendadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validações recomendadas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#restauracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Restauração
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limitacoes-conhecidas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitações conhecidas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusão
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="backup-linux">Backup Linux</h1>
+<h2 id="donwloads">Donwloads</h2>
+<ul>
+<li><a href="../../../downloads/scripts/backup_sistemas/backup_sistemas.sh">backup_sistemas.sh</a></li>
+<li><a href="../../../downloads/scripts/backup_sistemas/backup_geral.conf">backup_geral.conf</a></li>
+</ul>
+<h2 id="objetivo">Objetivo</h2>
+<p>Este documento descreve o funcionamento do script <code>backup_sistemas.sh</code>, utilizado para executar backups de servidores Linux por meio de <code>ssh</code> e <code>rsync</code>.</p>
+<p>O objetivo do script é manter cópias históricas de diretórios e arquivos definidos em cada servidor, com retenção simples, paralelismo controlado e reaproveitamento de arquivos já existentes por meio de hard links.</p>
+<p>O script foi pensado para ambientes onde:</p>
+<ul>
+<li>existe um servidor central de backup;</li>
+<li>os servidores clientes aceitam conexão SSH por chave;</li>
+<li>cada cliente informa o que deve ser incluído ou excluído;</li>
+<li>o backup precisa ser simples de auditar no sistema de arquivos;</li>
+<li>a restauração deve poder ser feita com ferramentas Linux comuns;</li>
+<li>o backup deve economizar no espaço alocado;</li>
+<li>o acesso do backup deve ocorrer apenas do servidor de backup para as maquinas, nunca o contrário.</li>
+</ul>
+<h2 id="contexto">Contexto</h2>
+<p>O <code>backup_sistemas.sh</code> é um script shell mantido ao longo de vários anos para resolver um problema prático: fazer backup de vários servidores Linux sem depender de um agente instalado em cada máquina.</p>
+<p>Cada servidor remoto mantém um arquivo de definição local. Em uma versão pública do script, recomenda-se usar um nome genérico, por exemplo:</p>
+<pre><code class="language-text">/root/.backup_sistemas
+</code></pre>
+<p>O caminho exato deve ser o mesmo utilizado no script publicado. Se a versão original usa um nome interno ou corporativo, ajuste esse nome antes de disponibilizar o código em um repositório público.</p>
+<p>Esse arquivo informa quais caminhos entram no backup e quais padrões devem ser excluídos.</p>
+<p>O servidor de backup lê essa lista por <code>scp</code>, executa o <code>rsync</code> por SSH e grava o resultado em uma estrutura de diretórios organizada por servidor e data.</p>
+<h2 id="visao-geral-da-arquitetura">Visão geral da arquitetura</h2>
+<pre><code class="language-mermaid">flowchart TD
+    A[&quot;Servidor de backup&quot;] --&gt; B[&quot;Lê configuração global&quot;]
+    B --&gt; C[&quot;Percorre lista de servidores&quot;]
+    C --&gt; D[&quot;Copia a lista remota via SCP&quot;]
+    D --&gt; E[&quot;Monta lista de inclusões e exclusões&quot;]
+    E --&gt; F[&quot;Executa rsync via SSH&quot;]
+    F --&gt; G[&quot;Cria diretório de backup por data&quot;]
+    G --&gt; H[&quot;Reaproveita arquivos do backup anterior com --link-dest, criando um hard link o que economiza espaço&quot;]
+    H --&gt; I[&quot;Remove backups antigos conforme retenção&quot;]
+    I --&gt; J[&quot;Gera log e relatório por e-mail&quot;]
+</code></pre>
+<h3 id="script-principal">Script principal</h3>
+<pre><code class="language-text">backup_sistemas.sh
+</code></pre>
+<p>Responsável por:</p>
+<ul>
+<li>carregar a configuração global;</li>
+<li>controlar locks de execução;</li>
+<li>buscar a lista de backup em cada servidor;</li>
+<li>executar os processos de sincronização;</li>
+<li>respeitar o limite de backups simultâneos;</li>
+<li>aplicar retenção;</li>
+<li>gerar logs;</li>
+<li>enviar relatório por e-mail.</li>
+</ul>
+<h3 id="arquivo-de-configuracao-global">Arquivo de configuração global</h3>
+<pre><code class="language-text">backup_geral.conf
+</code></pre>
+<p>Define parâmetros como:</p>
+<ul>
+<li>lista de servidores;</li>
+<li>diretório temporário;</li>
+<li>diretório base dos backups;</li>
+<li>quantidade máxima de backups simultâneos;</li>
+<li>retenção em dias;</li>
+<li>dados do servidor SMTP;</li>
+<li>caminho do <code>netcat</code>.</li>
+</ul>
+<p>Exemplo genérico:</p>
+<pre><code class="language-bash">Servers=&quot;srv-web-01 srv-db-01 srv-app-01:2222&quot;
+Dir_Temp=&quot;/var/tmp&quot;
+Dir_Backup=&quot;/backup&quot;
+Backups_Simultaneos=4
+Retensao=7
+Email=&quot;admin@example.net&quot;
+EMAIL_FROM=&quot;backup@example.net&quot;
+EMAIL_SERVER=&quot;mail.example.net&quot;
+EMAIL_PORT=&quot;25&quot;
+NC=&quot;/usr/bin/nc&quot;
+</code></pre>
+<h3 id="arquivo-remoto-de-definicao-do-backup">Arquivo remoto de definição do backup</h3>
+<p>Cada servidor cliente deve possuir um arquivo de definição do backup. Exemplo para uma versão pública:</p>
+<pre><code class="language-text">/root/.backup_sistemas
+</code></pre>
+<p>O formato esperado possui duas colunas:</p>
+<pre><code class="language-text">I /caminho/incluido
+E padrao_excluido
+</code></pre>
+<p>Onde:</p>
+<ul>
+<li><code>I</code> indica caminho incluído no backup;</li>
+<li><code>E</code> indica padrão ou caminho excluído;</li>
+<li>cada linha válida deve possuir exatamente dois campos.</li>
+</ul>
+<p>Exemplo:</p>
+<pre><code class="language-text">I /etc
+I /home
+I /var/www
+E cache
+E *.tmp
+E /home/usuario/downloads
+</code></pre>
+<p>As exclusões são aplicadas com a opção <code>--exclude-from</code> do <code>rsync</code>.</p>
+<h2 id="pre-requisitos">Pré-requisitos</h2>
+<p>No servidor de backup:</p>
+<ul>
+<li>Bash;</li>
+<li><code>rsync</code>;</li>
+<li><code>ssh</code>;</li>
+<li><code>scp</code>;</li>
+<li><code>awk</code>;</li>
+<li><code>sed</code>;</li>
+<li><code>mktemp</code>;</li>
+<li><code>md5sum</code>;</li>
+<li><code>base64</code>;</li>
+<li><code>netcat</code>;</li>
+<li>espaço em disco suficiente no diretório de backup.</li>
+</ul>
+<p>Nos servidores clientes:</p>
+<ul>
+<li>serviço SSH ativo;</li>
+<li>acesso do servidor de backup ao usuário autorizado;</li>
+<li>chave pública cadastrada no <code>authorized_keys</code>;</li>
+<li>arquivo de definição do backup criado e revisado.</li>
+</ul>
+<h2 id="funcionamento-passo-a-passo">Funcionamento passo a passo</h2>
+<h3 id="1-carregamento-da-configuracao">1. Carregamento da configuração</h3>
+<p>O script identifica o diretório onde está sendo executado e carrega o arquivo de configuração:</p>
+<pre><code class="language-bash">. ${basedir}/backup_geral.conf
+</code></pre>
+<p>Isso permite atualizar o script sem perder a configuração do ambiente.</p>
+<h3 id="2-criacao-de-logs-e-status">2. Criação de logs e status</h3>
+<p>O script cria arquivos temporários de log no diretório:</p>
+<pre><code class="language-text">${Dir_Backup}/Log
+</code></pre>
+<p>Durante a execução são registrados:</p>
+<ul>
+<li>horário de início;</li>
+<li>PID do processo;</li>
+<li>espaço ocupado no filesystem;</li>
+<li>servidor processado;</li>
+<li>caminho sincronizado;</li>
+<li>erros do <code>rsync</code>;</li>
+<li>remoção de backups antigos;</li>
+<li>envio do relatório final.</li>
+</ul>
+<h3 id="3-controle-de-execucao-concorrente">3. Controle de execução concorrente</h3>
+<p>O script utiliza arquivos de lock para evitar execuções simultâneas acima do limite desejado.</p>
+<p>Existe um lock geral por execução:</p>
+<pre><code class="language-text">${Dir_Backup}/Log/.lock_&lt;PID&gt;
+</code></pre>
+<p>E um lock por servidor:</p>
+<pre><code class="language-text">${Dir_Backup}/${server}/.lock
+</code></pre>
+<p>Esse controle evita que duas execuções tentem gravar no mesmo destino ao mesmo tempo.</p>
+<h3 id="4-coleta-da-lista-remota">4. Coleta da lista remota</h3>
+<p>Para cada servidor configurado, o script tenta copiar:</p>
+<pre><code class="language-text">servidor:/root/.backup_sistemas
+</code></pre>
+<p>para o diretório temporário local.</p>
+<p>Se o arquivo não existir ou não puder ser copiado, o servidor é ignorado e o fato é registrado no log.</p>
+<h3 id="5-preparacao-das-exclusoes">5. Preparação das exclusões</h3>
+<p>As linhas iniciadas por <code>E</code> são extraídas para um arquivo temporário de exclusões.</p>
+<p>Esse arquivo é usado no <code>rsync</code>:</p>
+<pre><code class="language-bash">--exclude-from=&lt;arquivo_temporario&gt;
+</code></pre>
+<p>Linhas vazias são ignoradas. Linhas fora do formato esperado são registradas como erro no log do servidor.</p>
+<h3 id="6-execucao-do-rsync">6. Execução do rsync</h3>
+<p>Para cada linha iniciada por <code>I</code>, o script executa o <code>rsync</code> contra o servidor remoto.</p>
+<p>Quando não existe backup anterior, a sincronização é feita diretamente.</p>
+<p>Quando existe backup anterior, o script usa:</p>
+<pre><code class="language-bash">--link-dest=&lt;backup_anterior&gt;
+</code></pre>
+<p>Com isso, arquivos que não mudaram entre um backup e outro podem ser reaproveitados por hard link, reduzindo o consumo de espaço em disco.</p>
+<p>As opções principais utilizadas pelo <code>rsync</code> são:</p>
+<pre><code class="language-bash">-arugtpl
+--numeric-ids
+--delete
+--exclude-from=&lt;arquivo&gt;
+--link-dest=&lt;backup_anterior&gt;
+</code></pre>
+<p>Resumo das opções:</p>
+<ul>
+<li><code>-a</code>: modo archive;</li>
+<li><code>-r</code>: recursivo;</li>
+<li><code>-u</code>: não sobrescreve arquivos mais novos no destino;</li>
+<li><code>-g</code>: preserva grupo;</li>
+<li><code>-t</code>: preserva data;</li>
+<li><code>-p</code>: preserva permissões;</li>
+<li><code>-l</code>: preserva links simbólicos;</li>
+<li><code>--numeric-ids</code>: preserva IDs numéricos de usuários e grupos;</li>
+<li><code>--delete</code>: remove no destino arquivos removidos na origem;</li>
+<li><code>--link-dest</code>: reaproveita arquivos iguais do backup anterior.</li>
+</ul>
+<h2 id="estrutura-dos-backups">Estrutura dos backups</h2>
+<p>A estrutura criada segue o padrão:</p>
+<pre><code class="language-text">/backup/
+    servidor-01/
+        202607170100/
+        202607180100/
+        Log/
+            202607170100.log
+            202607180100.log
+    servidor-02/
+        202607170100/
+        202607180100/
+        Log/
+            202607170100.log
+            202607180100.log
+    Log/
+        sys_sistema.log
+</code></pre>
+<p>O nome do diretório de cada execução utiliza o formato:</p>
+<pre><code class="language-text">YYYYMMDDHHMM
+</code></pre>
+<p>Exemplo:</p>
+<pre><code class="language-text">202607170130
+</code></pre>
+<h2 id="retencao">Retenção</h2>
+<p>Ao final da execução, o script percorre os diretórios de cada servidor e remove backups mais antigos que o período definido em:</p>
+<pre><code class="language-bash">Retensao=7
+</code></pre>
+<p>Existe uma proteção para evitar remover histórico quando o número de backups existentes estiver abaixo do esperado. Essa proteção reduz o risco de apagar os últimos backups disponíveis quando um servidor deixa de executar novos backups por falha de acesso, SSH ou configuração.</p>
+<h2 id="relatorio-por-e-mail">Relatório por e-mail</h2>
+<p>Depois da conclusão, o script monta uma mensagem MIME em texto e envia o relatório usando <code>netcat</code> contra o servidor SMTP configurado.</p>
+<p>Esse método evita depender de um MTA local, mas exige que o servidor SMTP aceite o envio a partir do servidor de backup.</p>
+<h2 id="exemplo-de-execucao">Exemplo de execução</h2>
+<p>Execução manual:</p>
+<pre><code class="language-bash">./backup_sistemas.sh
+</code></pre>
+<p>Execução recomendada por agendamento:</p>
+<pre><code class="language-cron">30 1 * * * /opt/backup/backup_sistemas.sh &gt;/dev/null 2&gt;&amp;1
+</code></pre>
+<p>Antes de colocar em produção, execute manualmente com poucos servidores e valide os logs.</p>
+<h2 id="validacoes-recomendadas">Validações recomendadas</h2>
+<p>Antes de confiar no backup:</p>
+<ul>
+<li>confirme se todos os servidores possuem o arquivo remoto de definição do backup;</li>
+<li>teste o SSH sem senha a partir do servidor de backup;</li>
+<li>valide se a porta SSH configurada está correta;</li>
+<li>confira se o diretório de destino possui espaço suficiente;</li>
+<li>revise as exclusões para evitar remover dados importantes do backup;</li>
+<li>faça restauração de teste;</li>
+<li>monitore o crescimento do diretório de backup;</li>
+<li>acompanhe os logs após cada alteração.</li>
+</ul>
+<p>Comandos úteis:</p>
+<pre><code class="language-bash">ssh -p 22 servidor.example.net true
+scp -P 22 servidor.example.net:/root/.backup_sistemas /tmp/backup_sistemas.teste
+rsync -avn --delete servidor.example.net:/etc/ /backup/teste/etc/
+</code></pre>
+<h2 id="restauracao">Restauração</h2>
+<p>Como o resultado do backup é uma árvore de arquivos comum, a restauração pode ser feita com <code>rsync</code> ou cópia direta.</p>
+<p>Exemplo:</p>
+<pre><code class="language-bash">rsync -aHAX /backup/servidor-01/202607170130/etc/ /restore/servidor-01/etc/
+</code></pre>
+<p>Ao restaurar para o servidor original, revise antes:</p>
+<ul>
+<li>permissões;</li>
+<li>donos e grupos;</li>
+<li>links simbólicos;</li>
+<li>serviços que precisam ser parados;</li>
+<li>risco de sobrescrever arquivos atuais;</li>
+<li>compatibilidade dos IDs numéricos de usuários e grupos.</li>
+</ul>
+<h2 id="limitacoes-conhecidas">Limitações conhecidas</h2>
+<p>O script é simples e eficaz, mas possui limitações importantes:</p>
+<ul>
+<li>depende de SSH funcional em todos os servidores;</li>
+<li>não criptografa os dados armazenados no destino;</li>
+<li>não faz deduplicação por bloco;</li>
+<li>não possui catálogo de arquivos;</li>
+<li>não possui verificação automática de restauração;</li>
+<li>usa locks por arquivo especial, o que exige limpeza se uma execução for interrompida de forma anormal;</li>
+<li>o envio de e-mail depende de conectividade direta com o SMTP;</li>
+<li>os logs devem ser acompanhados por monitoramento externo.</li>
+</ul>
+<h2 id="conclusao">Conclusão</h2>
+<p>O <code>backup_sistemas.sh</code> resolve um caso clássico de infraestrutura Linux: backup centralizado, baseado em ferramentas nativas e com baixo acoplamento aos servidores clientes. O uso de hard link diminui consideravelmente o espaço alocado pelo backup, pois arquivos repetidos só são gravados uma unica vez.</p>
+<p>Sua principal vantagem é a transparência. O resultado fica disponível no sistema de arquivos, backups, organizado por servidor e data, podendo ser auditado e restaurado sem depender de uma aplicação específica.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

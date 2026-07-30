@@ -1,0 +1,2634 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Engenharia de Infraestrutura Linux">
+      
+      
+      
+        <link rel="canonical" href="https://moreno.eco.br/casos/containers/docker/mariadb/configurando_backup_mariadb_docker/">
+      
+      
+        <link rel="prev" href="../../../../backup/backup_sistemas/">
+      
+      
+        <link rel="next" href="../../../../migracao/migracao_k8s_raid_ssd/Estudo_de_Caso_Migracao_Kubernetes_RAID_SSD_v4/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Backup de MariaDB em Docker - MORENO.ECO.BR</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#configurando-backup-de-mariadb-em-docker-com-volume-persistente-e-cron-no-host" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../../../../.." title="MORENO.ECO.BR" class="md-header__button md-logo" aria-label="MORENO.ECO.BR" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            MORENO.ECO.BR
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Backup de MariaDB em Docker
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="MORENO.ECO.BR" class="md-nav__button md-logo" aria-label="MORENO.ECO.BR" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    MORENO.ECO.BR
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Início
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Base de Conhecimento
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Base de Conhecimento
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Linux
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../artigos/linux/Linux_Modulo_1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux Módulo 1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../artigos/linux/Samba_LDAP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Samba + OpenLDAP em Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Redes
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Redes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../artigos/DNS/Delegacao_DNS_Reverso_Sub-redes_menores_24/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DNS reverso RFC 2317
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Storage
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Storage
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../artigos/storage/LVM/LVM_na_pratica/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LVM na prática
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../artigos/storage/iSCSI/Storage_iSCSI_Linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Storage iSCSI em Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Casos Reais
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Casos Reais
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PostgreSQL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../postgresql/postgresql-erro-acesso-remoto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Erro pg_hba.conf em acesso remoto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    systemd
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    systemd
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../systemd/systemd-status-127-zabbix-agent2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Status 127 após instalação do Zabbix Agent 2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    backup
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    backup
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../backup/backup_sistemas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backup Linux com rsync e hardlink
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Containers
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Containers
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backup de MariaDB em Docker
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backup de MariaDB em Docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objetivo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objetivo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arquitetura-adotada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Arquitetura adotada
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#persistencia-dos-dados-do-banco" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Persistência dos dados do banco
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#montagem-do-diretorio-de-backup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Montagem do diretório de backup
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Montagem do diretório de backup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#motivos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Motivos
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#montagem-do-diretorio-scripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Montagem do diretório /Scripts
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Montagem do diretório /Scripts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#motivos_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Motivos
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#utilizacao-de-uma-imagem-customizada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Utilização de uma imagem customizada
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pacotes-adicionados" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pacotes adicionados
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pacotes adicionados">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#uuid-runtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        uuid-runtime
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        jq
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dockerfile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dockerfile
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuracao-do-docker-composeyml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuração do docker-compose.yml
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#preparacao-dos-diretorios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preparação dos diretórios
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validacao-da-configuracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validação da configuração
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#construcao-da-imagem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Construção da imagem
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recriacao-do-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recriação do container
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validacao-apos-a-recriacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validação após a recriação
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Validação após a recriação">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#verificar-os-pontos-de-montagem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verificar os pontos de montagem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verificar-o-uuidgen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verificar o uuidgen
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verificar-o-jq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verificar o jq
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verificar-o-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verificar o script
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validar-a-sintaxe-do-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validar a sintaxe do script
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verificar-o-diretorio-de-backup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verificar o diretório de backup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testar-escrita-no-bind-mount" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testar escrita no bind mount
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agendamento-do-backup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agendamento do backup
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#funcionamento-do-comando-agendado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Funcionamento do comando agendado
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#motivos-para-utilizar-o-cron-do-host" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Motivos para utilizar o cron do host
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Motivos para utilizar o cron do host">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#processo-principal-unico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Processo principal único
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#menor-complexidade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Menor complexidade
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#centralizacao-operacional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Centralização operacional
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#facilidade-de-diagnostico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Facilidade de diagnóstico
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#independencia-do-ciclo-de-vida-do-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Independência do ciclo de vida do container
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#teste-manual-do-backup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Teste manual do backup
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#correcao-para-bancos-com-hifen-no-nome" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Correção para bancos com hífen no nome
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#beneficios-da-solucao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Benefícios da solução
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consideracoes-finais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Considerações finais
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Migração
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Migração
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../migracao/migracao_k8s_raid_ssd/Estudo_de_Caso_Migracao_Kubernetes_RAID_SSD_v4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes de RAID1 SATA para RAID1 SSD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objetivo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objetivo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arquitetura-adotada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Arquitetura adotada
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#persistencia-dos-dados-do-banco" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Persistência dos dados do banco
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#montagem-do-diretorio-de-backup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Montagem do diretório de backup
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Montagem do diretório de backup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#motivos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Motivos
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#montagem-do-diretorio-scripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Montagem do diretório /Scripts
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Montagem do diretório /Scripts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#motivos_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Motivos
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#utilizacao-de-uma-imagem-customizada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Utilização de uma imagem customizada
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pacotes-adicionados" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pacotes adicionados
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pacotes adicionados">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#uuid-runtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        uuid-runtime
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        jq
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dockerfile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dockerfile
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuracao-do-docker-composeyml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuração do docker-compose.yml
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#preparacao-dos-diretorios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preparação dos diretórios
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validacao-da-configuracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validação da configuração
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#construcao-da-imagem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Construção da imagem
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recriacao-do-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recriação do container
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validacao-apos-a-recriacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validação após a recriação
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Validação após a recriação">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#verificar-os-pontos-de-montagem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verificar os pontos de montagem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verificar-o-uuidgen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verificar o uuidgen
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verificar-o-jq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verificar o jq
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verificar-o-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verificar o script
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validar-a-sintaxe-do-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validar a sintaxe do script
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verificar-o-diretorio-de-backup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verificar o diretório de backup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testar-escrita-no-bind-mount" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testar escrita no bind mount
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agendamento-do-backup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agendamento do backup
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#funcionamento-do-comando-agendado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Funcionamento do comando agendado
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#motivos-para-utilizar-o-cron-do-host" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Motivos para utilizar o cron do host
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Motivos para utilizar o cron do host">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#processo-principal-unico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Processo principal único
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#menor-complexidade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Menor complexidade
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#centralizacao-operacional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Centralização operacional
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#facilidade-de-diagnostico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Facilidade de diagnóstico
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#independencia-do-ciclo-de-vida-do-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Independência do ciclo de vida do container
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#teste-manual-do-backup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Teste manual do backup
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#correcao-para-bancos-com-hifen-no-nome" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Correção para bancos com hífen no nome
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#beneficios-da-solucao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Benefícios da solução
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consideracoes-finais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Considerações finais
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="configurando-backup-de-mariadb-em-docker-com-volume-persistente-e-cron-no-host">Configurando backup de MariaDB em Docker com volume persistente e cron no host</h1>
+<table>
+<thead>
+<tr>
+<th>Informação</th>
+<th>Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tipo</td>
+<td>Procedimento</td>
+</tr>
+<tr>
+<td>Categoria</td>
+<td>Containers / Docker / Banco de Dados</td>
+</tr>
+<tr>
+<td>Subcategoria</td>
+<td>Backup e persistência</td>
+</tr>
+<tr>
+<td>Nível</td>
+<td>Intermediário</td>
+</tr>
+<tr>
+<td>Ambiente</td>
+<td>Docker Compose / MariaDB</td>
+</tr>
+<tr>
+<td>Objetivo</td>
+<td>Permitir que o container do MariaDB execute rotinas de backup sem modificar os dados persistentes do banco.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="objetivo">Objetivo</h2>
+<p>O container oficial do MariaDB foi projetado para executar o serviço do banco de dados com o mínimo de componentes adicionais.</p>
+<p>Durante a implantação do SysPass surgiu a necessidade de executar, dentro do container do MariaDB, uma rotina própria de backup do banco de dados.</p>
+<p>Para atender a essa necessidade foram realizadas customizações na imagem e na configuração do Docker Compose, mantendo separados:</p>
+<ul>
+<li>os dados persistentes do MariaDB;</li>
+<li>os scripts operacionais;</li>
+<li>os arquivos de backup;</li>
+<li>as dependências adicionais utilizadas pelo script;</li>
+<li>o mecanismo de agendamento.</li>
+</ul>
+<p>A solução permite reconstruir a imagem e recriar o container sem remover os dados armazenados no volume persistente do banco.</p>
+<hr />
+<h2 id="arquitetura-adotada">Arquitetura adotada</h2>
+<p>Foi adotada a seguinte organização:</p>
+<pre><code class="language-text">Host
+│
+├── /var/Backup/syspass
+│        │
+│        └──────────────► /var/Backup        (container)
+│
+├── syspass-db/
+│      ├── init/
+│      │      └─────────► /docker-entrypoint-initdb.d
+│      │
+│      └── Scripts/
+│             └─────────► /Scripts            (container)
+│
+└── Volume Docker
+         │
+         └──────────────► /var/lib/mysql
+</code></pre>
+<p>Cada ponto de montagem possui uma finalidade específica:</p>
+<table>
+<thead>
+<tr>
+<th>Origem no host</th>
+<th>Destino no container</th>
+<th>Finalidade</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Volume <code>syspass-db-data</code></td>
+<td><code>/var/lib/mysql</code></td>
+<td>Persistência dos dados do MariaDB</td>
+</tr>
+<tr>
+<td><code>/var/Backup/syspass</code></td>
+<td><code>/var/Backup</code></td>
+<td>Armazenamento persistente dos backups</td>
+</tr>
+<tr>
+<td><code>./syspass-db/Scripts</code></td>
+<td><code>/Scripts</code></td>
+<td>Scripts e recursos operacionais</td>
+</tr>
+<tr>
+<td><code>./syspass-db/init</code></td>
+<td><code>/docker-entrypoint-initdb.d</code></td>
+<td>Scripts executados na inicialização de um banco novo</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="persistencia-dos-dados-do-banco">Persistência dos dados do banco</h2>
+<p>Os arquivos do MariaDB permanecem armazenados no volume Docker:</p>
+<pre><code class="language-yaml">volumes:
+  - syspass-db-data:/var/lib/mysql
+</code></pre>
+<p>Esse volume não faz parte da camada gravável do container nem da imagem utilizada para criá-lo.</p>
+<p>Consequentemente, as seguintes operações não removem os dados do banco, desde que o mesmo volume continue montado em <code>/var/lib/mysql</code>:</p>
+<pre><code class="language-bash">docker compose build syspass-db
+docker compose up -d --no-deps --force-recreate syspass-db
+docker compose stop syspass-db
+docker compose restart syspass-db
+</code></pre>
+<p>!!! warning "Preservação do banco de dados"</p>
+<pre><code>Não utilize o comando abaixo durante esse procedimento:
+
+```bash
+docker compose down -v
+```
+
+A opção `-v` solicita a remoção dos volumes declarados pelo projeto e pode eliminar os dados persistentes do MariaDB.
+</code></pre>
+<p>Também devem ser evitados comandos como:</p>
+<pre><code class="language-bash">docker volume rm NOME_DO_VOLUME
+docker system prune --volumes
+</code></pre>
+<hr />
+<h2 id="montagem-do-diretorio-de-backup">Montagem do diretório de backup</h2>
+<p>Foi criado o seguinte bind mount:</p>
+<pre><code class="language-yaml">- /var/Backup/syspass:/var/Backup
+</code></pre>
+<p>Com essa configuração, qualquer arquivo gravado pelo container em:</p>
+<pre><code class="language-text">/var/Backup
+</code></pre>
+<p>é armazenado no host em:</p>
+<pre><code class="language-text">/var/Backup/syspass
+</code></pre>
+<h3 id="motivos">Motivos</h3>
+<p>Caso os backups fossem gravados apenas na camada gravável do container, eles poderiam ser perdidos quando o container fosse removido e recriado.</p>
+<p>A gravação diretamente no host oferece:</p>
+<ul>
+<li>persistência independente do ciclo de vida do container;</li>
+<li>facilidade para copiar os arquivos para outro servidor;</li>
+<li>integração com rotinas externas de backup;</li>
+<li>facilidade de auditoria;</li>
+<li>acesso aos arquivos sem necessidade de entrar no container;</li>
+<li>controle de retenção e capacidade pelo sistema operacional do host.</li>
+</ul>
+<hr />
+<h2 id="montagem-do-diretorio-scripts">Montagem do diretório <code>/Scripts</code></h2>
+<p>Foi criado o seguinte bind mount:</p>
+<pre><code class="language-yaml">- ./syspass-db/Scripts:/Scripts:ro
+</code></pre>
+<p>O diretório contém scripts e outros recursos operacionais utilizados pela rotina de backup.</p>
+<p>Exemplo:</p>
+<pre><code class="language-text">/Scripts
+└── scripts
+    └── backup_BD.sh
+</code></pre>
+<p>O parâmetro <code>:ro</code> monta o diretório como somente leitura dentro do container.</p>
+<p>Isso permite que o script seja executado, mas impede que processos internos do container modifiquem os arquivos originais no host.</p>
+<h3 id="motivos_1">Motivos</h3>
+<p>Manter os scripts fora da imagem oferece as seguintes vantagens:</p>
+<ul>
+<li>alteração dos scripts sem reconstrução da imagem;</li>
+<li>versionamento junto ao projeto;</li>
+<li>separação entre código operacional e imagem do banco;</li>
+<li>reutilização da mesma estrutura em outros containers;</li>
+<li>atualização imediata do script montado;</li>
+<li>redução do risco de alterações não rastreadas dentro do container.</li>
+</ul>
+<p>As alterações devem ser realizadas no host:</p>
+<pre><code class="language-bash">vi /srv/syspass-seg/syspass-db/Scripts/backup_BD.sh
+</code></pre>
+<p>O arquivo será apresentado dentro do container como:</p>
+<pre><code class="language-text">/Scripts/backup_BD.sh
+</code></pre>
+<hr />
+<h2 id="utilizacao-de-uma-imagem-customizada">Utilização de uma imagem customizada</h2>
+<p>Originalmente, o serviço utilizava diretamente a imagem oficial:</p>
+<pre><code class="language-yaml">image: mariadb:10.2
+</code></pre>
+<p>Como o script de backup necessita de programas que não estão presentes na imagem padrão, foi criada uma imagem derivada.</p>
+<p>A configuração passou a utilizar:</p>
+<pre><code class="language-yaml">build:
+  context: .
+  dockerfile: syspass-db/Dockerfile
+</code></pre>
+<p>Essa abordagem preserva o comportamento original da imagem MariaDB e acrescenta somente as dependências necessárias.</p>
+<hr />
+<h2 id="pacotes-adicionados">Pacotes adicionados</h2>
+<p>Foram adicionados os seguintes pacotes:</p>
+<h3 id="uuid-runtime"><code>uuid-runtime</code></h3>
+<p>O pacote disponibiliza o comando:</p>
+<pre><code class="language-bash">uuidgen
+</code></pre>
+<p>O script utiliza esse comando para criar um identificador único para cada execução do backup.</p>
+<p>Esse identificador pode ser utilizado para:</p>
+<ul>
+<li>correlação entre logs;</li>
+<li>identificação da execução enviada para uma API;</li>
+<li>rastreamento de falhas;</li>
+<li>associação entre etapas e artefatos gerados.</li>
+</ul>
+<h3 id="jq"><code>jq</code></h3>
+<p>O <code>jq</code> é utilizado pelo script para construir e validar a estrutura JSON contendo informações como:</p>
+<ul>
+<li>identificador da execução;</li>
+<li>horário de início e término;</li>
+<li>status final;</li>
+<li>etapas executadas;</li>
+<li>mensagens de erro;</li>
+<li>arquivos produzidos;</li>
+<li>tamanho dos artefatos;</li>
+<li>checksums;</li>
+<li>código de saída.</li>
+</ul>
+<p>O uso do <code>jq</code> reduz o risco de gerar JSON inválido por problemas de escape ou formatação.</p>
+<hr />
+<h2 id="dockerfile">Dockerfile</h2>
+<p>Foi criado o arquivo:</p>
+<pre><code class="language-text">syspass-db/Dockerfile
+</code></pre>
+<p>Conteúdo:</p>
+<pre><code class="language-dockerfile">FROM mariadb:10.2
+
+RUN apt-get update \
+    &amp;&amp; apt-get install -y --no-install-recommends \
+        uuid-runtime \
+        jq \
+    &amp;&amp; apt-get clean \
+    &amp;&amp; rm -rf /var/lib/apt/lists/*
+</code></pre>
+<p>O uso de uma imagem derivada permite acrescentar novas dependências futuramente.</p>
+<p>Por exemplo:</p>
+<pre><code class="language-dockerfile">FROM mariadb:10.2
+
+RUN apt-get update \
+    &amp;&amp; apt-get install -y --no-install-recommends \
+        uuid-runtime \
+        jq \
+        rsync \
+        curl \
+    &amp;&amp; apt-get clean \
+    &amp;&amp; rm -rf /var/lib/apt/lists/*
+</code></pre>
+<p>Após qualquer alteração no Dockerfile, a imagem deve ser reconstruída.</p>
+<hr />
+<h2 id="configuracao-do-docker-composeyml">Configuração do <code>docker-compose.yml</code></h2>
+<p>O serviço <code>syspass-db</code> foi configurado da seguinte forma:</p>
+<pre><code class="language-yaml">services:
+  syspass-db:
+    container_name: syspass-db
+
+    build:
+      context: .
+      dockerfile: syspass-db/Dockerfile
+
+    restart: unless-stopped
+
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
+      MYSQL_DATABASE: syspass-seg
+      MYSQL_USER_FILE: /run/secrets/mysql_syspass_user
+      MYSQL_PASSWORD_FILE: /run/secrets/mysql_syspass_password
+
+    secrets:
+      - mysql_root_password
+      - mysql_syspass_user
+      - mysql_syspass_password
+
+    volumes:
+      - syspass-db-data:/var/lib/mysql
+      - /var/Backup/syspass:/var/Backup
+      - ./syspass-db/Scripts:/Scripts:ro
+      - ./syspass-db/init:/docker-entrypoint-initdb.d:ro
+
+    networks:
+      - syspass-net-back
+</code></pre>
+<p>Os volumes e secrets permanecem declarados no nível principal do arquivo:</p>
+<pre><code class="language-yaml">volumes:
+  syspass-db-data:
+
+secrets:
+  mysql_root_password:
+    file: ./syspass-db/secrets/mysql_root_password.txt
+
+  mysql_syspass_user:
+    file: ./syspass-db/secrets/mysql_syspass_user.txt
+
+  mysql_syspass_password:
+    file: ./syspass-db/secrets/mysql_syspass_password.txt
+</code></pre>
+<hr />
+<h2 id="preparacao-dos-diretorios">Preparação dos diretórios</h2>
+<p>No host, foram preparados os diretórios utilizados pelos bind mounts:</p>
+<pre><code class="language-bash">cd /srv/syspass-seg
+
+mkdir -p /var/Backup/syspass
+mkdir -p syspass-db/Scripts
+</code></pre>
+<p>As permissões foram ajustadas:</p>
+<pre><code class="language-bash">chmod 0755 /var/Backup/syspass
+chmod 0755 syspass-db/Scripts
+chmod 0755 syspass-db/Scripts
+chmod 0755 syspass-db/Scripts/backup_BD.sh
+</code></pre>
+<p>O script deve possuir um interpretador válido na primeira linha:</p>
+<pre><code class="language-bash">head -n 1 syspass-db/Scripts/backup_BD.sh
+</code></pre>
+<p>Exemplo:</p>
+<pre><code class="language-bash">#!/bin/bash
+</code></pre>
+<hr />
+<h2 id="validacao-da-configuracao">Validação da configuração</h2>
+<p>A sintaxe do Compose pode ser validada com:</p>
+<pre><code class="language-bash">cd /srv/syspass-seg
+
+timeout 15s docker compose config --quiet
+</code></pre>
+<p>O uso de <code>timeout</code> evita que uma eventual falha do comando permaneça indefinidamente em execução.</p>
+<p>Interpretação do código de retorno:</p>
+<table>
+<thead>
+<tr>
+<th>Código</th>
+<th>Significado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0</code></td>
+<td>Configuração válida</td>
+</tr>
+<tr>
+<td><code>124</code></td>
+<td>O comando excedeu o tempo definido</td>
+</tr>
+<tr>
+<td>Outro</td>
+<td>Erro retornado pelo Docker Compose</td>
+</tr>
+</tbody>
+</table>
+<p>Para visualizar a configuração processada:</p>
+<pre><code class="language-bash">timeout 15s docker compose config
+</code></pre>
+<hr />
+<h2 id="construcao-da-imagem">Construção da imagem</h2>
+<p>A imagem customizada é construída com:</p>
+<pre><code class="language-bash">docker compose build syspass-db
+</code></pre>
+<p>Para forçar a reconstrução completa:</p>
+<pre><code class="language-bash">docker compose build --no-cache syspass-db
+</code></pre>
+<p>A construção da imagem não altera o container em execução e não modifica o volume do banco.</p>
+<hr />
+<h2 id="recriacao-do-container">Recriação do container</h2>
+<p>Após construir a imagem, somente o container do MariaDB é recriado:</p>
+<pre><code class="language-bash">docker compose up -d --no-deps --force-recreate syspass-db
+</code></pre>
+<p>Esse comando:</p>
+<ol>
+<li>interrompe o container antigo;</li>
+<li>remove o container antigo;</li>
+<li>cria um novo container usando a imagem customizada;</li>
+<li>monta novamente o volume <code>syspass-db-data</code> em <code>/var/lib/mysql</code>;</li>
+<li>monta <code>/var/Backup/syspass</code> em <code>/var/Backup</code>;</li>
+<li>monta <code>./syspass-db/Scripts</code> em <code>/Scripts</code>;</li>
+<li>mantém os dados persistentes existentes.</li>
+</ol>
+<hr />
+<h2 id="validacao-apos-a-recriacao">Validação após a recriação</h2>
+<h3 id="verificar-os-pontos-de-montagem">Verificar os pontos de montagem</h3>
+<pre><code class="language-bash">docker inspect syspass-db \
+  --format '{{range .Mounts}}{{printf &quot;%s -&gt; %s\n&quot; .Source .Destination}}{{end}}'
+</code></pre>
+<p>Devem ser apresentados os destinos:</p>
+<pre><code class="language-text">/var/lib/mysql
+/var/Backup
+/Scripts
+/docker-entrypoint-initdb.d
+</code></pre>
+<h3 id="verificar-o-uuidgen">Verificar o <code>uuidgen</code></h3>
+<pre><code class="language-bash">docker exec syspass-db command -v uuidgen
+docker exec syspass-db uuidgen
+</code></pre>
+<h3 id="verificar-o-jq">Verificar o <code>jq</code></h3>
+<pre><code class="language-bash">docker exec syspass-db command -v jq
+docker exec syspass-db jq --version
+</code></pre>
+<h3 id="verificar-o-script">Verificar o script</h3>
+<pre><code class="language-bash">docker exec syspass-db test -x /Scripts/backup_BD.sh
+</code></pre>
+<h3 id="validar-a-sintaxe-do-script">Validar a sintaxe do script</h3>
+<pre><code class="language-bash">docker exec syspass-db bash -n /Scripts/backup_BD.sh
+</code></pre>
+<h3 id="verificar-o-diretorio-de-backup">Verificar o diretório de backup</h3>
+<pre><code class="language-bash">docker exec syspass-db test -d /var/Backup
+</code></pre>
+<h3 id="testar-escrita-no-bind-mount">Testar escrita no bind mount</h3>
+<pre><code class="language-bash">docker exec syspass-db sh -ec '
+    touch /var/Backup/.teste-montagem
+    ls -l /var/Backup/.teste-montagem
+    rm -f /var/Backup/.teste-montagem
+'
+</code></pre>
+<hr />
+<h2 id="agendamento-do-backup">Agendamento do backup</h2>
+<p>Optou-se por não executar um daemon <code>cron</code> dentro do container.</p>
+<p>O backup é disparado pelo cron do host, utilizando <code>docker exec</code> para executar o script dentro do container.</p>
+<p>Foi criado o arquivo:</p>
+<pre><code class="language-text">/etc/cron.d/backup_BD_syspass
+</code></pre>
+<p>Conteúdo:</p>
+<pre><code class="language-cron">0 2 * * * root /usr/bin/docker inspect -f '{{.State.Running}}' syspass-db 2&gt;/dev/null | /bin/grep -qx true &amp;&amp; /usr/bin/docker exec syspass-db /Scripts/backup_BD.sh &gt;&gt; /var/log/syspass-db-backup.log 2&gt;&amp;1
+</code></pre>
+<p>A entrada deve permanecer em uma única linha no arquivo de cron.</p>
+<p>Foram aplicadas as permissões:</p>
+<pre><code class="language-bash">chown root:root /etc/cron.d/backup_BD_syspass
+chmod 0644 /etc/cron.d/backup_BD_syspass
+</code></pre>
+<p>A configuração pode ser consultada com:</p>
+<pre><code class="language-bash">cat /etc/cron.d/backup_BD_syspass
+</code></pre>
+<p>!!! note "Diferença entre <code>/etc/cron.d</code> e <code>crontab -l</code>"</p>
+<pre><code>O comando `crontab -l` não apresenta os arquivos armazenados em `/etc/cron.d`.
+
+Para consultar esse agendamento, utilize:
+
+```bash
+ls -l /etc/cron.d/
+cat /etc/cron.d/backup_BD_syspass
+```
+</code></pre>
+<hr />
+<h2 id="funcionamento-do-comando-agendado">Funcionamento do comando agendado</h2>
+<p>O comando utilizado no cron possui duas etapas.</p>
+<p>Primeiro, verifica se o container está em execução:</p>
+<pre><code class="language-bash">/usr/bin/docker inspect -f '{{.State.Running}}' syspass-db 2&gt;/dev/null |
+/bin/grep -qx true
+</code></pre>
+<p>O script somente será executado se o resultado for exatamente:</p>
+<pre><code class="language-text">true
+</code></pre>
+<p>Em seguida, executa o backup dentro do container:</p>
+<pre><code class="language-bash">/usr/bin/docker exec syspass-db /Scripts/backup_BD.sh
+</code></pre>
+<p>A saída padrão e a saída de erro são gravadas em:</p>
+<pre><code class="language-text">/var/log/syspass-db-backup.log
+</code></pre>
+<hr />
+<h2 id="motivos-para-utilizar-o-cron-do-host">Motivos para utilizar o cron do host</h2>
+<h3 id="processo-principal-unico">Processo principal único</h3>
+<p>O container permanece dedicado ao processo principal do MariaDB.</p>
+<p>Não é necessário executar simultaneamente:</p>
+<ul>
+<li><code>mysqld</code>;</li>
+<li><code>cron</code>.</li>
+</ul>
+<h3 id="menor-complexidade">Menor complexidade</h3>
+<p>Não é necessário:</p>
+<ul>
+<li>instalar cron na imagem;</li>
+<li>configurar um supervisor de processos;</li>
+<li>adaptar o entrypoint;</li>
+<li>gerenciar sinais de dois processos;</li>
+<li>manter arquivos de cron dentro do container.</li>
+</ul>
+<h3 id="centralizacao-operacional">Centralização operacional</h3>
+<p>Os agendamentos permanecem visíveis e administráveis no host.</p>
+<h3 id="facilidade-de-diagnostico">Facilidade de diagnóstico</h3>
+<p>O mesmo comando utilizado pelo cron pode ser executado manualmente.</p>
+<h3 id="independencia-do-ciclo-de-vida-do-container">Independência do ciclo de vida do container</h3>
+<p>O agendamento permanece existente mesmo que o container seja recriado.</p>
+<hr />
+<h2 id="teste-manual-do-backup">Teste manual do backup</h2>
+<p>Antes de depender do cron, o script deve ser executado manualmente:</p>
+<pre><code class="language-bash">docker exec syspass-db /Scripts/backup_BD.sh
+</code></pre>
+<p>O código de retorno pode ser verificado com:</p>
+<pre><code class="language-bash">echo $?
+</code></pre>
+<p>O log do cron pode ser consultado com:</p>
+<pre><code class="language-bash">tail -n 100 /var/log/syspass-db-backup.log
+</code></pre>
+<p>Os arquivos produzidos podem ser localizados no host:</p>
+<pre><code class="language-bash">find /var/Backup/syspass \
+    -maxdepth 3 \
+    -type f \
+    -printf '%TY-%Tm-%Td %TH:%TM:%TS %10s %p\n' |
+    sort
+</code></pre>
+<hr />
+<h2 id="correcao-para-bancos-com-hifen-no-nome">Correção para bancos com hífen no nome</h2>
+<p>O banco utilizado pela aplicação possui o nome:</p>
+<pre><code class="language-text">syspass-seg
+</code></pre>
+<p>O script de backup criava dinamicamente uma variável com o prefixo <code>tb_excluir_</code>:</p>
+<pre><code class="language-bash">tbvar=&quot;tb_excluir_${bd}&quot;
+lista_exclusao=&quot;${!tbvar:-}&quot;
+</code></pre>
+<p>Para o banco <code>syspass-seg</code>, isso produzia:</p>
+<pre><code class="language-text">tb_excluir_syspass-seg
+</code></pre>
+<p>O hífen não é válido em nomes de variáveis Bash, causando:</p>
+<pre><code class="language-text">bad substitution
+</code></pre>
+<p>A correção adotada foi normalizar o nome utilizado para construir a variável:</p>
+<pre><code class="language-bash">bd_var=&quot;${bd//[^a-zA-Z0-9_]/_}&quot;
+
+tbvar=&quot;tb_excluir_${bd_var}&quot;
+lista_exclusao=&quot;${!tbvar:-}&quot;
+
+tb_excl=&quot;&quot;
+for tb in ${lista_exclusao}; do
+    tb_excl+=&quot; --ignore-table=${bd}.${tb}&quot;
+done
+</code></pre>
+<p>Com isso:</p>
+<pre><code class="language-text">Nome real do banco:      syspass-seg
+Nome usado na variável:  syspass_seg
+</code></pre>
+<p>Caso seja necessário excluir tabelas desse banco, a variável deve ser declarada como:</p>
+<pre><code class="language-bash">tb_excluir_syspass_seg=&quot;tabela1 tabela2&quot;
+</code></pre>
+<p>O <code>mysqldump</code> continuará recebendo o nome real do banco:</p>
+<pre><code class="language-text">--ignore-table=syspass-seg.tabela1
+</code></pre>
+<hr />
+<h2 id="beneficios-da-solucao">Benefícios da solução</h2>
+<p>A arquitetura adotada oferece:</p>
+<ul>
+<li>separação entre imagem, dados, scripts e backups;</li>
+<li>persistência dos dados do MariaDB em volume dedicado;</li>
+<li>persistência dos backups no filesystem do host;</li>
+<li>facilidade para versionamento dos scripts;</li>
+<li>atualização dos scripts sem reconstrução da imagem;</li>
+<li>possibilidade de adicionar novas ferramentas à imagem;</li>
+<li>reconstrução segura do container sem remoção dos dados;</li>
+<li>agendamento independente do ciclo de vida do container;</li>
+<li>simplificação do processo principal do MariaDB;</li>
+<li>facilidade de auditoria e diagnóstico;</li>
+<li>reutilização do padrão em outros serviços.</li>
+</ul>
+<hr />
+<h2 id="consideracoes-finais">Considerações finais</h2>
+<p>A solução mantém o container do MariaDB próximo da imagem oficial, acrescentando somente as dependências necessárias para executar a rotina operacional de backup.</p>
+<p>Os dados do banco permanecem armazenados no volume Docker, enquanto os scripts e os arquivos de backup permanecem no host por meio de bind mounts.</p>
+<p>Essa separação permite:</p>
+<ul>
+<li>reconstruir a imagem;</li>
+<li>recriar o container;</li>
+<li>atualizar scripts;</li>
+<li>adicionar dependências;</li>
+<li>manter o agendamento no host;</li>
+</ul>
+<p>sem alterar ou substituir os dados persistentes do MariaDB.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../../..", "features": [], "search": "../../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,5153 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Engenharia de Infraestrutura Linux">
+      
+      
+      
+        <link rel="canonical" href="https://moreno.eco.br/casos/migracao/migracao_k8s_raid_ssd/Estudo_de_Caso_Migracao_Kubernetes_RAID_SSD_v4/">
+      
+      
+        <link rel="prev" href="../../../containers/docker/mariadb/configurando_backup_mariadb_docker/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Kubernetes de RAID1 SATA para RAID1 SSD - MORENO.ECO.BR</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#migracao-de-servidor-kubernetes-de-raid1-sata-para-raid1-ssd-sem-reinstalacao" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../../../.." title="MORENO.ECO.BR" class="md-header__button md-logo" aria-label="MORENO.ECO.BR" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            MORENO.ECO.BR
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Kubernetes de RAID1 SATA para RAID1 SSD
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="MORENO.ECO.BR" class="md-nav__button md-logo" aria-label="MORENO.ECO.BR" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    MORENO.ECO.BR
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Início
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Base de Conhecimento
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Base de Conhecimento
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Linux
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../artigos/linux/Linux_Modulo_1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux Módulo 1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../artigos/linux/Samba_LDAP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Samba + OpenLDAP em Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Redes
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Redes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../artigos/DNS/Delegacao_DNS_Reverso_Sub-redes_menores_24/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DNS reverso RFC 2317
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Storage
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Storage
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../artigos/storage/LVM/LVM_na_pratica/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LVM na prática
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../artigos/storage/iSCSI/Storage_iSCSI_Linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Storage iSCSI em Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Casos Reais
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Casos Reais
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PostgreSQL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../postgresql/postgresql-erro-acesso-remoto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Erro pg_hba.conf em acesso remoto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    systemd
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    systemd
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../systemd/systemd-status-127-zabbix-agent2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Status 127 após instalação do Zabbix Agent 2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    backup
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    backup
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../backup/backup_sistemas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backup Linux com rsync e hardlink
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Containers
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Containers
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../containers/docker/mariadb/configurando_backup_mariadb_docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backup de MariaDB em Docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Migração
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Migração
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes de RAID1 SATA para RAID1 SSD
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes de RAID1 SATA para RAID1 SSD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#capa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Capa
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#indice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Índice
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objetivo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objetivo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resumo-executivo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resumo executivo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ambiente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ambiente
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arquitetura-antes-da-migracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Arquitetura antes da migração
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Arquitetura antes da migração">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#caracteristicas-do-cenario-original" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Características do cenário original
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arquitetura-depois-da-migracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Arquitetura depois da migração
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Arquitetura depois da migração">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#resultado-esperado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resultado esperado
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#motivacao-da-migracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Motivação da Migração
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#premissas-e-restricoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Premissas e Restrições
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Premissas e Restrições">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#premissas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Premissas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restricoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Restrições
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estrategia-adotada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Estratégia adotada
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#preparacao-do-novo-raid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preparação do novo RAID
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Preparação do novo RAID">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#verificacoes-necessarias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verificações necessárias
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#definicao-da-estrategia-de-migracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Definição da estratégia de migração
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#preparacao-do-novo-disco" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preparação do novo disco
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clonagem-das-particoes-de-inicializacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clonagem das partições de inicialização
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#preparacao-da-estrutura-lvm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preparação da estrutura LVM
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Preparação da estrutura LVM">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#estrutura-original" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Estrutura original
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#criacao-do-novo-volume-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Criação do novo Volume Group
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reproducao-da-estrutura-logica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reprodução da estrutura lógica
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#arquitetura-adotada-durante-a-migracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Arquitetura adotada durante a migração
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evidencias-relacionadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidências relacionadas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#preparacao-dos-sistemas-de-arquivos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preparação dos sistemas de arquivos
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Preparação dos sistemas de arquivos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#analise-da-configuracao-existente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Análise da configuração existente
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evidencia-relacionada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidência relacionada
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#formatacao-dos-logical-volumes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Formatação dos Logical Volumes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evidencias-relacionadas_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidências relacionadas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Evidências relacionadas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#formatacao-do-volume-raiz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Formatação do volume raiz
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#formatacao-do-volume-usr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Formatação do volume /usr
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#formatacao-do-volume-var" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Formatação do volume /var
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#formatacao-do-volume-home" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Formatação do volume /home
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#formatacao-do-volume-tmp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Formatação do volume /tmp
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inicializacao-da-area-de-swap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inicialização da área de swap
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#formatacao-do-volume-destinado-aos-containers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Formatação do volume destinado aos containers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#formatacao-do-volume-de-backup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Formatação do volume de backup
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#preparacao-do-kubernetes-para-a-migracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preparação do Kubernetes para a migração
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#identificacao-do-estado-do-cluster" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Identificação do estado do cluster
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Identificação do estado do cluster">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#evidencias-relacionadas_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidências relacionadas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parada-controlada-das-aplicacoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parada controlada das aplicações
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parada controlada das aplicações">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#evidencias-relacionadas_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidências relacionadas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#encerramento-do-runtime-de-containers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Encerramento do runtime de containers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Encerramento do runtime de containers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#evidencias-relacionadas_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidências relacionadas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#liberacao-dos-pontos-de-montagem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Liberação dos pontos de montagem
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Liberação dos pontos de montagem">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#evidencias-relacionadas_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidências relacionadas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#condicoes-para-inicio-da-migracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Condições para início da migração
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#preparacao-do-novo-ambiente-para-sincronizacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preparação do novo ambiente para sincronização
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Preparação do novo ambiente para sincronização">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#montagem-da-nova-estrutura" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Montagem da nova estrutura
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#estrutura-final-de-montagem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Estrutura final de montagem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validacao-das-montagens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validação das Montagens
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Validação das Montagens">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#evidencia-relacionada_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidência relacionada
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sincronizacao-do-sistema-operacional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sincronização do sistema operacional
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sincronização do sistema operacional">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#execucao-em-sessao-persistente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Execução em sessão persistente
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comando-de-sincronizacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comando de sincronização
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opcoes-utilizadas-no-rsync" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opções utilizadas no rsync
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exclusao-dos-pseudo-sistemas-de-arquivos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exclusão dos pseudo-sistemas de arquivos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verificacao-da-sincronizacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verificação da sincronização
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Verificação da sincronização">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#evidencia-relacionada_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidência relacionada
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#preparacao-do-novo-sistema-para-inicializacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preparação do novo sistema para inicialização
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Preparação do novo sistema para inicialização">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#preparacao-do-ambiente-chroot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preparação do ambiente chroot
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Preparação do ambiente chroot">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#evidencia-relacionada_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidência relacionada
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validacao-do-sistema-migrado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validação do sistema migrado
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instalacao-do-grub-no-novo-raid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instalação do GRUB no novo RAID
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Instalação do GRUB no novo RAID">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#evidencia-relacionada_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidência relacionada
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#regeneracao-do-initramfs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Regeneração do initramfs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#atualizacao-da-configuracao-do-grub" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Atualização da configuração do GRUB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validacao-do-tipo-de-inicializacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validação do tipo de inicialização
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resultado-da-preparacao-do-boot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resultado da preparação do boot
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#encadeamento-da-etapa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Encadeamento da etapa
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ativacao-do-novo-raid-ssd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ativação do novo RAID SSD
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ativação do novo RAID SSD">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#validacao-dos-virtual-drives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validação dos Virtual Drives
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Validação dos Virtual Drives">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#evidencia-relacionada_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidência relacionada
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alteracao-do-virtual-drive-de-boot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alteração do Virtual Drive de boot
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Alteração do Virtual Drive de boot">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#evidencia-relacionada_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidência relacionada
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#confirmacao-da-configuracao-de-boot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Confirmação da configuração de boot
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#persistencia-das-gravacoes-pendentes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Persistência das gravações pendentes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reinicializacao-forcada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reinicialização forçada
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reinicialização forçada">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#evidencia-relacionada_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidência relacionada
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#momento-de-transicao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Momento de transição
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#primeiro-boot-e-recuperacao-do-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Primeiro boot e recuperação do Kubernetes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Primeiro boot e recuperação do Kubernetes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sequencia-recomendada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sequência recomendada
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validacao-inicial-do-cluster" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validação inicial do cluster
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Validação inicial do cluster">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#evidencia-relacionada_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidência relacionada
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restauracao-das-replicas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Restauração das réplicas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pods-permanecendo-em-pending" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pods permanecendo em Pending
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#liberacao-do-no-para-agendamento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Liberação do nó para agendamento
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validacao-dos-workloads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validação dos workloads
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Validação dos workloads">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#evidencia-relacionada_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidência relacionada
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verificacoes-finais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verificações finais
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conclusao-da-migracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusão da migração
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#complemento-tecnico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Complemento técnico
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Complemento técnico">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#engenharia-da-decisao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Engenharia da decisão
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#justificativa-para-um-novo-volume-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Justificativa para um novo Volume Group
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parada-controlada-do-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parada controlada do Kubernetes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#encerramento-de-containers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Encerramento de containers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#execucao-do-rsync" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Execução do rsync
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validacao-via-chroot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validação via chroot
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alteracao-do-virtual-drive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alteração do Virtual Drive
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#capa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Capa
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#indice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Índice
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objetivo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objetivo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resumo-executivo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resumo executivo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ambiente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ambiente
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arquitetura-antes-da-migracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Arquitetura antes da migração
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Arquitetura antes da migração">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#caracteristicas-do-cenario-original" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Características do cenário original
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arquitetura-depois-da-migracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Arquitetura depois da migração
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Arquitetura depois da migração">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#resultado-esperado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resultado esperado
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#motivacao-da-migracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Motivação da Migração
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#premissas-e-restricoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Premissas e Restrições
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Premissas e Restrições">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#premissas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Premissas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restricoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Restrições
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estrategia-adotada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Estratégia adotada
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#preparacao-do-novo-raid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preparação do novo RAID
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Preparação do novo RAID">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#verificacoes-necessarias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verificações necessárias
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#definicao-da-estrategia-de-migracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Definição da estratégia de migração
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#preparacao-do-novo-disco" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preparação do novo disco
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clonagem-das-particoes-de-inicializacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clonagem das partições de inicialização
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#preparacao-da-estrutura-lvm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preparação da estrutura LVM
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Preparação da estrutura LVM">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#estrutura-original" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Estrutura original
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#criacao-do-novo-volume-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Criação do novo Volume Group
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reproducao-da-estrutura-logica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reprodução da estrutura lógica
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#arquitetura-adotada-durante-a-migracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Arquitetura adotada durante a migração
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evidencias-relacionadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidências relacionadas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#preparacao-dos-sistemas-de-arquivos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preparação dos sistemas de arquivos
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Preparação dos sistemas de arquivos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#analise-da-configuracao-existente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Análise da configuração existente
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evidencia-relacionada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidência relacionada
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#formatacao-dos-logical-volumes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Formatação dos Logical Volumes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evidencias-relacionadas_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidências relacionadas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Evidências relacionadas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#formatacao-do-volume-raiz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Formatação do volume raiz
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#formatacao-do-volume-usr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Formatação do volume /usr
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#formatacao-do-volume-var" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Formatação do volume /var
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#formatacao-do-volume-home" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Formatação do volume /home
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#formatacao-do-volume-tmp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Formatação do volume /tmp
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inicializacao-da-area-de-swap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inicialização da área de swap
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#formatacao-do-volume-destinado-aos-containers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Formatação do volume destinado aos containers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#formatacao-do-volume-de-backup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Formatação do volume de backup
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#preparacao-do-kubernetes-para-a-migracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preparação do Kubernetes para a migração
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#identificacao-do-estado-do-cluster" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Identificação do estado do cluster
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Identificação do estado do cluster">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#evidencias-relacionadas_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidências relacionadas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parada-controlada-das-aplicacoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parada controlada das aplicações
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parada controlada das aplicações">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#evidencias-relacionadas_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidências relacionadas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#encerramento-do-runtime-de-containers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Encerramento do runtime de containers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Encerramento do runtime de containers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#evidencias-relacionadas_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidências relacionadas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#liberacao-dos-pontos-de-montagem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Liberação dos pontos de montagem
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Liberação dos pontos de montagem">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#evidencias-relacionadas_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidências relacionadas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#condicoes-para-inicio-da-migracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Condições para início da migração
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#preparacao-do-novo-ambiente-para-sincronizacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preparação do novo ambiente para sincronização
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Preparação do novo ambiente para sincronização">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#montagem-da-nova-estrutura" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Montagem da nova estrutura
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#estrutura-final-de-montagem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Estrutura final de montagem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validacao-das-montagens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validação das Montagens
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Validação das Montagens">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#evidencia-relacionada_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidência relacionada
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sincronizacao-do-sistema-operacional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sincronização do sistema operacional
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sincronização do sistema operacional">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#execucao-em-sessao-persistente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Execução em sessão persistente
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comando-de-sincronizacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comando de sincronização
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opcoes-utilizadas-no-rsync" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opções utilizadas no rsync
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exclusao-dos-pseudo-sistemas-de-arquivos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exclusão dos pseudo-sistemas de arquivos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verificacao-da-sincronizacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verificação da sincronização
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Verificação da sincronização">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#evidencia-relacionada_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidência relacionada
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#preparacao-do-novo-sistema-para-inicializacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preparação do novo sistema para inicialização
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Preparação do novo sistema para inicialização">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#preparacao-do-ambiente-chroot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preparação do ambiente chroot
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Preparação do ambiente chroot">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#evidencia-relacionada_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidência relacionada
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validacao-do-sistema-migrado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validação do sistema migrado
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instalacao-do-grub-no-novo-raid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instalação do GRUB no novo RAID
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Instalação do GRUB no novo RAID">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#evidencia-relacionada_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidência relacionada
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#regeneracao-do-initramfs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Regeneração do initramfs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#atualizacao-da-configuracao-do-grub" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Atualização da configuração do GRUB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validacao-do-tipo-de-inicializacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validação do tipo de inicialização
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resultado-da-preparacao-do-boot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resultado da preparação do boot
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#encadeamento-da-etapa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Encadeamento da etapa
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ativacao-do-novo-raid-ssd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ativação do novo RAID SSD
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ativação do novo RAID SSD">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#validacao-dos-virtual-drives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validação dos Virtual Drives
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Validação dos Virtual Drives">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#evidencia-relacionada_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidência relacionada
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alteracao-do-virtual-drive-de-boot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alteração do Virtual Drive de boot
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Alteração do Virtual Drive de boot">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#evidencia-relacionada_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidência relacionada
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#confirmacao-da-configuracao-de-boot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Confirmação da configuração de boot
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#persistencia-das-gravacoes-pendentes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Persistência das gravações pendentes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reinicializacao-forcada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reinicialização forçada
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reinicialização forçada">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#evidencia-relacionada_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidência relacionada
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#momento-de-transicao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Momento de transição
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#primeiro-boot-e-recuperacao-do-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Primeiro boot e recuperação do Kubernetes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Primeiro boot e recuperação do Kubernetes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sequencia-recomendada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sequência recomendada
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validacao-inicial-do-cluster" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validação inicial do cluster
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Validação inicial do cluster">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#evidencia-relacionada_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidência relacionada
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restauracao-das-replicas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Restauração das réplicas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pods-permanecendo-em-pending" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pods permanecendo em Pending
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#liberacao-do-no-para-agendamento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Liberação do nó para agendamento
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validacao-dos-workloads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validação dos workloads
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Validação dos workloads">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#evidencia-relacionada_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidência relacionada
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verificacoes-finais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verificações finais
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conclusao-da-migracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusão da migração
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#complemento-tecnico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Complemento técnico
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Complemento técnico">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#engenharia-da-decisao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Engenharia da decisão
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#justificativa-para-um-novo-volume-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Justificativa para um novo Volume Group
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parada-controlada-do-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parada controlada do Kubernetes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#encerramento-de-containers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Encerramento de containers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#execucao-do-rsync" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Execução do rsync
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validacao-via-chroot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validação via chroot
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alteracao-do-virtual-drive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alteração do Virtual Drive
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="migracao-de-servidor-kubernetes-de-raid1-sata-para-raid1-ssd-sem-reinstalacao">Migração de servidor Kubernetes de RAID1 SATA para RAID1 SSD sem reinstalação</h1>
+<table>
+<thead>
+<tr>
+<th>Informação</th>
+<th>Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tipo</td>
+<td>Estudo de caso</td>
+</tr>
+<tr>
+<td>Categoria</td>
+<td>Storage / Kubernetes / Recuperação</td>
+</tr>
+<tr>
+<td>Nível</td>
+<td>Avançado</td>
+</tr>
+<tr>
+<td>Status</td>
+<td>Analisado e Corrigido</td>
+</tr>
+<tr>
+<td>Versão</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Data da revisão</td>
+<td>2026-07-30</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="capa">Capa</h2>
+<p><strong>MORENO.ECO.BR</strong></p>
+<p>Engenharia de Infraestrutura Linux</p>
+<p><strong>Estudo de caso técnico</strong></p>
+<p>Migração de servidor Kubernetes de RAID1 SATA para RAID1 SSD sem reinstalação.</p>
+<p>Este documento descreve uma migração real, anonimizada, envolvendo sistema operacional Linux, LVM, RAID por controladora IBM ServeRAID, GRUB, Kubernetes, containerd e sincronização com <code>rsync</code>.</p>
+<hr />
+<h2 id="indice">Índice</h2>
+<ol>
+<li>Objetivo</li>
+<li>Resumo executivo</li>
+<li>Ambiente</li>
+<li>Arquitetura antes da migração</li>
+<li>Arquitetura depois da migração</li>
+<li>Motivação da migração</li>
+<li>Premissas e restrições</li>
+<li>Estudo das alternativas</li>
+<li>Estratégia adotada</li>
+<li>Preparação do novo RAID</li>
+<li>Preparação do LVM</li>
+<li>Formatação dos volumes</li>
+<li>Preparação do Kubernetes</li>
+<li>Parada controlada</li>
+<li>Montagem da nova raiz</li>
+<li>Sincronização com rsync</li>
+<li>Chroot</li>
+<li>GRUB e initramfs</li>
+<li>MegaCLI e ordem de boot</li>
+<li>Primeiro boot</li>
+<li>Recuperação do Kubernetes</li>
+<li>Problemas encontrados</li>
+<li>Validações</li>
+<li>Lições aprendidas</li>
+<li>Conclusão</li>
+<li>Apêndice A: comandos utilizados</li>
+<li>Apêndice B: saídas relevantes</li>
+<li>Apêndice C: evidências em imagem</li>
+<li>Apêndice D: checklist de sanitização</li>
+</ol>
+<hr />
+<h2 id="objetivo">Objetivo</h2>
+<p>Documentar a migração integral de um servidor Linux com Kubernetes de um RAID1 em discos SATA mecânicos para um novo RAID1 em SSD, sem reinstalação do sistema operacional e sem reconstrução do cluster a partir do zero.</p>
+<p>O objetivo técnico foi preservar:</p>
+<ul>
+<li>sistema operacional;</li>
+<li>estrutura LVM;</li>
+<li>volumes de dados;</li>
+<li>configuração do Kubernetes;</li>
+<li>dados utilizados por containers;</li>
+<li>configuração de boot;</li>
+<li>possibilidade de retorno ao RAID antigo em caso de falha.</li>
+</ul>
+<p>O objetivo operacional foi reduzir a latência de I/O observada no ambiente, principalmente nos componentes sensíveis a escrita e sincronização, como o <code>etcd</code>.</p>
+<hr />
+<h2 id="resumo-executivo">Resumo executivo</h2>
+<p>O ambiente original executava Linux com Kubernetes sobre uma estrutura baseada em LVM armazenada em um RAID1 com discos SATA. O desempenho de I/O do armazenamento mecânico passou a impactar a estabilidade operacional do ambiente, especialmente durante operações de escrita e recuperação dos componentes do Kubernetes.</p>
+<p>A solução adotada foi criar um novo RAID1 com SSDs, montar uma nova estrutura LVM equivalente, formatar os volumes, parar o Kubernetes de forma controlada, sincronizar o sistema com <code>rsync</code>, preparar o novo sistema via <code>chroot</code>, reinstalar o GRUB e alterar o Virtual Drive de boot na controladora IBM ServeRAID M1015 com MegaCLI.</p>
+<p>A migração foi concluída com sucesso. O sistema operacional, os volumes, a configuração do Kubernetes e os dados foram preservados. O RAID antigo foi mantido intacto durante a mudança, funcionando como plano de retorno.</p>
+<hr />
+<h2 id="ambiente">Ambiente</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Descrição anonimizada</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sistema operacional</td>
+<td>Linux</td>
+</tr>
+<tr>
+<td>Função do servidor</td>
+<td>Nó com Kubernetes</td>
+</tr>
+<tr>
+<td>Armazenamento original</td>
+<td>RAID1 com discos SATA</td>
+</tr>
+<tr>
+<td>Armazenamento novo</td>
+<td>RAID1 com SSD</td>
+</tr>
+<tr>
+<td>Controladora</td>
+<td>IBM ServeRAID M1015</td>
+</tr>
+<tr>
+<td>Gerenciamento da controladora</td>
+<td>MegaCLI</td>
+</tr>
+<tr>
+<td>Gerenciamento de volumes</td>
+<td>LVM</td>
+</tr>
+<tr>
+<td>Runtime de containers</td>
+<td>containerd</td>
+</tr>
+<tr>
+<td>Orquestração</td>
+<td>Kubernetes</td>
+</tr>
+<tr>
+<td>Método de cópia</td>
+<td>rsync</td>
+</tr>
+<tr>
+<td>Bootloader</td>
+<td>GRUB</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="arquitetura-antes-da-migracao">Arquitetura antes da migração</h2>
+<p>Antes da migração, o servidor inicializava a partir de um Virtual Drive configurado na controladora RAID. Esse Virtual Drive apresentava um volume físico LVM ao sistema operacional.</p>
+<pre><code class="language-mermaid">flowchart TD
+    A[Servidor físico] --&gt; B[IBM ServeRAID M1015]
+    B --&gt; C[Virtual Drive antigo]
+    C --&gt; D[RAID1 SATA]
+    D --&gt; E[Physical Volume LVM]
+    E --&gt; F[Volume Group original]
+    F --&gt; G[Logical Volumes]
+    G --&gt; H[Sistema Linux]
+    H --&gt; I[containerd]
+    H --&gt; J[Kubernetes]
+    J --&gt; K[Pods e workloads]
+</code></pre>
+<h3 id="caracteristicas-do-cenario-original">Características do cenário original</h3>
+<ul>
+<li>O RAID antigo permanecia funcional.</li>
+<li>A estrutura LVM concentrava volumes do sistema e de dados.</li>
+<li>O Kubernetes dependia da consistência dos volumes locais.</li>
+<li>O <code>etcd</code> era sensível ao comportamento do armazenamento.</li>
+<li>Uma reinstalação completa aumentaria risco e tempo de indisponibilidade.</li>
+</ul>
+<hr />
+<h2 id="arquitetura-depois-da-migracao">Arquitetura depois da migração</h2>
+<p>Após a migração, o servidor passou a inicializar a partir de um novo Virtual Drive associado ao RAID1 SSD.</p>
+<pre><code class="language-mermaid">flowchart TD
+    A[Servidor físico] --&gt; B[IBM ServeRAID M1015]
+    B --&gt; C[Virtual Drive novo]
+    C --&gt; D[RAID1 SSD]
+    D --&gt; E[Physical Volume LVM novo]
+    E --&gt; F[Volume Group novo]
+    F --&gt; G[Logical Volumes equivalentes]
+    G --&gt; H[Sistema Linux migrado]
+    H --&gt; I[containerd]
+    H --&gt; J[Kubernetes]
+    J --&gt; K[Pods e workloads recuperados]
+
+    B --&gt; L[Virtual Drive antigo preservado]
+    L --&gt; M[RAID1 SATA mantido como retorno]
+</code></pre>
+<h3 id="resultado-esperado">Resultado esperado</h3>
+<ul>
+<li>Boot pelo novo RAID SSD.</li>
+<li>Estrutura de volumes preservada.</li>
+<li>Sistema operacional iniciado sem reinstalação.</li>
+<li>Kubernetes recuperado após liberação controlada.</li>
+<li>RAID antigo preservado até homologação.</li>
+</ul>
+<hr />
+<h2 id="motivacao-da-migracao">Motivação da Migração</h2>
+<p>O servidor Kubernetes executava o sistema operacional e o etcd, responsável pelo armazenamento do estado do cluster, sobre um conjunto de discos SATA mecânicos configurados em RAID1.</p>
+<p>Durante a operação foram observados tempos excessivos de resposta das operações de entrada e saída (I/O), elevando significativamente a latência do subsistema de armazenamento. Como o etcd depende de gravações síncronas e de baixa latência para manter o estado do cluster, esse comportamento comprometia diretamente o funcionamento do Kubernetes.</p>
+<p>As consequências eram percebidas na operação diária do ambiente, incluindo:</p>
+<ul>
+<li>aumento da latência nas operações do etcd;</li>
+<li>degradação do tempo de resposta da API do Kubernetes;</li>
+<li>atrasos na comunicação entre os componentes do cluster;</li>
+<li>falhas na criação e inicialização de Pods;</li>
+<li>encerramento inesperado de Pods durante períodos de maior atividade;</li>
+<li>aumento do tempo de recuperação após reinicializações;</li>
+<li>indisponibilidades ocasionais de serviços hospedados no cluster.</li>
+</ul>
+<p>A análise do ambiente demonstrou que a limitação não estava relacionada à capacidade de armazenamento, mas ao elevado tempo de resposta do conjunto de discos mecânicos. O subsistema de armazenamento havia se tornado o principal gargalo do ambiente, impedindo que o Kubernetes e, principalmente, o etcd, operassem dentro dos requisitos de desempenho necessários para manter a estabilidade do cluster.</p>
+<p>Diante desse cenário, foi definida a substituição do armazenamento principal por um novo conjunto de discos SSD configurados em RAID1. A migração teve como objetivo eliminar o gargalo de I/O, reduzir a latência do armazenamento e restabelecer a estabilidade operacional do cluster, preservando integralmente a instalação existente por meio da migração do sistema operacional e de seus dados, sem necessidade de reinstalação do servidor.</p>
+<hr />
+<h2 id="premissas-e-restricoes">Premissas e Restrições</h2>
+<h3 id="premissas">Premissas</h3>
+<ul>
+<li>O RAID antigo deveria permanecer intacto durante a migração.</li>
+<li>O sistema operacional não deveria ser reinstalado.</li>
+<li>A estrutura de volumes deveria ser reproduzida no novo armazenamento.</li>
+<li>O Kubernetes deveria ser parado de forma controlada antes da cópia final.</li>
+<li>A alteração do boot deveria ocorrer somente depois da validação do novo sistema.</li>
+</ul>
+<h3 id="restricoes">Restrições</h3>
+<ul>
+<li>A janela de manutenção deveria ser controlada.</li>
+<li>A cópia precisava preservar permissões, donos, links, atributos e arquivos especiais.</li>
+<li>Volumes montados por containers não poderiam permanecer ativos durante a sincronização final.</li>
+<li>A controladora RAID exigia alteração explícita do Virtual Drive de boot.</li>
+</ul>
+<hr />
+<h2 id="estrategia-adotada">Estratégia adotada</h2>
+<p>O fluxo geral da migração foi:</p>
+<pre><code class="language-mermaid">flowchart LR
+    A[Reconhecer&lt;br&gt;novo&lt;br&gt;RAID SSD] --&gt; B[Criar PV,&lt;br&gt;VG e LVs]
+    B --&gt; C[Formatar&lt;br&gt;volumes]
+    C --&gt; D[Montar&lt;br&gt;nova&lt;br&gt;raiz]
+    D --&gt; E[Parar&lt;br&gt;Kubernetes]
+    E --&gt; F[Parar&lt;br&gt;kubelet&lt;br&gt; e&lt;br&gt;containerd]
+    F --&gt; G[Sincronizar&lt;br&gt;com&lt;br&gt;rsync]
+    G --&gt; H[Entrar&lt;br&gt;em chroot]
+    H --&gt; I[Gerar&lt;br&gt;initramfs&lt;br&gt;e instalar&lt;br&gt;GRUB]
+    I --&gt; J[Ajustar&lt;br&gt;boot&lt;br&gt;com&lt;br&gt;MegaCLI]
+    J --&gt; K[Reiniciar]
+    K --&gt; L[Validar&lt;br&gt;sistema]
+    L --&gt; M[Recuperar&lt;br&gt;Kubernetes]
+
+</code></pre>
+<p>Essa sequência reduziu o risco porque cada etapa produzia uma evidência verificável antes da próxima.</p>
+<hr />
+<h2 id="preparacao-do-novo-raid">Preparação do novo RAID</h2>
+<p>O primeiro passo foi validar que a controladora reconhecia os discos SSD e apresentava o novo Virtual Drive ao sistema.</p>
+<h3 id="verificacoes-necessarias">Verificações necessárias</h3>
+<p>Após a instalação física dos discos SSD e a criação do novo arranjo RAID1 na controladora IBM ServeRAID M1015, o primeiro procedimento consistiu em validar se o novo Virtual Drive havia sido criado corretamente e encontrava-se operacional.</p>
+<p>Essa etapa garante que o novo armazenamento está íntegro antes de qualquer intervenção no sistema operacional, evitando iniciar uma migração sobre um volume com falhas de configuração ou degradação do RAID.</p>
+<p>A verificação foi realizada utilizando o utilitário MegaCLI, consultando diretamente as informações dos discos virtuais configurados na controladora.</p>
+<p>Itens verificados:</p>
+<ul>
+<li>reconhecimento dos dois discos SSD pela controladora;</li>
+<li>criação do novo Virtual Drive em RAID1;</li>
+<li>estado operacional do volume (Optimal);</li>
+<li>capacidade aproximada de 1 TB;</li>
+<li>políticas de acesso e cache aplicadas ao novo volume;</li>
+<li>preservação do Virtual Drive original, garantindo que o sistema em produção permanecesse íntegro durante toda a preparação.</li>
+</ul>
+<p><img alt="Verificando discos virtuais na controladora" src="../imagens/Verificando_discos_virtuais_controladora.png" /></p>
+<p>A saída do MegaCLI confirma que a controladora reconhece dois discos virtuais configurados em RAID1. O Virtual Drive 0 corresponde ao armazenamento atualmente utilizado pelo sistema operacional, enquanto o Virtual Drive 1 representa o novo conjunto de discos SSD preparado para receber a migração.</p>
+<p>Ambos os volumes encontram-se com estado Optimal, indicando que a sincronização do espelhamento foi concluída com sucesso e que não havia falhas de hardware que impedissem o prosseguimento da migração.</p>
+<p>Outro aspecto relevante observado é que ambos os volumes estavam operando com a política de cache:</p>
+<pre><code>WriteThrough
+ReadAheadNone
+Direct
+No Write Cache if Bad BBU
+</code></pre>
+<p>Essa configuração é compatível com a ausência de uma bateria funcional (BBU) na controladora, priorizando a integridade dos dados em detrimento do desempenho de escrita. Embora essa política aumente a latência das operações de gravação, ela elimina o risco de perda de dados em caso de interrupção inesperada de energia.</p>
+<p>Com a confirmação do estado operacional do novo Virtual Drive, foi possível prosseguir para a etapa seguinte, na qual o sistema operacional reconhece o novo dispositivo de armazenamento como um novo disco disponível para particionamento e preparação da migração.</p>
+<hr />
+<h2 id="definicao-da-estrategia-de-migracao">Definição da estratégia de migração</h2>
+<p>Antes do início da migração foi analisada a melhor estratégia para transferir o sistema operacional do RAID mecânico para o novo RAID SSD, preservando a instalação existente e reduzindo o tempo de indisponibilidade do ambiente.</p>
+<p>Inicialmente foi considerada a utilização da ferramenta <strong>dd</strong>, realizando uma cópia integral das partições existentes para o novo disco. Essa abordagem apresentava como principal vantagem a preservação exata do conteúdo das partições, incluindo sistemas de arquivos, UUIDs e estruturas de inicialização, reduzindo significativamente a necessidade de ajustes posteriores.</p>
+<p>Entretanto, durante o planejamento observou-se que essa estratégia era adequada apenas para as pequenas partições de inicialização. A aplicação do mesmo procedimento sobre a partição principal, com aproximadamente <strong>950 GB</strong>, implicaria a cópia de todo o dispositivo em nível de bloco, incluindo áreas não utilizadas, aumentando significativamente o tempo de migração e a indisponibilidade do ambiente.</p>
+<p>Diante dessa análise foi adotada uma estratégia híbrida:</p>
+<ul>
+<li>clonagem em nível de bloco (<code>dd</code>) apenas das partições de inicialização;</li>
+<li>recriação da estrutura LVM no novo RAID;</li>
+<li>migração do sistema de arquivos utilizando <code>rsync</code>, copiando apenas os dados efetivamente utilizados.</li>
+</ul>
+<p>Essa abordagem preservou os componentes de boot do sistema, reduziu o tempo necessário para a migração da partição principal e permitiu reorganizar a estrutura lógica de armazenamento sem reinstalação do sistema operacional.</p>
+<hr />
+<h2 id="preparacao-do-novo-disco">Preparação do novo disco</h2>
+<p>Antes da transferência dos dados foi necessário preparar o novo Virtual Drive para receber a estrutura do sistema operacional.</p>
+<p>Inicialmente foi analisada a tabela de partições do disco original, identificando sua organização e o tamanho de cada partição existente.</p>
+<p><img alt="Verificação da estrutura das partições" src="../imagens/Verificando_particoes_antiga.png" /></p>
+<p>Em seguida, utilizando o utilitário <strong>fdisk</strong>, foi recriada manualmente uma estrutura equivalente no novo disco, preservando o layout necessário para o processo de inicialização e para a futura configuração do LVM.</p>
+<p>Após a criação das partições foi realizada uma nova verificação da tabela de partições para confirmar que a estrutura do novo disco correspondia ao planejamento definido.</p>
+<p><img alt="Estrutura das partições recriada no novo RAID" src="../imagens/Criando_particoes_disco_novo.png" /></p>
+<p>A sequência de comandos demonstra a inspeção da estrutura existente, a criação das novas partições e a validação final da tabela de partições antes do início da migração dos dados.</p>
+<hr />
+<h2 id="clonagem-das-particoes-de-inicializacao">Clonagem das partições de inicialização</h2>
+<p>Com a estrutura do novo disco preparada, iniciou-se a transferência das partições responsáveis pelo processo de inicialização do sistema.</p>
+<p>Foram clonadas diretamente as seguintes partições:</p>
+<pre><code class="language-text">/dev/sda1  →  /dev/sdb1
+/dev/sda2  →  /dev/sdb2
+/dev/sda3  →  /dev/sdb3
+</code></pre>
+<p>A utilização do utilitário <strong>dd</strong> nessas partições permitiu preservar integralmente seu conteúdo, incluindo sistemas de arquivos, identificadores (UUIDs) e demais metadados, eliminando a necessidade de formatação ou recriação manual dessas estruturas.</p>
+<p><img alt="Clonagem das partições de inicialização" src="../imagens/copia_direta_particoes_menores.png" /></p>
+<p>A captura de imagem demonstra a clonagem direta das três partições de inicialização utilizando o utilitário <strong>dd</strong>, preservando integralmente sua estrutura antes do início da migração do sistema de arquivos principal.</p>
+<p>Como cada uma dessas partições possui aproximadamente <strong>1 GB</strong>, a operação foi concluída rapidamente, com baixo risco operacional.</p>
+<p>Durante essa etapa foi reavaliada a possibilidade de aplicar o mesmo procedimento à partição principal do sistema. Contudo, considerando seu tamanho aproximado de <strong>950 GB</strong>, concluiu-se que a cópia integral em nível de bloco tornaria a migração demasiadamente demorada, além de copiar também grandes áreas sem dados úteis.</p>
+<p>Essa constatação confirmou a decisão de utilizar <strong>rsync</strong> para a migração da partição principal, mantendo o <code>dd</code> exclusivamente para as pequenas partições de inicialização.</p>
+<hr />
+<h2 id="preparacao-da-estrutura-lvm">Preparação da estrutura LVM</h2>
+<p>Concluída a preparação do novo disco, iniciou-se a criação da estrutura de gerenciamento de volumes que receberia o sistema operacional.</p>
+<p>Antes de qualquer alteração, foi realizado um levantamento completo da configuração LVM existente no servidor, identificando a organização dos <em>Physical Volumes (PV)</em>, <em>Volume Groups (VG)</em> e <em>Logical Volumes (LV)</em> utilizados pelo ambiente em produção.</p>
+<p>A análise demonstrou que todo o sistema estava concentrado em um único <strong>Volume Group</strong>, denominado <strong>vg0</strong>, contendo os volumes lógicos responsáveis pelo sistema operacional, áreas de dados e armazenamento dos containers.</p>
+<h3 id="estrutura-original">Estrutura original</h3>
+<table>
+<thead>
+<tr>
+<th>Logical Volume</th>
+<th>Finalidade</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>backup</td>
+<td>Área destinada aos backups locais</td>
+</tr>
+<tr>
+<td>docker</td>
+<td>Dados persistentes dos containers</td>
+</tr>
+<tr>
+<td>home</td>
+<td>Diretório <code>/home</code></td>
+</tr>
+<tr>
+<td>root</td>
+<td>Sistema operacional</td>
+</tr>
+<tr>
+<td>swap</td>
+<td>Área de memória virtual</td>
+</tr>
+<tr>
+<td>tmp</td>
+<td>Diretório temporário</td>
+</tr>
+<tr>
+<td>usr</td>
+<td>Diretório <code>/usr</code></td>
+</tr>
+<tr>
+<td>var</td>
+<td>Diretório <code>/var</code></td>
+</tr>
+</tbody>
+</table>
+<p>Essa estrutura serviu como referência para a criação do novo ambiente de armazenamento.</p>
+<h3 id="criacao-do-novo-volume-group">Criação do novo Volume Group</h3>
+<p>Embora fosse possível utilizar novamente o nome <strong>vg0</strong>, optou-se pela criação de um novo <strong>Volume Group</strong>, denominado <strong>dados</strong>.</p>
+<p>Essa decisão permitiu que a estrutura antiga e a nova coexistissem durante toda a migração, reduzindo significativamente o risco operacional.</p>
+<p>As principais vantagens dessa abordagem foram:</p>
+<ul>
+<li>evitar conflitos entre Volume Groups com o mesmo nome;</li>
+<li>preservar integralmente o ambiente original durante toda a migração;</li>
+<li>permitir a comparação entre as duas estruturas a qualquer momento;</li>
+<li>simplificar um eventual procedimento de retorno (rollback), caso necessário.</li>
+</ul>
+<p>Durante todo o processo, o sistema operacional permaneceu utilizando exclusivamente o Volume Group <strong>vg0</strong>, enquanto a nova estrutura era preparada de forma independente no RAID SSD.</p>
+<h3 id="reproducao-da-estrutura-logica">Reprodução da estrutura lógica</h3>
+<p>Após a criação do novo Volume Group, foram recriados todos os Logical Volumes existentes no ambiente original, preservando a mesma organização lógica e os mesmos tamanhos.</p>
+<table>
+<thead>
+<tr>
+<th>Logical Volume</th>
+<th style="text-align: right;">Tamanho</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>backup</td>
+<td style="text-align: right;">400 GB</td>
+</tr>
+<tr>
+<td>docker</td>
+<td style="text-align: right;">350 GB</td>
+</tr>
+<tr>
+<td>home</td>
+<td style="text-align: right;">5 GB</td>
+</tr>
+<tr>
+<td>root</td>
+<td style="text-align: right;">30 GB</td>
+</tr>
+<tr>
+<td>swap</td>
+<td style="text-align: right;">8 GB</td>
+</tr>
+<tr>
+<td>tmp</td>
+<td style="text-align: right;">5 GB</td>
+</tr>
+<tr>
+<td>usr</td>
+<td style="text-align: right;">30 GB</td>
+</tr>
+<tr>
+<td>var</td>
+<td style="text-align: right;">30 GB</td>
+</tr>
+</tbody>
+</table>
+<p>A reprodução da estrutura original simplificou a migração do sistema de arquivos, mantendo a mesma organização administrativa já utilizada no ambiente em produção.</p>
+<h3 id="arquitetura-adotada-durante-a-migracao">Arquitetura adotada durante a migração</h3>
+<p>Durante toda a preparação coexistiram duas estruturas LVM completamente independentes:</p>
+<pre><code class="language-text">RAID Original
+└── VG: vg0
+    ├── root
+    ├── var
+    ├── usr
+    ├── home
+    ├── tmp
+    ├── swap
+    ├── docker
+    └── backup
+
+RAID SSD
+└── VG: dados
+    ├── root
+    ├── var
+    ├── usr
+    ├── home
+    ├── tmp
+    ├── swap
+    ├── docker
+    └── backup
+</code></pre>
+<p>Essa separação foi uma das principais medidas de segurança adotadas durante a migração. Em nenhum momento houve alteração da estrutura LVM utilizada pelo sistema em produção, permitindo que todo o processo de preparação fosse realizado sem interferir no ambiente original.</p>
+<h3 id="evidencias-relacionadas">Evidências relacionadas</h3>
+<p><img alt="Criação do novo Volume Group" src="../imagens/Verificando_LVM_Criando_novo_VG.png" /></p>
+<p>A primeira evidência apresenta a identificação da estrutura LVM existente, a criação do novo <em>Physical Volume</em> sobre o RAID SSD e a criação do novo <strong>Volume Group</strong> denominado <strong>dados</strong>, mantendo simultaneamente o <strong>vg0</strong> original.</p>
+<p><img alt="Criação dos Logical Volumes" src="../imagens/Verificando_LVM_Criando_Volumes.png" /></p>
+<p>A segunda evidência demonstra a recriação dos Logical Volumes no novo Volume Group, preservando a mesma organização lógica existente no ambiente original e preparando o armazenamento para a migração dos dados utilizando <code>rsync</code>.</p>
+<hr />
+<h2 id="preparacao-dos-sistemas-de-arquivos">Preparação dos sistemas de arquivos</h2>
+<p>Concluída a criação da estrutura LVM, iniciou-se a preparação dos sistemas de arquivos que receberiam os dados migrados do ambiente original.</p>
+<p>Antes da formatação dos novos Logical Volumes, foi realizada uma análise do arquivo <code>/etc/fstab</code> do sistema em produção. O objetivo dessa verificação foi identificar os sistemas de arquivos utilizados em cada ponto de montagem, garantindo que a nova estrutura reproduzisse fielmente a configuração existente.</p>
+<p>Essa etapa evitou suposições durante a migração e assegurou que cada volume fosse inicializado utilizando o mesmo sistema de arquivos empregado pelo servidor original.</p>
+<h3 id="analise-da-configuracao-existente">Análise da configuração existente</h3>
+<p>A consulta ao arquivo <code>/etc/fstab</code> permitiu identificar os pontos de montagem utilizados pelo sistema operacional, bem como os respectivos sistemas de arquivos associados a cada Logical Volume.</p>
+<p>Essa informação serviu como referência para toda a preparação do novo ambiente de armazenamento.</p>
+<h3 id="evidencia-relacionada">Evidência relacionada</h3>
+<p><img alt="Verificação da configuração do fstab" src="../imagens/Verificando_formatacao_das_particoes.png" /></p>
+<p>A imagem apresenta o conteúdo do arquivo <code>/etc/fstab</code> do ambiente original, utilizado como referência para identificar os sistemas de arquivos empregados em cada ponto de montagem antes da criação da nova estrutura.</p>
+<h3 id="formatacao-dos-logical-volumes">Formatação dos Logical Volumes</h3>
+<p>Com base nas informações obtidas no ambiente original, todos os Logical Volumes pertencentes ao Volume Group <strong>dados</strong> foram inicializados utilizando os mesmos sistemas de arquivos existentes no servidor em produção.</p>
+<table>
+<thead>
+<tr>
+<th>Logical Volume</th>
+<th>Sistema de arquivos</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>root</td>
+<td>ext4</td>
+</tr>
+<tr>
+<td>usr</td>
+<td>ext4</td>
+</tr>
+<tr>
+<td>var</td>
+<td>ext4</td>
+</tr>
+<tr>
+<td>home</td>
+<td>ext4</td>
+</tr>
+<tr>
+<td>tmp</td>
+<td>ext4</td>
+</tr>
+<tr>
+<td>docker</td>
+<td>ext4</td>
+</tr>
+<tr>
+<td>backup</td>
+<td>ext4</td>
+</tr>
+<tr>
+<td>swap</td>
+<td>swap</td>
+</tr>
+</tbody>
+</table>
+<p>A criação de novos sistemas de arquivos resultou na geração de novos UUIDs para cada volume. Esses identificadores foram posteriormente utilizados na reconstrução do arquivo <code>/etc/fstab</code> do ambiente migrado, garantindo que o sistema operacional montasse corretamente cada ponto de montagem após a inicialização pelo novo RAID.</p>
+<h3 id="evidencias-relacionadas_1">Evidências relacionadas</h3>
+<h4 id="formatacao-do-volume-raiz">Formatação do volume raiz</h4>
+<p><img alt="Formatando volume root" src="../imagens/Formatando_blocos_particao_root.png" /></p>
+<h4 id="formatacao-do-volume-usr">Formatação do volume <code>/usr</code></h4>
+<p><img alt="Formatando volume usr" src="../imagens/Formatando_blocos_particao_usr.png" /></p>
+<h4 id="formatacao-do-volume-var">Formatação do volume <code>/var</code></h4>
+<p><img alt="Formatando volume var" src="../imagens/Formatando_blocos_particao_var.png" /></p>
+<h4 id="formatacao-do-volume-home">Formatação do volume <code>/home</code></h4>
+<p><img alt="Formatando volume home" src="../imagens/Formatando_blocos_particao_home.png" /></p>
+<h4 id="formatacao-do-volume-tmp">Formatação do volume <code>/tmp</code></h4>
+<p><img alt="Formatando volume tmp" src="../imagens/Formatando_blocos_particao_tmp.png" /></p>
+<h4 id="inicializacao-da-area-de-swap">Inicialização da área de swap</h4>
+<p><img alt="Formatando volume swap" src="../imagens/Formatando_blocos_particao_swap.png" /></p>
+<h4 id="formatacao-do-volume-destinado-aos-containers">Formatação do volume destinado aos containers</h4>
+<p><img alt="Formatando volume docker" src="../imagens/Formatando_blocos_particao_docker.png" /></p>
+<h4 id="formatacao-do-volume-de-backup">Formatação do volume de backup</h4>
+<p><img alt="Formatando volume backup" src="../imagens/Formatando_blocos_particao_backup.png" /></p>
+<p>Ao final dessa etapa, toda a estrutura de armazenamento do novo RAID encontrava-se preparada para receber a migração dos dados do sistema operacional por meio do <code>rsync</code>.</p>
+<hr />
+<h2 id="preparacao-do-kubernetes-para-a-migracao">Preparação do Kubernetes para a migração</h2>
+<p>Antes da sincronização final do sistema operacional foi necessário colocar o ambiente Kubernetes em um estado consistente, eliminando qualquer escrita ativa sobre os volumes que seriam migrados.</p>
+<p>O objetivo dessa etapa não era remover aplicações ou alterar a configuração do cluster, mas apenas interromper temporariamente sua execução, preservando integralmente os objetos Kubernetes para posterior restauração.</p>
+<p>A sequência de ações adotada foi:</p>
+<pre><code class="language-mermaid">flowchart TD
+    A[Listar workloads] --&gt; B[Salvar réplicas atuais]
+    B --&gt; C[Reduzir Deployments]
+    C --&gt; D[Reduzir StatefulSets]
+    D --&gt; E[Acompanhar pods encerrando]
+    E --&gt; F[Validar ausência de containers ativos]
+    F --&gt; G[Parar kubelet]
+    G --&gt; H[Parar containerd]
+    H --&gt; I[Desmontar mounts temporários]
+    I --&gt; J[Executar sincronização final]
+</code></pre>
+<hr />
+<h2 id="identificacao-do-estado-do-cluster">Identificação do estado do cluster</h2>
+<p>Antes de iniciar a parada das cargas de trabalho foi realizado um levantamento do estado atual do ambiente.</p>
+<p>Foram identificados:</p>
+<ul>
+<li>o nó responsável pela execução do cluster;</li>
+<li>os Pods ativos em todos os namespaces;</li>
+<li>os Deployments e StatefulSets existentes;</li>
+<li>a quantidade de réplicas configurada para cada workload.</li>
+</ul>
+<p>Essas informações foram registradas antes da interrupção do ambiente, permitindo restaurar posteriormente a mesma configuração operacional.</p>
+<h3 id="evidencias-relacionadas_2">Evidências relacionadas</h3>
+<p><img alt="Identificando nós Kubernetes" src="../imagens/Identificando_nos_kubernets.png" /></p>
+<p>A imagem identifica o nó do cluster que seria submetido ao procedimento de migração.</p>
+<p><img alt="Lista de Pods" src="../imagens/Lista_pods_kubernet.png" /></p>
+<p>A consulta apresenta todos os Pods ativos no momento do início da migração.</p>
+<p><img alt="Deployments e StatefulSets" src="../imagens/Kubernet_Statefulsets.png" /></p>
+<p>A relação de Deployments e StatefulSets foi utilizada para registrar previamente a quantidade de réplicas existente em cada carga de trabalho.</p>
+<hr />
+<h2 id="parada-controlada-das-aplicacoes">Parada controlada das aplicações</h2>
+<p>Com o estado do cluster documentado, iniciou-se a redução controlada das cargas de trabalho.</p>
+<p>Inicialmente todos os <strong>Deployments</strong> tiveram sua quantidade de réplicas reduzida para zero.</p>
+<p>Na sequência, o mesmo procedimento foi aplicado aos <strong>StatefulSets</strong>, preservando sua configuração, porém interrompendo completamente sua execução.</p>
+<p>Durante toda a operação foi realizado o acompanhamento da finalização dos Pods para verificar se todas as aplicações haviam encerrado corretamente.</p>
+<p>Essa abordagem permitiu interromper a execução das aplicações sem remover qualquer configuração do Kubernetes.</p>
+<h3 id="evidencias-relacionadas_3">Evidências relacionadas</h3>
+<p><img alt="Bloqueio do nó" src="../imagens/Bloqueio_Kubernet.png" /></p>
+<p>O nó foi marcado como indisponível para novos agendamentos (<em>cordon</em>), impedindo que novas cargas fossem distribuídas durante a migração.</p>
+<p><img alt="Redução dos Deployments" src="../imagens/Desligando_todos_pods_kubernet.png" /></p>
+<p>A imagem demonstra a redução controlada dos Deployments para zero réplicas.</p>
+<p><img alt="Redução dos StatefulSets" src="../imagens/Desligando_todos_pods_incluindo_statefulset_kubernet.png" /></p>
+<p>Na sequência foi aplicada a mesma estratégia aos StatefulSets existentes.</p>
+<p><img alt="Acompanhamento da finalização" src="../imagens/Acompanhando_desligamento_pods.png" /></p>
+<p>Durante todo o processo foi acompanhada a finalização gradual dos Pods até a interrupção das cargas de trabalho.</p>
+<hr />
+<h2 id="encerramento-do-runtime-de-containers">Encerramento do runtime de containers</h2>
+<p>Após a parada das aplicações verificou-se que alguns containers permaneciam em execução.</p>
+<p>Esse comportamento ocorre porque a interrupção das cargas de trabalho não encerra imediatamente todos os componentes do runtime de containers.</p>
+<p>Para eliminar completamente qualquer atividade sobre os volumes do sistema, foi interrompido o serviço <strong>kubelet</strong>, impedindo novas tentativas de criação ou reinicialização de Pods.</p>
+<p>Na sequência foi realizada uma inspeção direta do <strong>containerd</strong>, identificando as tarefas (<em>tasks</em>) ainda em execução.</p>
+<p>Esses containers remanescentes foram encerrados inicialmente por meio dos mecanismos normais do runtime. Os processos que permaneceram ativos foram finalizados manualmente utilizando sinais do sistema operacional.</p>
+<p>Essa etapa garantiu que nenhum processo permanecesse utilizando os sistemas de arquivos que seriam copiados durante a migração.</p>
+<h3 id="evidencias-relacionadas_4">Evidências relacionadas</h3>
+<p><img alt="Parada do kubelet" src="../imagens/Desligando_kubelet.png" /></p>
+<p>O serviço kubelet foi interrompido para impedir novas operações do Kubernetes durante a migração.</p>
+<p><img alt="Containers ainda em execução" src="../imagens/Verificando_Containers_ainda_execucao.png" /></p>
+<p>Mesmo após a interrupção das aplicações, ainda existiam tarefas ativas no containerd.</p>
+<p><img alt="Encerramento das tasks" src="../imagens/For%C3%A7ando_enceramento_containers.png" /></p>
+<p>Realizou-se a finalização controlada das tarefas remanescentes.</p>
+<p><img alt="Finalização com kill" src="../imagens/For%C3%A7ando_enceramento_containers_com_kill.png" /></p>
+<p>Os processos que permaneceram ativos foram encerrados manualmente, garantindo que não existissem containers em execução.</p>
+<hr />
+<h2 id="liberacao-dos-pontos-de-montagem">Liberação dos pontos de montagem</h2>
+<p>Mesmo após o encerramento dos containers, ainda permaneciam ativos diversos sistemas de arquivos temporários criados pelo Kubernetes.</p>
+<p>Esses pontos de montagem, pertencentes principalmente ao <strong>containerd</strong> e ao <strong>kubelet</strong>, poderiam manter referências abertas aos volumes do sistema e comprometer a consistência da sincronização dos dados.</p>
+<p>Inicialmente foram desmontados todos os sistemas de arquivos associados ao <strong>containerd</strong>.</p>
+<p>Na sequência foi aplicado o mesmo procedimento aos pontos de montagem pertencentes ao <strong>kubelet</strong>, repetindo a operação até que nenhuma montagem temporária permanecesse ativa.</p>
+<p>Somente após essa validação o ambiente foi considerado completamente preparado para o início da sincronização do sistema operacional.</p>
+<h3 id="evidencias-relacionadas_5">Evidências relacionadas</h3>
+<p><img alt="Verificação das montagens" src="../imagens/Verificando_particoes_montadas_de_containers.png" /></p>
+<p>A inspeção identificou os sistemas de arquivos temporários ainda mantidos pelo Kubernetes.</p>
+<p><img alt="Desmontagem dos mounts do containerd" src="../imagens/Demonte_Particoes_container_1.png" /></p>
+<p>Realizou-se a desmontagem automatizada dos sistemas de arquivos pertencentes ao runtime de containers.</p>
+<p><img alt="Validação final" src="../imagens/Demonte_Particoes_container_2.png" /></p>
+<p>A verificação final confirmou que não permaneciam montagens temporárias associadas ao Kubernetes.</p>
+<hr />
+<h2 id="condicoes-para-inicio-da-migracao">Condições para início da migração</h2>
+<p>Ao término da etapa de parada do Kubernetes o ambiente encontrava-se em um estado seguro para a sincronização final dos dados.</p>
+<p>Foram confirmadas as seguintes condições:</p>
+<table>
+<thead>
+<tr>
+<th>Verificação</th>
+<th>Situação</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nó bloqueado para novos agendamentos</td>
+<td>✔</td>
+</tr>
+<tr>
+<td>Réplicas registradas</td>
+<td>✔</td>
+</tr>
+<tr>
+<td>Deployments reduzidos</td>
+<td>✔</td>
+</tr>
+<tr>
+<td>StatefulSets reduzidos</td>
+<td>✔</td>
+</tr>
+<tr>
+<td>Pods encerrados</td>
+<td>✔</td>
+</tr>
+<tr>
+<td>kubelet interrompido</td>
+<td>✔</td>
+</tr>
+<tr>
+<td>Containers finalizados</td>
+<td>✔</td>
+</tr>
+<tr>
+<td>Sistemas de arquivos temporários desmontados</td>
+<td>✔</td>
+</tr>
+</tbody>
+</table>
+<p>Com todas essas verificações concluídas, o sistema operacional encontrava-se completamente inativo do ponto de vista das cargas de trabalho do Kubernetes, permitindo iniciar a sincronização do ambiente para o novo conjunto de discos SSD com segurança e consistência.</p>
+<hr />
+<h2 id="preparacao-do-novo-ambiente-para-sincronizacao">Preparação do novo ambiente para sincronização</h2>
+<p>Após a interrupção das cargas de trabalho do Kubernetes e a liberação dos pontos de montagem temporários, iniciou-se a preparação do novo ambiente para receber a cópia do sistema operacional.</p>
+<p>O objetivo desta etapa foi montar os sistemas de arquivos do RAID SSD sob um diretório temporário, reproduzindo a mesma hierarquia de montagem utilizada pelo sistema original.</p>
+<p>Essa organização foi necessária para que o <code>rsync</code> direcionasse os arquivos de cada diretório para o Logical Volume correspondente no novo armazenamento.</p>
+<hr />
+<h3 id="montagem-da-nova-estrutura">Montagem da nova estrutura</h3>
+<p>O diretório <code>/mnt/root</code> foi utilizado como raiz temporária do sistema migrado.</p>
+<p>Inicialmente, o novo Logical Volume destinado à raiz foi montado nesse diretório:</p>
+<pre><code class="language-bash">cd /mnt
+
+mkdir -p root
+
+mount /dev/mapper/dados-root root
+</code></pre>
+<p>Após a montagem da raiz, foram criados os diretórios necessários para receber os demais sistemas de arquivos:</p>
+<pre><code class="language-bash">mkdir -p \
+    root/boot \
+    root/home \
+    root/usr \
+    root/var \
+    root/tmp
+</code></pre>
+<p>Na sequência, cada Logical Volume foi montado no ponto correspondente:</p>
+<pre><code class="language-bash">mount /dev/mapper/dados-home root/home
+mount /dev/mapper/dados-usr  root/usr
+mount /dev/mapper/dados-var  root/var
+mount /dev/mapper/dados-tmp  root/tmp
+</code></pre>
+<p>Como os volumes destinados aos backups e aos dados do <code>containerd</code> estavam localizados abaixo de <code>/var</code>, seus pontos de montagem foram criados somente após a montagem do volume <code>dados-var</code>:</p>
+<pre><code class="language-bash">mkdir -p \
+    root/var/Backup \
+    root/var/lib/containerd
+
+mount /dev/mapper/dados-backup root/var/Backup
+mount /dev/mapper/dados-docker root/var/lib/containerd
+</code></pre>
+<p>Por fim, foram montadas as partições responsáveis pela inicialização do sistema:</p>
+<pre><code class="language-bash">mount /dev/sdb2 root/boot
+
+mkdir -p root/boot/efi
+
+mount /dev/sdb3 root/boot/efi
+</code></pre>
+<p>A ordem das montagens foi importante. Os volumes principais precisavam ser montados antes dos volumes localizados em seus subdiretórios. Caso contrário, uma montagem posterior poderia ocultar o conteúdo ou o ponto de montagem anteriormente preparado.</p>
+<hr />
+<h3 id="estrutura-final-de-montagem">Estrutura final de montagem</h3>
+<p>A estrutura preparada para receber a sincronização ficou organizada da seguinte forma:</p>
+<table>
+<thead>
+<tr>
+<th>Dispositivo</th>
+<th>Ponto de montagem temporário</th>
+<th>Ponto de montagem após o boot</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/dev/mapper/dados-root</code></td>
+<td><code>/mnt/root</code></td>
+<td><code>/</code></td>
+</tr>
+<tr>
+<td><code>/dev/mapper/dados-home</code></td>
+<td><code>/mnt/root/home</code></td>
+<td><code>/home</code></td>
+</tr>
+<tr>
+<td><code>/dev/mapper/dados-usr</code></td>
+<td><code>/mnt/root/usr</code></td>
+<td><code>/usr</code></td>
+</tr>
+<tr>
+<td><code>/dev/mapper/dados-var</code></td>
+<td><code>/mnt/root/var</code></td>
+<td><code>/var</code></td>
+</tr>
+<tr>
+<td><code>/dev/mapper/dados-tmp</code></td>
+<td><code>/mnt/root/tmp</code></td>
+<td><code>/tmp</code></td>
+</tr>
+<tr>
+<td><code>/dev/mapper/dados-backup</code></td>
+<td><code>/mnt/root/var/Backup</code></td>
+<td><code>/var/Backup</code></td>
+</tr>
+<tr>
+<td><code>/dev/mapper/dados-docker</code></td>
+<td><code>/mnt/root/var/lib/containerd</code></td>
+<td><code>/var/lib/containerd</code></td>
+</tr>
+<tr>
+<td><code>/dev/sdb2</code></td>
+<td><code>/mnt/root/boot</code></td>
+<td><code>/boot</code></td>
+</tr>
+<tr>
+<td><code>/dev/sdb3</code></td>
+<td><code>/mnt/root/boot/efi</code></td>
+<td><code>/boot/efi</code></td>
+</tr>
+</tbody>
+</table>
+<p>A área de swap não precisava ser montada nessa etapa. Sua ativação seria realizada posteriormente pelo sistema operacional a partir da configuração do <code>/etc/fstab</code>.</p>
+<hr />
+<h3 id="validacao-das-montagens">Validação das Montagens</h3>
+<p>Após a montagem de todos os volumes, foi utilizado o comando <code>lsblk -f</code> para validar:</p>
+<ul>
+<li>os sistemas de arquivos existentes;</li>
+<li>os UUIDs dos novos volumes;</li>
+<li>os respectivos pontos de montagem;</li>
+<li>a separação entre o RAID original e o novo RAID SSD;</li>
+<li>a correspondência entre a estrutura de origem e a estrutura de destino.</li>
+</ul>
+<h4 id="evidencia-relacionada_1">Evidência relacionada</h4>
+<p><img alt="Partições montadas e preparadas para sincronização" src="../imagens/Particoes_montadas_pronta_para_sincornismo.png" /></p>
+<p>A saída demonstra a coexistência das duas estruturas de armazenamento.</p>
+<p>O RAID original permanecia montado nos pontos utilizados pelo sistema em execução, enquanto os volumes do novo RAID SSD estavam montados abaixo de <code>/mnt/root</code>, prontos para receber a cópia.</p>
+<p>Essa validação também reduziu o risco de inversão entre origem e destino antes da execução do <code>rsync</code>.</p>
+<hr />
+<h2 id="sincronizacao-do-sistema-operacional">Sincronização do sistema operacional</h2>
+<p>Com a nova estrutura completamente montada, iniciou-se a sincronização dos dados do sistema operacional.</p>
+<p>A ferramenta escolhida foi o <code>rsync</code>, pois permitia realizar a cópia em nível de arquivos, preservando os metadados necessários ao funcionamento do sistema sem transferir blocos não utilizados.</p>
+<p>Entre as características relevantes dessa abordagem estavam:</p>
+<ul>
+<li>cópia somente dos arquivos existentes;</li>
+<li>preservação de proprietários e grupos;</li>
+<li>preservação de permissões;</li>
+<li>preservação de links simbólicos;</li>
+<li>preservação de hard links;</li>
+<li>preservação de ACLs;</li>
+<li>preservação de atributos estendidos;</li>
+<li>manutenção dos identificadores numéricos de usuários e grupos;</li>
+<li>possibilidade de repetir a sincronização;</li>
+<li>registro detalhado da execução em arquivo de log.</li>
+</ul>
+<hr />
+<h3 id="execucao-em-sessao-persistente">Execução em sessão persistente</h3>
+<p>A sincronização foi executada dentro de uma sessão do GNU Screen:</p>
+<pre><code class="language-bash">screen
+</code></pre>
+<p>A utilização de uma sessão persistente evitou que uma eventual perda da conexão SSH interrompesse a cópia.</p>
+<p>Caso a sessão administrativa fosse desconectada, seria possível acessar novamente o servidor e retornar à execução com:</p>
+<pre><code class="language-bash">screen -r
+</code></pre>
+<p>Essa precaução foi necessária porque a transferência envolvia dezenas de gigabytes e poderia permanecer em execução por um período prolongado.</p>
+<hr />
+<h3 id="comando-de-sincronizacao">Comando de sincronização</h3>
+<p>Dentro da sessão do GNU Screen, foi definido um arquivo de log com data e hora da execução:</p>
+<pre><code class="language-bash">cd /
+
+LOG=&quot;/var/Backup/rsync-clone-$(date +%Y%m%d-%H%M%S).log&quot;
+</code></pre>
+<p>Em seguida, foi iniciada a sincronização:</p>
+<pre><code class="language-bash">rsync -aHAXv \
+    --numeric-ids \
+    --info=progress2,stats2 \
+    --delete \
+    --exclude='/proc/*' \
+    --exclude='/sys/*' \
+    --exclude='/dev/*' \
+    --exclude='/run/*' \
+    --exclude='/tmp/*' \
+    --exclude='/mnt/*' \
+    --exclude='/media/*' \
+    --exclude='/lost+found' \
+    / /mnt/root/ \
+    2&gt;&amp;1 | tee &quot;$LOG&quot;
+</code></pre>
+<p>A origem utilizada foi a raiz do sistema em execução:</p>
+<pre><code class="language-text">/
+</code></pre>
+<p>O destino foi a nova raiz temporária:</p>
+<pre><code class="language-text">/mnt/root/
+</code></pre>
+<p>Como os subvolumes do destino já estavam montados em seus respectivos diretórios, os arquivos de <code>/usr</code>, <code>/var</code>, <code>/home</code>, <code>/tmp</code>, <code>/var/Backup</code> e <code>/var/lib/containerd</code> foram gravados diretamente nos Logical Volumes correspondentes.</p>
+<hr />
+<h3 id="opcoes-utilizadas-no-rsync">Opções utilizadas no <code>rsync</code></h3>
+<table>
+<thead>
+<tr>
+<th>Opção</th>
+<th>Função</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-a</code></td>
+<td>Ativa o modo de arquivamento, preservando estrutura, permissões, datas, proprietários, grupos e links simbólicos</td>
+</tr>
+<tr>
+<td><code>-H</code></td>
+<td>Preserva hard links</td>
+</tr>
+<tr>
+<td><code>-A</code></td>
+<td>Preserva ACLs</td>
+</tr>
+<tr>
+<td><code>-X</code></td>
+<td>Preserva atributos estendidos</td>
+</tr>
+<tr>
+<td><code>-v</code></td>
+<td>Exibe informações detalhadas da operação</td>
+</tr>
+<tr>
+<td><code>--numeric-ids</code></td>
+<td>Preserva UID e GID numericamente, sem depender da resolução de nomes</td>
+</tr>
+<tr>
+<td><code>--info=progress2,stats2</code></td>
+<td>Exibe o progresso global e estatísticas detalhadas</td>
+</tr>
+<tr>
+<td><code>--delete</code></td>
+<td>Remove do destino arquivos que não existam na origem</td>
+</tr>
+<tr>
+<td><code>--exclude</code></td>
+<td>Impede a cópia de diretórios temporários ou gerenciados dinamicamente</td>
+</tr>
+<tr>
+<td><code>tee</code></td>
+<td>Exibe a saída na tela e, simultaneamente, grava o resultado em arquivo de log</td>
+</tr>
+</tbody>
+</table>
+<p>As opções <code>-r</code>, <code>-t</code>, <code>-l</code>, <code>-o</code> e <code>-g</code> não precisam ser informadas separadamente, pois já estão incluídas na opção <code>-a</code>.</p>
+<hr />
+<h3 id="exclusao-dos-pseudo-sistemas-de-arquivos">Exclusão dos pseudo-sistemas de arquivos</h3>
+<p>Os diretórios <code>/proc</code>, <code>/sys</code>, <code>/dev</code> e <code>/run</code> não foram copiados porque representam pseudo-sistemas de arquivos criados dinamicamente pelo kernel e pelos serviços durante a inicialização.</p>
+<p>Também foram excluídos:</p>
+<ul>
+<li><code>/tmp</code>, por conter dados temporários;</li>
+<li><code>/mnt</code>, para impedir que o <code>rsync</code> entrasse no próprio destino e criasse uma cópia recursiva;</li>
+<li><code>/media</code>, por representar pontos de montagem removíveis;</li>
+<li><code>lost+found</code>, por ser criado automaticamente pelo sistema de arquivos.</li>
+</ul>
+<p>Esses diretórios foram recriados ou preenchidos normalmente durante a inicialização do sistema pelo novo RAID.</p>
+<hr />
+<h3 id="verificacao-da-sincronizacao">Verificação da sincronização</h3>
+<p>Ao término da operação, o arquivo de log foi consultado para validar as estatísticas da transferência:</p>
+<pre><code class="language-bash">tail -f /var/Backup/rsync-clone-20260728-141717.log
+</code></pre>
+<h4 id="evidencia-relacionada_2">Evidência relacionada</h4>
+<p><img alt="Verificação da sincronização dos dados" src="../imagens/Verificacao_sync_dados.png" /></p>
+<p>A saída do <code>rsync</code> registrou aproximadamente:</p>
+<ul>
+<li><strong>50,8 GB</strong> de conteúdo lógico analisado;</li>
+<li><strong>41,6 GB</strong> enviados durante a sincronização;</li>
+<li>aproximadamente <strong>19,2 MB/s</strong> de taxa média;</li>
+<li>relação de otimização (<em>speedup</em>) de <strong>1,22</strong>.</li>
+</ul>
+<p>Essas informações confirmaram a conclusão da transferência e demonstraram uma das vantagens do <code>rsync</code>: somente os arquivos efetivamente existentes precisaram ser processados, sem a cópia integral dos aproximadamente 950 GB disponíveis no volume de origem.</p>
+<p>Com a sincronização concluída, a nova estrutura passou a conter uma réplica funcional do sistema operacional, e ainda era necessário ajustar os identificadores dos sistemas de arquivos, reconstruir o <code>/etc/fstab</code> e preparar o carregador de inicialização.</p>
+<hr />
+<h2 id="preparacao-do-novo-sistema-para-inicializacao">Preparação do novo sistema para inicialização</h2>
+<p>Após a conclusão da sincronização com <code>rsync</code>, o novo RAID SSD já continha os arquivos do sistema operacional. Entretanto, a simples cópia dos dados não tornou o ambiente automaticamente inicializável.</p>
+<p>Ainda foi necessário preparar o sistema copiado para reconhecer sua nova estrutura de armazenamento e instalar o carregador de inicialização no novo disco.</p>
+<p>Para isso, utilizou-se um ambiente <code>chroot</code>, permitindo executar comandos sobre o sistema localizado em <code>/mnt/root</code> como se ele já tivesse sido inicializado a partir do novo RAID SSD.</p>
+<p>O <code>chroot</code> não participou da cópia dos dados. Sua função foi permitir a preparação do ambiente de boot do sistema migrado.</p>
+<hr />
+<h3 id="preparacao-do-ambiente-chroot">Preparação do ambiente <code>chroot</code></h3>
+<p>Antes de acessar o novo sistema, foram disponibilizados dentro de <code>/mnt/root</code> os pseudo-sistemas de arquivos necessários para o funcionamento das ferramentas de administração.</p>
+<pre><code class="language-bash">mount --bind /dev /mnt/root/dev
+mount --bind /dev/pts /mnt/root/dev/pts
+mount -t proc proc /mnt/root/proc
+mount -t sysfs sys /mnt/root/sys
+mount -t tmpfs tmpfs /mnt/root/run
+</code></pre>
+<p>Essas montagens disponibilizaram ao sistema migrado:</p>
+<ul>
+<li>os dispositivos presentes em <code>/dev</code>;</li>
+<li>os terminais pseudo-TTY em <code>/dev/pts</code>;</li>
+<li>as informações de processos em <code>/proc</code>;</li>
+<li>as informações de hardware e kernel em <code>/sys</code>;</li>
+<li>a estrutura temporária de execução em <code>/run</code>.</li>
+</ul>
+<p>Após essa preparação, o novo sistema foi acessado com:</p>
+<pre><code class="language-bash">chroot /mnt/root /bin/bash
+</code></pre>
+<p>A partir desse momento, os comandos passaram a utilizar <code>/mnt/root</code> como diretório raiz, atuando diretamente sobre o sistema copiado para o novo RAID SSD.</p>
+<h4 id="evidencia-relacionada_3">Evidência relacionada</h4>
+<p><img alt="Verificação do sistema dentro do chroot" src="../imagens/Chroot_verificacao_para_grub.png" /></p>
+<hr />
+<h3 id="validacao-do-sistema-migrado">Validação do sistema migrado</h3>
+<p>Antes da instalação do GRUB, foram realizadas verificações para confirmar que o ambiente copiado possuía os componentes necessários para inicializar de forma independente.</p>
+<p>Foram validados:</p>
+<ul>
+<li>a presença dos arquivos do sistema operacional;</li>
+<li>o reconhecimento do Volume Group <code>dados</code>;</li>
+<li>a disponibilidade dos Logical Volumes;</li>
+<li>a montagem da partição <code>/boot</code>;</li>
+<li>a montagem da partição <code>/boot/efi</code>;</li>
+<li>a presença dos kernels instalados;</li>
+<li>a disponibilidade das ferramentas do GRUB;</li>
+<li>a configuração do arquivo <code>/etc/fstab</code>;</li>
+<li>a capacidade de regenerar o <code>initramfs</code>.</li>
+</ul>
+<p>Essa etapa reduziu o risco de instalar o carregador de inicialização sobre uma estrutura incompleta ou apontando para dispositivos incorretos.</p>
+<hr />
+<h3 id="instalacao-do-grub-no-novo-raid">Instalação do GRUB no novo RAID</h3>
+<p>A análise do servidor confirmou que o sistema utilizava inicialização em modo BIOS Legacy, com tabela de partições DOS/MBR.</p>
+<p>Por esse motivo, o GRUB foi instalado utilizando a plataforma <code>i386-pc</code>, diretamente no disco correspondente ao novo Virtual Drive SSD:</p>
+<pre><code class="language-bash">grub-install \
+    --target=i386-pc \
+    --recheck \
+    /dev/sdb
+</code></pre>
+<p>O destino utilizado foi <code>/dev/sdb</code>, que correspondia ao novo RAID SSD apresentado pela controladora ao sistema operacional.</p>
+<p>A instalação foi realizada sobre o disco completo, e não sobre uma partição específica, porque no modo BIOS o código inicial do GRUB é gravado na área de inicialização do dispositivo.</p>
+<h4 id="evidencia-relacionada_4">Evidência relacionada</h4>
+<p><img alt="Instalação do GRUB no novo disco" src="../imagens/Instalacao_grub_disco_novo.png" /></p>
+<hr />
+<h3 id="regeneracao-do-initramfs">Regeneração do <code>initramfs</code></h3>
+<p>Após a instalação do GRUB, foram regeneradas as imagens de inicialização dos kernels instalados:</p>
+<pre><code class="language-bash">update-initramfs -u -k all
+</code></pre>
+<p>O <code>initramfs</code> contém os módulos, ferramentas e regras necessários para que o kernel consiga localizar e montar o sistema de arquivos raiz durante o processo de boot.</p>
+<p>Essa etapa foi particularmente importante porque o sistema passou a inicializar utilizando:</p>
+<ul>
+<li>um novo Physical Volume;</li>
+<li>um novo Volume Group denominado <code>dados</code>;</li>
+<li>novos Logical Volumes;</li>
+<li>novos UUIDs para os sistemas de arquivos.</li>
+</ul>
+<p>A regeneração garantiu que as imagens de inicialização fossem atualizadas com as informações do novo ambiente.</p>
+<hr />
+<h3 id="atualizacao-da-configuracao-do-grub">Atualização da configuração do GRUB</h3>
+<p>Na sequência, foi regenerado o arquivo de configuração do GRUB:</p>
+<pre><code class="language-bash">update-grub
+</code></pre>
+<p>O comando identificou os kernels presentes em <code>/boot</code> e atualizou o arquivo:</p>
+<pre><code class="language-text">/boot/grub/grub.cfg
+</code></pre>
+<p>Durante essa etapa foram detectadas as versões de kernel instaladas no servidor, incluindo:</p>
+<pre><code class="language-text">6.8.0-136
+6.8.0-134
+</code></pre>
+<p>Também foi verificado que a entrada de inicialização apontava para o novo volume raiz:</p>
+<pre><code class="language-text">/dev/mapper/dados-root
+</code></pre>
+<p>Essa conferência confirmou que o carregador de inicialização estava sendo configurado para utilizar a estrutura LVM criada no novo RAID SSD.</p>
+<hr />
+<h3 id="validacao-do-tipo-de-inicializacao">Validação do tipo de inicialização</h3>
+<p>Como validação adicional, foi verificada a estrutura de inicialização do novo disco:</p>
+<pre><code class="language-bash">file -s /dev/sdb
+</code></pre>
+<p>A saída confirmou a presença de uma tabela de partições DOS/MBR, compatível com a instalação do GRUB em modo BIOS utilizando o alvo <code>i386-pc</code>.</p>
+<p>Essa validação foi importante para confirmar a coerência entre:</p>
+<ul>
+<li>o modo de inicialização utilizado pelo servidor;</li>
+<li>a tabela de partições do novo disco;</li>
+<li>o destino da instalação do GRUB;</li>
+<li>a plataforma selecionada no <code>grub-install</code>.</li>
+</ul>
+<hr />
+<h3 id="resultado-da-preparacao-do-boot">Resultado da preparação do boot</h3>
+<p>Ao término dessa etapa, o novo RAID SSD possuía:</p>
+<ul>
+<li>uma cópia completa do sistema operacional;</li>
+<li>a estrutura LVM baseada no Volume Group <code>dados</code>;</li>
+<li>os sistemas de arquivos configurados;</li>
+<li>as partições de boot montadas;</li>
+<li>o GRUB instalado em <code>/dev/sdb</code>;</li>
+<li>as imagens de <code>initramfs</code> regeneradas;</li>
+<li>o arquivo <code>grub.cfg</code> atualizado;</li>
+<li>entradas de boot apontando para <code>/dev/mapper/dados-root</code>.</li>
+</ul>
+<p>Com essas validações concluídas, o novo ambiente estava preparado para realizar o primeiro boot de forma independente do RAID mecânico original.</p>
+<hr />
+<h3 id="encadeamento-da-etapa">Encadeamento da etapa</h3>
+<pre><code class="language-mermaid">flowchart TD
+    A[Sincronização concluída com rsync] --&gt; B[Montagem dos pseudo-sistemas]
+    B --&gt; C[Acesso ao sistema com chroot]
+    C --&gt; D[Validação do LVM e do fstab]
+    D --&gt; E[Instalação do GRUB em /dev/sdb]
+    E --&gt; F[Regeneração do initramfs]
+    F --&gt; G[Atualização do grub.cfg]
+    G --&gt; H[Validação do novo ambiente de boot]
+    H --&gt; I[Sistema pronto para o primeiro boot]
+</code></pre>
+<p>O uso do <code>chroot</code> permitiu transformar a cópia realizada pelo <code>rsync</code> em um sistema inicializável. A migração dos dados já havia sido concluída; nessa etapa foram reconstruídos os elementos necessários para que o servidor pudesse iniciar diretamente pelo novo conjunto de discos SSD.</p>
+<hr />
+<h2 id="ativacao-do-novo-raid-ssd">Ativação do novo RAID SSD</h2>
+<p>Após a preparação do sistema operacional, a instalação do GRUB e a regeneração do <code>initramfs</code>, restava definir qual Virtual Drive seria apresentado pela controladora como dispositivo de inicialização.</p>
+<p>Essa alteração foi mantida para o final do procedimento. Até esse momento, o RAID mecânico original continuava definido como volume de boot, preservando uma possibilidade imediata de retorno caso alguma validação do novo ambiente apresentasse falha.</p>
+<hr />
+<h3 id="validacao-dos-virtual-drives">Validação dos Virtual Drives</h3>
+<p>Antes da alteração da ordem de inicialização, foi realizada uma nova consulta à controladora IBM ServeRAID M1015 utilizando o MegaCLI:</p>
+<pre><code class="language-bash">/opt/MegaRAID/MegaCli/MegaCli64 -LDInfo -Lall -aAll
+</code></pre>
+<p>A consulta confirmou a existência de dois Virtual Drives configurados em RAID1 e em estado <code>Optimal</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Virtual Drive</th>
+<th style="text-align: right;">Capacidade</th>
+<th>Finalidade</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VD0 — Target ID 0</td>
+<td style="text-align: right;">930,390 GB</td>
+<td>Sistema original em discos mecânicos</td>
+</tr>
+<tr>
+<td>VD1 — Target ID 1</td>
+<td style="text-align: right;">952,742 GB</td>
+<td>Novo sistema em discos SSD</td>
+</tr>
+</tbody>
+</table>
+<p>A coexistência dos dois volumes permitiu realizar toda a preparação do novo sistema sem modificar o RAID utilizado pelo ambiente em produção.</p>
+<h4 id="evidencia-relacionada_5">Evidência relacionada</h4>
+<p><img alt="Verificação dos Virtual Drives na controladora" src="../imagens/Verificando_discos_virtuais_controladora.png" /></p>
+<p>A saída confirma que os dois Virtual Drives estavam íntegros e disponíveis antes da alteração do dispositivo de inicialização.</p>
+<hr />
+<h3 id="alteracao-do-virtual-drive-de-boot">Alteração do Virtual Drive de boot</h3>
+<p><strong>Observação técnica</strong></p>
+<blockquote>
+<p>A alteração do Virtual Drive de inicialização pôde ser realizada diretamente pelo sistema operacional porque o servidor utilizava uma controladora <strong>IBM ServeRAID M1015</strong>, cuja configuração é acessível por meio do utilitário <strong>MegaCLI</strong>.</p>
+<p>Em servidores cuja controladora não oferece esse tipo de gerenciamento em ambiente operacional, ou quando são utilizados controladores SATA/AHCI sem gerenciamento dedicado, a alteração do dispositivo de inicialização deve ser realizada manualmente na configuração de firmware do equipamento (BIOS/UEFI), selecionando o novo disco como primeiro dispositivo de boot.</p>
+<p>Portanto, esta etapa é específica para equipamentos que suportam gerenciamento da controladora RAID por software e pode variar conforme o fabricante e o modelo do hardware.</p>
+</blockquote>
+<p>Com o novo sistema completamente preparado, o Virtual Drive 1 foi definido como volume de inicialização da controladora.</p>
+<p>O comando utilizado foi:</p>
+<pre><code class="language-bash">/opt/MegaRAID/MegaCli/MegaCli64 -AdpBootDrive -Set -L1 -a0
+</code></pre>
+<p>Os parâmetros indicam:</p>
+<table>
+<thead>
+<tr>
+<th>Parâmetro</th>
+<th>Função</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-AdpBootDrive</code></td>
+<td>Gerencia o Virtual Drive utilizado para boot</td>
+</tr>
+<tr>
+<td><code>-Set</code></td>
+<td>Define um novo volume de inicialização</td>
+</tr>
+<tr>
+<td><code>-L1</code></td>
+<td>Seleciona o Virtual Drive 1</td>
+</tr>
+<tr>
+<td><code>-a0</code></td>
+<td>Aplica a configuração ao adaptador 0</td>
+</tr>
+</tbody>
+</table>
+<p>A controladora confirmou a alteração:</p>
+<pre><code class="language-text">Boot Virtual Drive is set to #1 (target id #1) on Adapter 0
+
+Exit Code: 0x00
+</code></pre>
+<p>O código de saída <code>0x00</code> indicou que o comando foi executado com sucesso.</p>
+<h4 id="evidencia-relacionada_6">Evidência relacionada</h4>
+<p><img alt="Alteração do Virtual Drive de inicialização" src="../imagens/Alteracao_disco_inicializacao_na_controladora.png" /></p>
+<p>Essa operação alterou apenas o Virtual Drive selecionado pela controladora para inicialização. O RAID mecânico original permaneceu íntegro e disponível, sem qualquer modificação em seus dados.</p>
+<hr />
+<h3 id="confirmacao-da-configuracao-de-boot">Confirmação da configuração de boot</h3>
+<p>Após a alteração, foi realizada uma nova consulta para confirmar que a configuração havia sido efetivamente registrada:</p>
+<pre><code class="language-bash">/opt/MegaRAID/MegaCli/MegaCli64 -AdpBootDrive -Get -a0
+</code></pre>
+<p>A controladora retornou:</p>
+<pre><code class="language-text">Adapter 0: Boot Virtual Drive - #1 (target id - 1).
+
+Exit Code: 0x00
+</code></pre>
+<p>O resultado confirmou que o Virtual Drive 1, correspondente ao novo RAID SSD, estava selecionado como dispositivo de inicialização.</p>
+<p>Essa validação foi realizada antes da reinicialização para evitar depender apenas da resposta do comando de alteração.</p>
+<hr />
+<h3 id="persistencia-das-gravacoes-pendentes">Persistência das gravações pendentes</h3>
+<p>Antes da reinicialização foi executado o comando:</p>
+<pre><code class="language-bash">sync
+</code></pre>
+<p>O <code>sync</code> solicita ao kernel a gravação dos dados pendentes mantidos em cache para os dispositivos de armazenamento.</p>
+<p>Essa etapa foi especialmente importante porque, durante o procedimento, haviam sido realizados:</p>
+<ul>
+<li>sincronização de arquivos com <code>rsync</code>;</li>
+<li>alterações no <code>/etc/fstab</code>;</li>
+<li>instalação do GRUB;</li>
+<li>regeneração do <code>initramfs</code>;</li>
+<li>atualização do arquivo <code>grub.cfg</code>;</li>
+<li>alterações na configuração de boot da controladora.</li>
+</ul>
+<p>A execução do <code>sync</code> reduziu o risco de reinicializar o servidor com dados ainda mantidos apenas nos buffers de escrita do sistema operacional.</p>
+<hr />
+<h3 id="reinicializacao-forcada">Reinicialização forçada</h3>
+<p>Após a confirmação da ordem de boot e a sincronização dos buffers, o servidor foi reinicializado utilizando o mecanismo Magic SysRq:</p>
+<pre><code class="language-bash">echo b &gt; /proc/sysrq-trigger
+</code></pre>
+<p>O comando <code>b</code> provoca uma reinicialização imediata do kernel, sem executar o processo convencional de desligamento dos serviços e sem desmontar novamente os sistemas de arquivos.</p>
+<p>Essa forma de reinicialização foi utilizada porque as cargas do Kubernetes já haviam sido encerradas, o <code>kubelet</code> estava parado, os containers remanescentes haviam sido finalizados, os pontos de montagem temporários haviam sido liberados e o comando <code>sync</code> havia sido executado previamente.</p>
+<p>Ainda assim, trata-se de uma reinicialização forçada. Ela não deve ser apresentada como equivalente a um <code>reboot</code> convencional, pois ignora as rotinas normais de encerramento do sistema.</p>
+<h4 id="evidencia-relacionada_7">Evidência relacionada</h4>
+<p><img alt="Confirmação do Virtual Drive de boot e reinicialização" src="../imagens/Verificacao_disco_boot_e_reboot.png" /></p>
+<p>A captura registra a confirmação do Virtual Drive 1 como dispositivo de boot, a execução do <code>sync</code> e o acionamento da reinicialização imediata.</p>
+<hr />
+<h3 id="momento-de-transicao">Momento de transição</h3>
+<p>A reinicialização marcou a troca efetiva entre os dois ambientes:</p>
+<pre><code class="language-text">Antes da reinicialização
+└── Boot pela controladora
+    └── Virtual Drive 0
+        └── RAID1 com discos mecânicos
+            └── VG vg0
+
+Após a reinicialização
+└── Boot pela controladora
+    └── Virtual Drive 1
+        └── RAID1 com discos SSD
+            └── VG dados
+</code></pre>
+<p>Embora todas as verificações anteriores reduzissem significativamente o risco, o primeiro boot pelo novo RAID representava o ponto decisivo da migração.</p>
+<p>Até esse momento haviam sido validados:</p>
+<ul>
+<li>o estado do novo RAID1;</li>
+<li>a tabela de partições;</li>
+<li>a estrutura LVM;</li>
+<li>os sistemas de arquivos;</li>
+<li>a sincronização dos dados;</li>
+<li>o arquivo <code>/etc/fstab</code>;</li>
+<li>a instalação do GRUB em <code>/dev/sdb</code>;</li>
+<li>a regeneração do <code>initramfs</code>;</li>
+<li>a geração do <code>grub.cfg</code>;</li>
+<li>a seleção do Virtual Drive 1 como volume de boot.</li>
+</ul>
+<p>A conclusão técnica da migração, entretanto, ainda dependia da validação do sistema após a inicialização e da recuperação operacional do Kubernetes.</p>
+<hr />
+<h2 id="primeiro-boot-e-recuperacao-do-kubernetes">Primeiro boot e recuperação do Kubernetes</h2>
+<p>A primeira inicialização pelo novo RAID SSD representou a validação prática de todo o procedimento de migração.</p>
+<p>O servidor iniciou normalmente, sem entrar em modo de emergência, utilizando o sistema operacional armazenado no novo conjunto de discos e a estrutura LVM criada no Volume Group <code>dados</code>.</p>
+<p>Antes da recuperação das aplicações, foram confirmados:</p>
+<ul>
+<li>carregamento do sistema pelo novo RAID SSD;</li>
+<li>utilização de <code>/dev/mapper/dados-root</code> como sistema de arquivos raiz;</li>
+<li>ativação do Volume Group <code>dados</code>;</li>
+<li>montagem dos volumes definidos no <code>/etc/fstab</code>;</li>
+<li>inicialização do <code>containerd</code>;</li>
+<li>inicialização do <code>kubelet</code>;</li>
+<li>disponibilidade do plano de controle do Kubernetes;</li>
+<li>acesso funcional ao cluster por meio do <code>kubectl</code> e do K9s.</li>
+</ul>
+<p>O Volume Group original, <code>vg0</code>, continuava visível porque o RAID mecânico permanecia conectado ao servidor. Entretanto, o sistema já estava executando sobre o novo Volume Group <code>dados</code>, conforme planejado.</p>
+<p>Após o boot pelo novo RAID SSD, o Kubernetes precisou ser liberado e validado.</p>
+<h3 id="sequencia-recomendada">Sequência recomendada</h3>
+<pre><code class="language-mermaid">flowchart TD
+    A[Confirmar boot no RAID SSD] --&gt; B[Validar volumes montados]
+    B --&gt; C[Iniciar containerd]
+    C --&gt; D[Iniciar kubelet]
+    D --&gt; E[Validar nó Kubernetes]
+    E --&gt; F[Restaurar réplicas]
+    F --&gt; G[Acompanhar pods]
+    G --&gt; H[Validar workloads]
+    H --&gt; I[Homologar ambiente]
+</code></pre>
+<hr />
+<h3 id="validacao-inicial-do-cluster">Validação inicial do cluster</h3>
+<p>Após o boot, o K9s conseguiu se conectar normalmente ao contexto administrativo do cluster:</p>
+<pre><code class="language-text">kubernetes-admin@kubernetes
+</code></pre>
+<p>Também foram identificados os namespaces existentes:</p>
+<pre><code class="language-text">default
+kube-flannel
+kube-node-lease
+kube-public
+kube-system
+local-path-storage
+novu
+traefik
+</code></pre>
+<p>Essa verificação confirmou que:</p>
+<ul>
+<li>o <code>etcd</code> carregou corretamente a base de dados do cluster;</li>
+<li>o <code>kube-apiserver</code> estava acessível;</li>
+<li>o estado dos objetos Kubernetes havia sido preservado;</li>
+<li>os namespaces e recursos anteriormente existentes continuavam registrados.</li>
+</ul>
+<h4 id="evidencia-relacionada_8">Evidência relacionada</h4>
+<p><img alt="K9s conectado ao cluster após o primeiro boot" src="../imagens/k9s_mostrando-funcionalidade_apos_boot.png" /></p>
+<p>A imagem demonstra o acesso ao cluster após a inicialização pelo novo RAID SSD e a preservação dos namespaces existentes.</p>
+<hr />
+<h3 id="restauracao-das-replicas">Restauração das réplicas</h3>
+<p>Antes da parada do ambiente, a quantidade de réplicas dos Deployments e StatefulSets havia sido registrada no arquivo:</p>
+<pre><code class="language-text">/root/kubernetes-replicas-before-backup.txt
+</code></pre>
+<p>Esse arquivo foi utilizado como referência para restaurar as cargas de trabalho à configuração existente antes da migração.</p>
+<p>A restauração foi realizada interpretando os registros salvos e aplicando novamente a quantidade de réplicas de cada recurso:</p>
+<pre><code class="language-bash">awk '
+NR==1 {next}
+
+$2==&quot;Deployment&quot; {
+    printf(
+        &quot;kubectl scale deployment %s -n %s --replicas=%s\n&quot;,
+        $3, $1, $4
+    )
+}
+
+$2==&quot;StatefulSet&quot; {
+    printf(
+        &quot;kubectl scale statefulset %s -n %s --replicas=%s\n&quot;,
+        $3, $1, $4
+    )
+}
+' /root/kubernetes-replicas-before-backup.txt | bash
+</code></pre>
+<p>Após a execução, a recuperação dos Pods foi acompanhada com:</p>
+<pre><code class="language-bash">watch -n 2 'kubectl get pods -A'
+</code></pre>
+<p>O arquivo de réplicas foi mantido após a migração como registro do estado anterior do cluster e como evidência para eventual auditoria ou necessidade de recuperação.</p>
+<hr />
+<h3 id="pods-permanecendo-em-pending">Pods permanecendo em <code>Pending</code></h3>
+<p>Durante a recuperação, vários StatefulSets foram recriados, porém seus Pods permaneceram com estado <code>Pending</code>.</p>
+<p>Entre os recursos afetados estavam:</p>
+<pre><code class="language-text">alertmanager-prometheus-kube-prometheus-alertmanager-0
+kafka-0
+loki-0
+loki-chunks-cache-0
+loki-results-cache-0
+mongo-0
+mysql-0
+postgres-0
+prometheus-prometheus-kube-prometheus-prometheus-0
+</code></pre>
+<p>O plano de controle estava operacional e os componentes essenciais do cluster encontravam-se em execução:</p>
+<pre><code class="language-text">etcd
+kube-apiserver
+kube-controller-manager
+kube-scheduler
+kube-proxy
+kube-flannel
+</code></pre>
+<p>Portanto, o estado <code>Pending</code> não estava relacionado a uma falha no boot, no <code>etcd</code>, no runtime de containers ou nos volumes migrados.</p>
+<p>A verificação do nó apresentou o seguinte estado:</p>
+<pre><code class="language-text">Ready,SchedulingDisabled
+</code></pre>
+<p>O nó permanecia bloqueado para novos agendamentos porque o comando <code>kubectl cordon</code> havia sido executado antes da migração e essa condição foi preservada no estado do cluster armazenado pelo <code>etcd</code>.</p>
+<hr />
+<h3 id="liberacao-do-no-para-agendamento">Liberação do nó para agendamento</h3>
+<p>Como o cluster possuía apenas um nó, enquanto ele permanecesse em <code>SchedulingDisabled</code> o scheduler não teria outro destino disponível para os novos Pods.</p>
+<p>O agendamento foi liberado com:</p>
+<pre><code class="language-bash">kubectl uncordon spo-mb-l-srv-kubernet-lab-01
+</code></pre>
+<p>Em seguida, o estado do nó foi novamente verificado:</p>
+<pre><code class="language-bash">kubectl get nodes
+</code></pre>
+<p>O estado esperado passou a ser:</p>
+<pre><code class="language-text">Ready
+</code></pre>
+<p>Sem a indicação <code>SchedulingDisabled</code>.</p>
+<p>Após essa alteração, os Pods que estavam em <code>Pending</code> começaram a ser agendados e inicializados normalmente.</p>
+<p>Esse comportamento confirmou que o atraso na recuperação não estava relacionado à migração do armazenamento, mas ao estado administrativo aplicado ao nó antes da janela de manutenção.</p>
+<hr />
+<h3 id="validacao-dos-workloads">Validação dos workloads</h3>
+<p>Após a liberação do agendamento, foi acompanhado o retorno dos componentes do cluster e das aplicações.</p>
+<p>Foram validados em execução:</p>
+<ul>
+<li><code>etcd</code>;</li>
+<li><code>kube-apiserver</code>;</li>
+<li><code>kube-controller-manager</code>;</li>
+<li><code>kube-scheduler</code>;</li>
+<li><code>kube-proxy</code>;</li>
+<li>Flannel;</li>
+<li>Local Path Provisioner;</li>
+<li>Alertmanager;</li>
+<li>Kafka;</li>
+<li>Loki e seus componentes de cache;</li>
+<li>MongoDB;</li>
+<li>MySQL;</li>
+<li>PostgreSQL;</li>
+<li>Prometheus;</li>
+<li>Node Exporter.</li>
+</ul>
+<p>A visualização final no K9s apresentou os Pods em estado <code>Running</code> e com seus containers prontos.</p>
+<h4 id="evidencia-relacionada_9">Evidência relacionada</h4>
+<p><img alt="Kubernetes funcional após a migração" src="../imagens/k9s_OK_e_Funcional_apos_boot_migracao_bem_sucedida.png" /></p>
+<p>A imagem confirma o retorno dos componentes do plano de controle, do provisionador de armazenamento e das principais cargas de trabalho após a liberação do nó para agendamento.</p>
+<hr />
+<h3 id="verificacoes-finais">Verificações finais</h3>
+<p>Ao término da recuperação foram executadas verificações sobre os principais recursos do cluster:</p>
+<pre><code class="language-bash">kubectl get nodes
+kubectl get deployments -A
+kubectl get statefulsets -A
+kubectl get pods -A
+kubectl get pvc -A
+</code></pre>
+<p>Também poderia ser utilizada a consulta de eventos recentes para identificar falhas ocorridas durante a inicialização:</p>
+<pre><code class="language-bash">kubectl get events -A \
+    --sort-by=.lastTimestamp
+</code></pre>
+<p>As validações confirmaram:</p>
+<table>
+<thead>
+<tr>
+<th>Verificação</th>
+<th>Resultado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Boot pelo novo RAID SSD</td>
+<td>Concluído</td>
+</tr>
+<tr>
+<td>Sistema raiz em <code>/dev/mapper/dados-root</code></td>
+<td>Confirmado</td>
+</tr>
+<tr>
+<td>Volume Group <code>dados</code> ativo</td>
+<td>Confirmado</td>
+</tr>
+<tr>
+<td><code>containerd</code> operacional</td>
+<td>Confirmado</td>
+</tr>
+<tr>
+<td><code>kubelet</code> operacional</td>
+<td>Confirmado</td>
+</tr>
+<tr>
+<td>Plano de controle disponível</td>
+<td>Confirmado</td>
+</tr>
+<tr>
+<td>Estado do cluster preservado no <code>etcd</code></td>
+<td>Confirmado</td>
+</tr>
+<tr>
+<td>Réplicas restauradas</td>
+<td>Concluído</td>
+</tr>
+<tr>
+<td>Nó liberado para agendamento</td>
+<td>Concluído</td>
+</tr>
+<tr>
+<td>Pods recriados</td>
+<td>Concluído</td>
+</tr>
+<tr>
+<td>StatefulSets recuperados</td>
+<td>Concluído</td>
+</tr>
+<tr>
+<td>Workloads em execução</td>
+<td>Confirmado</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="conclusao-da-migracao">Conclusão da migração</h3>
+<p>A migração foi considerada concluída após a confirmação de que o servidor havia inicializado pelo novo RAID SSD e de que o cluster Kubernetes retornara ao estado operacional.</p>
+<p>O problema encontrado durante a recuperação — Pods permanecendo em <code>Pending</code> — ocorreu porque o nó ainda estava marcado como <code>SchedulingDisabled</code>, condição aplicada deliberadamente antes da migração.</p>
+<p>A execução do <code>kubectl uncordon</code> restabeleceu o agendamento e permitiu que todas as cargas fossem recuperadas.</p>
+<p>O resultado final confirmou:</p>
+<ul>
+<li>integridade do sistema operacional migrado;</li>
+<li>funcionamento do GRUB e do <code>initramfs</code>;</li>
+<li>ativação correta da nova estrutura LVM;</li>
+<li>preservação da base do <code>etcd</code>;</li>
+<li>recuperação dos objetos Kubernetes;</li>
+<li>disponibilidade dos volumes persistentes;</li>
+<li>retorno das aplicações e componentes de monitoramento.</li>
+</ul>
+<p>Com todos os Pods necessários em estado <code>Running</code>, o ambiente foi homologado e a janela de manutenção encerrada.</p>
+<hr />
+<h2 id="complemento-tecnico">Complemento técnico</h2>
+<h3 id="engenharia-da-decisao">Engenharia da decisão</h3>
+<p>A migração não foi conduzida como uma simples sequência de comandos. Durante toda a execução foram avaliados riscos, alternativas e impactos operacionais.</p>
+<p>Inicialmente foi considerada a clonagem integral utilizando <code>dd</code>. Após análise concluiu-se que essa estratégia seria adequada apenas para as pequenas partições de boot, tornando-se pouco eficiente para o volume principal devido ao tempo de cópia, replicação de blocos vazios e impossibilidade de reorganizar a estrutura LVM.</p>
+<p>Optou-se então por reconstruir a estrutura LVM no novo RAID SSD e utilizar <code>rsync</code> para sincronização dos dados.</p>
+<h3 id="justificativa-para-um-novo-volume-group">Justificativa para um novo Volume Group</h3>
+<p>Criou-se um novo Volume Group denominado <code>dados</code> em vez de reutilizar <code>vg0</code>. Essa decisão eliminou ambiguidades enquanto os dois sistemas coexistiam no mesmo servidor e reduziu riscos durante o <code>grub-install</code>, geração do initramfs e validações do LVM.</p>
+<h3 id="parada-controlada-do-kubernetes">Parada controlada do Kubernetes</h3>
+<p>O objetivo principal foi impedir escritas durante o sincronismo. Para isso foi adotada uma sequência lógica: inventário dos workloads, salvamento das réplicas, cordon do nó, redução de Deployments e StatefulSets para zero, acompanhamento do encerramento dos Pods, parada do kubelet, verificação das Tasks do containerd e encerramento manual dos processos remanescentes.</p>
+<h3 id="encerramento-de-containers">Encerramento de containers</h3>
+<p>Foi observado que a parada do kubelet não encerrou imediatamente todos os containers. Alguns processos permaneceram ativos no containerd e precisaram ser finalizados manualmente antes da desmontagem dos mounts temporários.</p>
+<h3 id="execucao-do-rsync">Execução do rsync</h3>
+<p>A sincronização foi realizada dentro de uma sessão <code>screen</code>, preservando ACLs, atributos estendidos, hard links, permissões e identificadores numéricos. Pseudo-sistemas de arquivos foram excluídos da cópia por serem recriados durante o boot.</p>
+<h3 id="validacao-via-chroot">Validação via chroot</h3>
+<p>Após a sincronização foi realizado <code>chroot</code> para validar a estrutura migrada, confirmar o reconhecimento do novo VG, regenerar o initramfs e instalar o GRUB no novo disco.</p>
+<h3 id="alteracao-do-virtual-drive">Alteração do Virtual Drive</h3>
+<p>A troca do Virtual Drive de boot na controladora IBM ServeRAID foi deliberadamente deixada para o final. Até esse momento o RAID original permaneceu preservado, constituindo um mecanismo simples de rollback caso qualquer validação apresentasse falha.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

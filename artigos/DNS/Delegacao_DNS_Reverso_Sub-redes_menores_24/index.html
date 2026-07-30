@@ -1,0 +1,2690 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Engenharia de Infraestrutura Linux">
+      
+      
+      
+        <link rel="canonical" href="https://moreno.eco.br/artigos/DNS/Delegacao_DNS_Reverso_Sub-redes_menores_24/">
+      
+      
+        <link rel="prev" href="../../linux/Samba_LDAP/">
+      
+      
+        <link rel="next" href="../../storage/LVM/LVM_na_pratica/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>DNS reverso RFC 2317 - MORENO.ECO.BR</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#delegacao-de-dns-reverso-para-sub-redes-menores-que-24-com-rfc-2317" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../../.." title="MORENO.ECO.BR" class="md-header__button md-logo" aria-label="MORENO.ECO.BR" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            MORENO.ECO.BR
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              DNS reverso RFC 2317
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="MORENO.ECO.BR" class="md-nav__button md-logo" aria-label="MORENO.ECO.BR" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    MORENO.ECO.BR
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Início
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Base de Conhecimento
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Base de Conhecimento
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Linux
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../linux/Linux_Modulo_1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux Módulo 1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../linux/Samba_LDAP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Samba + OpenLDAP em Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Redes
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Redes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DNS reverso RFC 2317
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DNS reverso RFC 2317
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objetivo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objetivo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contexto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contexto
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compatibilidade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compatibilidade
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ambiente-de-exemplo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ambiente de exemplo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#como-funciona-a-delegacao-rfc-2317" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Como funciona a delegação RFC 2317
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Como funciona a delegação RFC 2317">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fluxo-da-delegacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fluxo da delegação
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pre-requisitos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pré-requisitos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#etapa-1-criar-a-subzona-reversa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 1 — Criar a subzona reversa
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#etapa-2-cadastrar-o-soa-e-os-registros-ns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 2 — Cadastrar o SOA e os registros NS
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Etapa 2 — Cadastrar o SOA e os registros NS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#registro-soa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Registro SOA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#registros-ns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Registros NS
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#etapa-3-cadastrar-os-registros-ptr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 3 — Cadastrar os registros PTR
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#etapa-4-identificar-a-zona-reversa-pai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 4 — Identificar a zona reversa pai
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#etapa-5-remover-registros-conflitantes-da-zona-pai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 5 — Remover registros conflitantes da zona pai
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#etapa-6-criar-os-cnames-na-zona-pai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 6 — Criar os CNAMEs na zona pai
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#etapa-7-delegar-a-subzona-na-zona-pai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 7 — Delegar a subzona na zona pai
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validação
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Validação">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#verificar-a-nova-zona-no-banco" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verificar a nova zona no banco
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verificar-os-cnames-na-zona-pai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verificar os CNAMEs na zona pai
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testar-o-ptr-diretamente-no-servidor-autoritativo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testar o PTR diretamente no servidor autoritativo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testar-o-soa-da-subzona" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testar o SOA da subzona
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testar-os-registros-ns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testar os registros NS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testar-a-cadeia-publica-de-delegacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testar a cadeia pública de delegação
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aplicacao-no-bind9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Aplicação no BIND9
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#problemas-comuns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problemas comuns
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Problemas comuns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cname-e-ptr-no-mesmo-nome" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CNAME e PTR no mesmo nome
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cname-apontando-para-a-zona-incorreta" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CNAME apontando para a zona incorreta
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ausencia-dos-registros-ns-na-zona-pai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ausência dos registros NS na zona pai
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#soa-inconsistente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SOA inconsistente
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#serial-nao-atualizado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Serial não atualizado
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ttl-elevado-durante-testes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TTL elevado durante testes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limitacoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitações
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusão
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Referências
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Storage
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Storage
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../storage/LVM/LVM_na_pratica/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LVM na prática
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../storage/iSCSI/Storage_iSCSI_Linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Storage iSCSI em Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Casos Reais
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Casos Reais
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PostgreSQL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../casos/postgresql/postgresql-erro-acesso-remoto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Erro pg_hba.conf em acesso remoto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    systemd
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    systemd
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../casos/systemd/systemd-status-127-zabbix-agent2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Status 127 após instalação do Zabbix Agent 2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    backup
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    backup
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../casos/backup/backup_sistemas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backup Linux com rsync e hardlink
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Containers
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Containers
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../casos/containers/docker/mariadb/configurando_backup_mariadb_docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backup de MariaDB em Docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Migração
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Migração
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../casos/migracao/migracao_k8s_raid_ssd/Estudo_de_Caso_Migracao_Kubernetes_RAID_SSD_v4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes de RAID1 SATA para RAID1 SSD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objetivo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objetivo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contexto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contexto
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compatibilidade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compatibilidade
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ambiente-de-exemplo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ambiente de exemplo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#como-funciona-a-delegacao-rfc-2317" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Como funciona a delegação RFC 2317
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Como funciona a delegação RFC 2317">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fluxo-da-delegacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fluxo da delegação
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pre-requisitos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pré-requisitos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#etapa-1-criar-a-subzona-reversa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 1 — Criar a subzona reversa
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#etapa-2-cadastrar-o-soa-e-os-registros-ns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 2 — Cadastrar o SOA e os registros NS
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Etapa 2 — Cadastrar o SOA e os registros NS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#registro-soa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Registro SOA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#registros-ns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Registros NS
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#etapa-3-cadastrar-os-registros-ptr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 3 — Cadastrar os registros PTR
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#etapa-4-identificar-a-zona-reversa-pai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 4 — Identificar a zona reversa pai
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#etapa-5-remover-registros-conflitantes-da-zona-pai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 5 — Remover registros conflitantes da zona pai
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#etapa-6-criar-os-cnames-na-zona-pai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 6 — Criar os CNAMEs na zona pai
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#etapa-7-delegar-a-subzona-na-zona-pai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 7 — Delegar a subzona na zona pai
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validação
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Validação">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#verificar-a-nova-zona-no-banco" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verificar a nova zona no banco
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verificar-os-cnames-na-zona-pai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verificar os CNAMEs na zona pai
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testar-o-ptr-diretamente-no-servidor-autoritativo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testar o PTR diretamente no servidor autoritativo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testar-o-soa-da-subzona" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testar o SOA da subzona
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testar-os-registros-ns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testar os registros NS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testar-a-cadeia-publica-de-delegacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testar a cadeia pública de delegação
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aplicacao-no-bind9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Aplicação no BIND9
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#problemas-comuns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problemas comuns
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Problemas comuns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cname-e-ptr-no-mesmo-nome" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CNAME e PTR no mesmo nome
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cname-apontando-para-a-zona-incorreta" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CNAME apontando para a zona incorreta
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ausencia-dos-registros-ns-na-zona-pai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ausência dos registros NS na zona pai
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#soa-inconsistente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SOA inconsistente
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#serial-nao-atualizado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Serial não atualizado
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ttl-elevado-durante-testes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TTL elevado durante testes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limitacoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitações
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusão
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Referências
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="delegacao-de-dns-reverso-para-sub-redes-menores-que-24-com-rfc-2317">Delegação de DNS Reverso para Sub-redes menores que /24 com RFC 2317</h1>
+<h2 id="objetivo">Objetivo</h2>
+<p>Este documento descreve como delegar o DNS reverso de sub-redes IPv4 menores que <code>/24</code>, conforme o mecanismo definido na RFC 2317.</p>
+<p>A técnica permite que blocos como <code>/25</code>, <code>/26</code>, <code>/27</code>, <code>/28</code>, <code>/29</code> e <code>/30</code> tenham seus registros PTR administrados separadamente da zona reversa principal.</p>
+<p>Os exemplos utilizam:</p>
+<ul>
+<li>PowerDNS Authoritative Server;</li>
+<li>PostgreSQL como backend;</li>
+<li>comandos SQL executados diretamente nas tabelas <code>domains</code> e <code>records</code>.</li>
+</ul>
+<p>O princípio de funcionamento, entretanto, não depende do PowerDNS. A mesma técnica pode ser implementada em outros servidores DNS autoritativos, como o BIND9, adaptando apenas a forma de cadastro das zonas e dos registros.</p>
+<h2 id="contexto">Contexto</h2>
+<p>A delegação tradicional de zonas reversas IPv4 ocorre nos limites dos octetos.</p>
+<p>Para uma rede <code>/24</code>, por exemplo, a zona reversa pode ser delegada diretamente:</p>
+<pre><code class="language-text">100.51.198.in-addr.arpa
+</code></pre>
+<p>Para sub-redes menores que <code>/24</code>, como <code>198.51.100.0/29</code>, não existe uma correspondência direta entre o prefixo CIDR e um nível da árvore DNS.</p>
+<p>A RFC 2317 resolve essa limitação por meio de:</p>
+<ol>
+<li>uma subzona reversa com nome convencionado;</li>
+<li>registros CNAME na zona reversa pai;</li>
+<li>registros PTR armazenados na nova subzona;</li>
+<li>registros NS que identificam os servidores autoritativos da subzona.</li>
+</ol>
+<h2 id="compatibilidade">Compatibilidade</h2>
+<p>Este procedimento pode ser aplicado em servidores DNS autoritativos compatíveis com os registros utilizados pela RFC 2317, incluindo:</p>
+<ul>
+<li>PowerDNS;</li>
+<li>BIND9;</li>
+<li>Knot DNS;</li>
+<li>NSD.</li>
+</ul>
+<p>Nos exemplos deste documento, os registros são inseridos diretamente no banco PostgreSQL utilizado pelo PowerDNS.</p>
+<p>Em ambientes gerenciados, considere utilizar a API do PowerDNS ou a ferramenta oficial de administração, evitando alterações diretas no banco sem validação prévia.</p>
+<h2 id="ambiente-de-exemplo">Ambiente de exemplo</h2>
+<p>Será utilizada a seguinte sub-rede reservada para documentação:</p>
+<pre><code class="language-text">198.51.100.0/29
+</code></pre>
+<p>Servidores DNS autoritativos:</p>
+<pre><code class="language-text">ns1.example.net
+ns2.example.net
+ns3.example.net
+</code></pre>
+<p>Servidor DNS utilizado nos testes diretos:</p>
+<pre><code class="language-text">192.0.2.53
+</code></pre>
+<p>Zona reversa pai:</p>
+<pre><code class="language-text">100.51.198.in-addr.arpa
+</code></pre>
+<p>Subzona RFC 2317 adotada no exemplo:</p>
+<pre><code class="language-text">0-29.100.51.198.in-addr.arpa
+</code></pre>
+<p>!!! note</p>
+<pre><code>A RFC 2317 não exige um único padrão de nome para a subzona delegada.
+
+Nomes como `0-7`, `0-29` ou outras convenções podem ser utilizados, desde que a zona pai, a subzona, os CNAMEs e os registros NS permaneçam consistentes.
+</code></pre>
+<h2 id="como-funciona-a-delegacao-rfc-2317">Como funciona a delegação RFC 2317</h2>
+<p>Considere a consulta reversa para o endereço:</p>
+<pre><code class="language-text">198.51.100.4
+</code></pre>
+<p>A consulta DNS inicial será feita para:</p>
+<pre><code class="language-text">4.100.51.198.in-addr.arpa
+</code></pre>
+<p>Na zona pai, esse nome não terá um registro PTR direto. Em seu lugar, será criado um CNAME:</p>
+<pre><code class="language-text">4.100.51.198.in-addr.arpa
+    CNAME
+4.0-29.100.51.198.in-addr.arpa
+</code></pre>
+<p>O registro PTR definitivo ficará armazenado na subzona:</p>
+<pre><code class="language-text">4.0-29.100.51.198.in-addr.arpa
+    PTR
+mail.example.net
+</code></pre>
+<h3 id="fluxo-da-delegacao">Fluxo da delegação</h3>
+<pre><code class="language-mermaid">flowchart TD
+    A[&quot;Cliente consulta o reverso&lt;br/&gt;198.51.100.4&quot;] --&gt; B[&quot;Resolvedor cria a consulta PTR&lt;br/&gt;4.100.51.198.in-addr.arpa&quot;]
+
+    B --&gt; C[&quot;Zona reversa pai&lt;br/&gt;100.51.198.in-addr.arpa&quot;]
+
+    C --&gt; D{&quot;Existe PTR direto&lt;br/&gt;na zona pai?&quot;}
+
+    D -- &quot;Não&quot; --&gt; E[&quot;Zona pai retorna CNAME&lt;br/&gt;4.100.51.198.in-addr.arpa&lt;br/&gt;→&lt;br/&gt;4.0-29.100.51.198.in-addr.arpa&quot;]
+
+    E --&gt; F[&quot;Resolvedor consulta o nome&lt;br/&gt;na subzona RFC 2317&quot;]
+
+    F --&gt; G[&quot;Delegação NS da subzona&lt;br/&gt;0-29.100.51.198.in-addr.arpa&quot;]
+
+    G --&gt; H[&quot;Servidor autoritativo&lt;br/&gt;da subzona&quot;]
+
+    H --&gt; I[&quot;Registro PTR&lt;br/&gt;4.0-29.100.51.198.in-addr.arpa&lt;br/&gt;→&lt;br/&gt;mail.example.net&quot;]
+
+    I --&gt; J[&quot;Resolvedor retorna&lt;br/&gt;mail.example.net&quot;]
+
+    D -- &quot;Sim&quot; --&gt; K[&quot;PTR direto é retornado&lt;br/&gt;sem utilizar a RFC 2317&quot;]
+
+    style C fill:#e8f1ff,stroke:#2563eb,color:#111827
+    style E fill:#fff4d6,stroke:#d97706,color:#111827
+    style G fill:#ede9fe,stroke:#7c3aed,color:#111827
+    style I fill:#dcfce7,stroke:#16a34a,color:#111827
+</code></pre>
+<p>O fluxo principal é:</p>
+<ol>
+<li>o resolvedor consulta o PTR na zona reversa pai;</li>
+<li>a zona pai retorna um CNAME;</li>
+<li>o CNAME aponta para um nome pertencente à subzona RFC 2317;</li>
+<li>a delegação NS direciona a consulta aos servidores autoritativos da subzona;</li>
+<li>a subzona retorna o registro PTR definitivo.</li>
+</ol>
+<p>!!! warning</p>
+<pre><code>Não mantenha simultaneamente um PTR direto e um CNAME para o mesmo nome na zona pai.
+
+Um nome que possui CNAME não deve possuir outros tipos de registro, exceto os registros permitidos pelas especificações do DNS.
+</code></pre>
+<h2 id="pre-requisitos">Pré-requisitos</h2>
+<p>Antes de iniciar, verifique:</p>
+<ul>
+<li>acesso administrativo ao PowerDNS;</li>
+<li>acesso ao PostgreSQL;</li>
+<li>existência da zona reversa pai;</li>
+<li>autoridade sobre a zona reversa pai;</li>
+<li>definição dos servidores autoritativos da nova subzona;</li>
+<li>identificação dos endereços utilizáveis da sub-rede;</li>
+<li>definição dos nomes PTR que serão cadastrados;</li>
+<li>cópia de segurança das zonas e dos registros afetados.</li>
+</ul>
+<p>!!! warning</p>
+<pre><code>Alterações diretas no banco do PowerDNS podem afetar imediatamente o serviço DNS.
+
+Execute os comandos inicialmente em ambiente de homologação ou dentro de uma transação PostgreSQL.
+</code></pre>
+<p>Exemplo:</p>
+<pre><code class="language-sql">BEGIN;
+
+-- Alterações e verificações
+
+ROLLBACK;
+</code></pre>
+<p>Depois de validar os comandos, execute novamente utilizando <code>COMMIT</code>.</p>
+<h2 id="etapa-1-criar-a-subzona-reversa">Etapa 1 — Criar a subzona reversa</h2>
+<p>Cadastrar a nova zona no PowerDNS:</p>
+<pre><code class="language-sql">INSERT INTO domains (name, type)
+VALUES (
+    '0-29.100.51.198.in-addr.arpa',
+    'NATIVE'
+);
+</code></pre>
+<p>Obter o ID atribuído à zona:</p>
+<pre><code class="language-sql">SELECT id
+FROM domains
+WHERE name = '0-29.100.51.198.in-addr.arpa';
+</code></pre>
+<p>Exemplo de resultado:</p>
+<pre><code class="language-text">  id
+-------
+ 90001
+</code></pre>
+<p>O valor retornado será utilizado como <code>domain_id</code> nos registros pertencentes à subzona.</p>
+<p>!!! note</p>
+<pre><code>O identificador `90001` é apenas um exemplo.
+
+Utilize sempre o ID retornado pelo banco de dados do ambiente em que a zona foi criada.
+</code></pre>
+<h2 id="etapa-2-cadastrar-o-soa-e-os-registros-ns">Etapa 2 — Cadastrar o SOA e os registros NS</h2>
+<h3 id="registro-soa">Registro SOA</h3>
+<pre><code class="language-sql">INSERT INTO records (
+    domain_id,
+    name,
+    type,
+    content,
+    ttl,
+    prio,
+    disabled,
+    auth
+)
+VALUES (
+    90001,
+    '0-29.100.51.198.in-addr.arpa',
+    'SOA',
+    'ns1.example.net. dns-admin.example.net. 2026010101 10800 3600 604800 14400',
+    14400,
+    0,
+    FALSE,
+    TRUE
+);
+</code></pre>
+<p>O campo <code>content</code> contém:</p>
+<pre><code class="language-text">MNAME RNAME SERIAL REFRESH RETRY EXPIRE MINIMUM
+</code></pre>
+<p>No exemplo:</p>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th style="text-align: right;">Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MNAME</td>
+<td style="text-align: right;"><code>ns1.example.net.</code></td>
+</tr>
+<tr>
+<td>RNAME</td>
+<td style="text-align: right;"><code>dns-admin.example.net.</code></td>
+</tr>
+<tr>
+<td>SERIAL</td>
+<td style="text-align: right;"><code>2026010101</code></td>
+</tr>
+<tr>
+<td>REFRESH</td>
+<td style="text-align: right;"><code>10800</code></td>
+</tr>
+<tr>
+<td>RETRY</td>
+<td style="text-align: right;"><code>3600</code></td>
+</tr>
+<tr>
+<td>EXPIRE</td>
+<td style="text-align: right;"><code>604800</code></td>
+</tr>
+<tr>
+<td>MINIMUM</td>
+<td style="text-align: right;"><code>14400</code></td>
+</tr>
+</tbody>
+</table>
+<p>No campo <code>RNAME</code>, o primeiro ponto representa o caractere <code>@</code> do endereço de e-mail.</p>
+<p>Assim:</p>
+<pre><code class="language-text">dns-admin.example.net.
+</code></pre>
+<p>representa:</p>
+<pre><code class="language-text">dns-admin@example.net
+</code></pre>
+<h3 id="registros-ns">Registros NS</h3>
+<pre><code class="language-sql">INSERT INTO records (
+    domain_id,
+    name,
+    type,
+    content,
+    ttl,
+    prio,
+    disabled,
+    auth
+)
+VALUES
+    (
+        90001,
+        '0-29.100.51.198.in-addr.arpa',
+        'NS',
+        'ns1.example.net',
+        14400,
+        0,
+        FALSE,
+        TRUE
+    ),
+    (
+        90001,
+        '0-29.100.51.198.in-addr.arpa',
+        'NS',
+        'ns2.example.net',
+        14400,
+        0,
+        FALSE,
+        TRUE
+    ),
+    (
+        90001,
+        '0-29.100.51.198.in-addr.arpa',
+        'NS',
+        'ns3.example.net',
+        14400,
+        0,
+        FALSE,
+        TRUE
+    );
+</code></pre>
+<h2 id="etapa-3-cadastrar-os-registros-ptr">Etapa 3 — Cadastrar os registros PTR</h2>
+<p>Neste exemplo, serão utilizados os seguintes mapeamentos:</p>
+<table>
+<thead>
+<tr>
+<th>Endereço IPv4</th>
+<th>Registro PTR</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>198.51.100.3</code></td>
+<td><code>gateway.example.net</code></td>
+</tr>
+<tr>
+<td><code>198.51.100.4</code></td>
+<td><code>mail.example.net</code></td>
+</tr>
+</tbody>
+</table>
+<p>Cadastrar os registros:</p>
+<pre><code class="language-sql">INSERT INTO records (
+    domain_id,
+    name,
+    type,
+    content,
+    ttl,
+    prio,
+    disabled,
+    auth
+)
+VALUES
+    (
+        90001,
+        '3.0-29.100.51.198.in-addr.arpa',
+        'PTR',
+        'gateway.example.net',
+        14400,
+        0,
+        FALSE,
+        TRUE
+    ),
+    (
+        90001,
+        '4.0-29.100.51.198.in-addr.arpa',
+        'PTR',
+        'mail.example.net',
+        14400,
+        0,
+        FALSE,
+        TRUE
+    );
+</code></pre>
+<p>!!! warning</p>
+<pre><code>Um endereço IP pode tecnicamente possuir mais de um registro PTR, mas diversos serviços esperam apenas um nome reverso por endereço.
+
+Para servidores de e-mail, é recomendável manter um único PTR e garantir que o nome retornado também resolva para o endereço original.
+</code></pre>
+<p>Exemplo de consistência direta e reversa:</p>
+<pre><code class="language-text">198.51.100.4
+    PTR mail.example.net
+
+mail.example.net
+    A 198.51.100.4
+</code></pre>
+<h2 id="etapa-4-identificar-a-zona-reversa-pai">Etapa 4 — Identificar a zona reversa pai</h2>
+<p>Localizar o domínio correspondente ao bloco <code>/24</code>:</p>
+<pre><code class="language-sql">SELECT id
+FROM domains
+WHERE name = '100.51.198.in-addr.arpa';
+</code></pre>
+<p>Exemplo de resultado:</p>
+<pre><code class="language-text">  id
+-------
+ 12000
+</code></pre>
+<p>O identificador da zona pai será utilizado nos registros CNAME e NS criados nas etapas seguintes.</p>
+<p>Caso a zona pai ainda não exista, ela deverá ser criada e configurada com seus registros SOA e NS antes da delegação RFC 2317.</p>
+<h2 id="etapa-5-remover-registros-conflitantes-da-zona-pai">Etapa 5 — Remover registros conflitantes da zona pai</h2>
+<p>Antes de criar os CNAMEs, verifique se existem registros PTR para os endereços da sub-rede:</p>
+<pre><code class="language-sql">SELECT id, name, type, content
+FROM records
+WHERE domain_id = 12000
+  AND name IN (
+      '1.100.51.198.in-addr.arpa',
+      '2.100.51.198.in-addr.arpa',
+      '3.100.51.198.in-addr.arpa',
+      '4.100.51.198.in-addr.arpa',
+      '5.100.51.198.in-addr.arpa',
+      '6.100.51.198.in-addr.arpa'
+  );
+</code></pre>
+<p>Se os PTR antigos tiverem sido confirmados como substituíveis, remova-os:</p>
+<pre><code class="language-sql">DELETE FROM records
+WHERE domain_id = 12000
+  AND name IN (
+      '1.100.51.198.in-addr.arpa',
+      '2.100.51.198.in-addr.arpa',
+      '3.100.51.198.in-addr.arpa',
+      '4.100.51.198.in-addr.arpa',
+      '5.100.51.198.in-addr.arpa',
+      '6.100.51.198.in-addr.arpa'
+  );
+</code></pre>
+<p>!!! warning</p>
+<pre><code>Confirme os registros retornados pelo `SELECT` antes de executar o `DELETE`.
+
+A remoção incorreta pode interromper a resolução reversa de outros endereços.
+</code></pre>
+<h2 id="etapa-6-criar-os-cnames-na-zona-pai">Etapa 6 — Criar os CNAMEs na zona pai</h2>
+<p>Cada nome reverso da zona pai deve apontar para o nome correspondente na subzona RFC 2317.</p>
+<pre><code class="language-sql">INSERT INTO records (
+    domain_id,
+    name,
+    type,
+    content,
+    ttl,
+    prio,
+    disabled,
+    auth
+)
+VALUES
+    (
+        12000,
+        '1.100.51.198.in-addr.arpa',
+        'CNAME',
+        '1.0-29.100.51.198.in-addr.arpa',
+        14400,
+        0,
+        FALSE,
+        TRUE
+    ),
+    (
+        12000,
+        '2.100.51.198.in-addr.arpa',
+        'CNAME',
+        '2.0-29.100.51.198.in-addr.arpa',
+        14400,
+        0,
+        FALSE,
+        TRUE
+    ),
+    (
+        12000,
+        '3.100.51.198.in-addr.arpa',
+        'CNAME',
+        '3.0-29.100.51.198.in-addr.arpa',
+        14400,
+        0,
+        FALSE,
+        TRUE
+    ),
+    (
+        12000,
+        '4.100.51.198.in-addr.arpa',
+        'CNAME',
+        '4.0-29.100.51.198.in-addr.arpa',
+        14400,
+        0,
+        FALSE,
+        TRUE
+    ),
+    (
+        12000,
+        '5.100.51.198.in-addr.arpa',
+        'CNAME',
+        '5.0-29.100.51.198.in-addr.arpa',
+        14400,
+        0,
+        FALSE,
+        TRUE
+    ),
+    (
+        12000,
+        '6.100.51.198.in-addr.arpa',
+        'CNAME',
+        '6.0-29.100.51.198.in-addr.arpa',
+        14400,
+        0,
+        FALSE,
+        TRUE
+    );
+</code></pre>
+<p>Em uma rede <code>/29</code>:</p>
+<ul>
+<li>o primeiro endereço representa a rede;</li>
+<li>o último endereço representa o broadcast;</li>
+<li>os endereços intermediários normalmente são utilizáveis.</li>
+</ul>
+<p>Neste exemplo, os CNAMEs foram criados para os endereços de <code>1</code> a <code>6</code>.</p>
+<h2 id="etapa-7-delegar-a-subzona-na-zona-pai">Etapa 7 — Delegar a subzona na zona pai</h2>
+<p>Cadastrar os registros NS da subzona dentro da zona pai:</p>
+<pre><code class="language-sql">INSERT INTO records (
+    domain_id,
+    name,
+    type,
+    content,
+    ttl,
+    prio,
+    disabled,
+    auth
+)
+VALUES
+    (
+        12000,
+        '0-29.100.51.198.in-addr.arpa',
+        'NS',
+        'ns1.example.net',
+        14400,
+        0,
+        FALSE,
+        TRUE
+    ),
+    (
+        12000,
+        '0-29.100.51.198.in-addr.arpa',
+        'NS',
+        'ns2.example.net',
+        14400,
+        0,
+        FALSE,
+        TRUE
+    ),
+    (
+        12000,
+        '0-29.100.51.198.in-addr.arpa',
+        'NS',
+        'ns3.example.net',
+        14400,
+        0,
+        FALSE,
+        TRUE
+    );
+</code></pre>
+<p>Esses registros informam quais servidores possuem autoridade sobre:</p>
+<pre><code class="language-text">0-29.100.51.198.in-addr.arpa
+</code></pre>
+<h2 id="validacao">Validação</h2>
+<h3 id="verificar-a-nova-zona-no-banco">Verificar a nova zona no banco</h3>
+<pre><code class="language-sql">SELECT
+    d.name AS zone,
+    r.name,
+    r.type,
+    r.content,
+    r.ttl,
+    r.auth
+FROM domains AS d
+JOIN records AS r
+    ON r.domain_id = d.id
+WHERE d.name = '0-29.100.51.198.in-addr.arpa'
+ORDER BY r.type, r.name, r.content;
+</code></pre>
+<h3 id="verificar-os-cnames-na-zona-pai">Verificar os CNAMEs na zona pai</h3>
+<pre><code class="language-sql">SELECT name, type, content
+FROM records
+WHERE domain_id = 12000
+  AND type = 'CNAME'
+  AND name LIKE '%.100.51.198.in-addr.arpa'
+ORDER BY name;
+</code></pre>
+<h3 id="testar-o-ptr-diretamente-no-servidor-autoritativo">Testar o PTR diretamente no servidor autoritativo</h3>
+<pre><code class="language-bash">dig -x 198.51.100.4 @192.0.2.53
+</code></pre>
+<p>Trecho esperado:</p>
+<pre><code class="language-text">4.100.51.198.in-addr.arpa.       14400 IN CNAME 4.0-29.100.51.198.in-addr.arpa.
+4.0-29.100.51.198.in-addr.arpa.  14400 IN PTR   mail.example.net.
+</code></pre>
+<p>O resultado deve mostrar:</p>
+<ol>
+<li>o CNAME criado na zona pai;</li>
+<li>o PTR existente na subzona;</li>
+<li>o nome final associado ao endereço.</li>
+</ol>
+<h3 id="testar-o-soa-da-subzona">Testar o SOA da subzona</h3>
+<pre><code class="language-bash">dig -t SOA \
+  0-29.100.51.198.in-addr.arpa \
+  +noall +answer \
+  @192.0.2.53
+</code></pre>
+<p>Resultado esperado:</p>
+<pre><code class="language-text">0-29.100.51.198.in-addr.arpa. 14400 IN SOA ns1.example.net. dns-admin.example.net. 2026010101 10800 3600 604800 14400
+</code></pre>
+<h3 id="testar-os-registros-ns">Testar os registros NS</h3>
+<pre><code class="language-bash">dig -t NS \
+  0-29.100.51.198.in-addr.arpa \
+  +noall +answer \
+  @192.0.2.53
+</code></pre>
+<p>Resultado esperado:</p>
+<pre><code class="language-text">0-29.100.51.198.in-addr.arpa. 14400 IN NS ns1.example.net.
+0-29.100.51.198.in-addr.arpa. 14400 IN NS ns2.example.net.
+0-29.100.51.198.in-addr.arpa. 14400 IN NS ns3.example.net.
+</code></pre>
+<h3 id="testar-a-cadeia-publica-de-delegacao">Testar a cadeia pública de delegação</h3>
+<pre><code class="language-bash">dig +trace -x 198.51.100.4
+</code></pre>
+<p>Em um ambiente publicamente delegado, a saída deve demonstrar:</p>
+<ol>
+<li>consulta à raiz DNS;</li>
+<li>encaminhamento para <code>in-addr.arpa</code>;</li>
+<li>delegação da zona reversa pai;</li>
+<li>resposta CNAME da zona pai;</li>
+<li>consulta à subzona RFC 2317;</li>
+<li>resposta PTR final.</li>
+</ol>
+<p>!!! note</p>
+<pre><code>Os blocos `192.0.2.0/24`, `198.51.100.0/24` e `203.0.113.0/24` são reservados para documentação.
+
+Por isso, os exemplos deste documento não produzirão uma resolução pública real.
+</code></pre>
+<h2 id="aplicacao-no-bind9">Aplicação no BIND9</h2>
+<p>No BIND9, a lógica permanece a mesma.</p>
+<p>Na zona pai, os registros seriam semelhantes a:</p>
+<pre><code class="language-dns">$ORIGIN 100.51.198.in-addr.arpa.
+
+0-29    IN NS    ns1.example.net.
+0-29    IN NS    ns2.example.net.
+0-29    IN NS    ns3.example.net.
+
+1       IN CNAME 1.0-29.100.51.198.in-addr.arpa.
+2       IN CNAME 2.0-29.100.51.198.in-addr.arpa.
+3       IN CNAME 3.0-29.100.51.198.in-addr.arpa.
+4       IN CNAME 4.0-29.100.51.198.in-addr.arpa.
+5       IN CNAME 5.0-29.100.51.198.in-addr.arpa.
+6       IN CNAME 6.0-29.100.51.198.in-addr.arpa.
+</code></pre>
+<p>Na subzona delegada:</p>
+<pre><code class="language-dns">$ORIGIN 0-29.100.51.198.in-addr.arpa.
+$TTL 14400
+
+@   IN SOA ns1.example.net. dns-admin.example.net. (
+        2026010101
+        10800
+        3600
+        604800
+        14400
+    )
+
+    IN NS ns1.example.net.
+    IN NS ns2.example.net.
+    IN NS ns3.example.net.
+
+3   IN PTR gateway.example.net.
+4   IN PTR mail.example.net.
+</code></pre>
+<p>A forma de armazenamento é diferente, mas o fluxo de resolução permanece igual ao apresentado no diagrama.</p>
+<h2 id="problemas-comuns">Problemas comuns</h2>
+<h3 id="cname-e-ptr-no-mesmo-nome">CNAME e PTR no mesmo nome</h3>
+<p>Um PTR antigo permanece cadastrado na zona pai enquanto um CNAME é criado para o mesmo nome.</p>
+<p>Correção:</p>
+<ul>
+<li>localizar o PTR conflitante;</li>
+<li>confirmar que ele pertence à faixa delegada;</li>
+<li>removê-lo antes de criar o CNAME.</li>
+</ul>
+<h3 id="cname-apontando-para-a-zona-incorreta">CNAME apontando para a zona incorreta</h3>
+<p>Exemplo incorreto:</p>
+<pre><code class="language-text">4.100.51.198.in-addr.arpa
+    CNAME
+4.100.51.198.in-addr.arpa
+</code></pre>
+<p>Esse registro cria uma referência circular.</p>
+<p>O destino deve pertencer à subzona RFC 2317:</p>
+<pre><code class="language-text">4.0-29.100.51.198.in-addr.arpa
+</code></pre>
+<h3 id="ausencia-dos-registros-ns-na-zona-pai">Ausência dos registros NS na zona pai</h3>
+<p>A subzona existe no servidor, mas não foi delegada na zona pai.</p>
+<p>Correção:</p>
+<ul>
+<li>criar os registros NS da subzona dentro da zona pai;</li>
+<li>confirmar que os servidores indicados respondem autoritativamente.</li>
+</ul>
+<h3 id="soa-inconsistente">SOA inconsistente</h3>
+<p>O campo MNAME do SOA aponta para um servidor que não consta entre os NS ou que não responde pela zona.</p>
+<p>Correção:</p>
+<ul>
+<li>revisar o SOA;</li>
+<li>revisar os NS;</li>
+<li>consultar diretamente cada servidor autoritativo.</li>
+</ul>
+<h3 id="serial-nao-atualizado">Serial não atualizado</h3>
+<p>Alterações em arquivos de zona do BIND9 ou em ambientes com transferência de zona podem não ser propagadas quando o serial não é incrementado.</p>
+<p>No PowerDNS com backend PostgreSQL, o comportamento depende da arquitetura, da replicação e da forma de provisionamento adotada.</p>
+<h3 id="ttl-elevado-durante-testes">TTL elevado durante testes</h3>
+<p>Respostas antigas podem permanecer em cache.</p>
+<p>Durante implantação controlada, pode ser útil reduzir previamente o TTL. Depois da validação, o TTL pode ser aumentado novamente.</p>
+<h2 id="limitacoes">Limitações</h2>
+<ul>
+<li>A RFC 2317 é utilizada para delegação reversa IPv4 sem alinhamento em <code>/24</code>.</li>
+<li>Para IPv6, o DNS reverso utiliza a árvore <code>ip6.arpa</code> e delegações baseadas em nibbles hexadecimais.</li>
+<li>O procedimento depende de controle sobre a zona reversa pai.</li>
+<li>A simples criação da subzona não estabelece a delegação.</li>
+<li>Alterações diretas no banco exigem conhecimento do esquema e dos procedimentos operacionais do PowerDNS.</li>
+<li>O exemplo não aborda DNSSEC, transferência de zona, replicação do PostgreSQL ou automação via API.</li>
+</ul>
+<h2 id="conclusao">Conclusão</h2>
+<p>A RFC 2317 permite delegar a administração de DNS reverso para sub-redes IPv4 menores que <code>/24</code>.</p>
+<p>O mecanismo utiliza:</p>
+<ul>
+<li>registros CNAME na zona reversa pai;</li>
+<li>uma subzona reversa independente;</li>
+<li>registros NS para delegação;</li>
+<li>registros PTR na subzona.</li>
+</ul>
+<p>No PowerDNS com PostgreSQL, esses elementos podem ser cadastrados nas tabelas <code>domains</code> e <code>records</code>.</p>
+<p>No BIND9, os mesmos registros são representados em arquivos de zona.</p>
+<p>Independentemente do software utilizado, a resolução segue o mesmo fluxo: a consulta chega à zona pai, recebe um CNAME, segue para a subzona delegada e obtém o PTR definitivo.</p>
+<h2 id="referencias">Referências</h2>
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc2317">RFC 2317 — Classless IN-ADDR.ARPA Delegation</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc1034">RFC 1034 — Domain Names: Concepts and Facilities</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc1035">RFC 1035 — Domain Names: Implementation and Specification</a></li>
+<li><a href="https://doc.powerdns.com/authoritative/">PowerDNS Authoritative Server</a></li>
+<li><a href="https://bind9.readthedocs.io/">BIND 9 Administrator Reference Manual</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
