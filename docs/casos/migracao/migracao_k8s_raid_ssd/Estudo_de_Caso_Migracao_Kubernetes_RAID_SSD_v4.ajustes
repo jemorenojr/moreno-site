@@ -1,0 +1,229 @@
+# Ajustes necessários antes da publicação
+
+Documento revisado:
+
+```text
+Estudo_de_Caso_Migracao_Kubernetes_RAID_SSD_v4.md
+```
+
+Data da revisão:
+
+```text
+2026-07-30
+```
+
+## Decisão
+
+Publicação liberada após revisão humana das imagens.
+
+O documento evoluiu tecnicamente e está apto para publicação conforme decisão do autor. O build estrito do MkDocs foi corrigido, o status interno foi atualizado e as imagens foram revisadas manualmente pelo autor.
+
+## Ressalvas encontradas
+
+### 1. Status interno do documento
+
+Situação anterior:
+
+```text
+Status | Rascunho para análise
+```
+
+Situação atual:
+
+```text
+Status | Analisado e Corrigido
+```
+
+Item resolvido.
+
+### 2. Nome real ou identificável de host
+
+Foi encontrada referência explícita a um nome de nó:
+
+```text
+kubectl uncordon spo-mb-l-srv-kubernet-lab-01
+```
+
+Substituição recomendada:
+
+```text
+kubectl uncordon node-kubernetes-01
+```
+
+Observação do autor:
+
+```text
+Hostname sem domínio ou indicação de empresa pode ser aceito.
+```
+
+Com essa decisão, o hostname textual sem domínio deixa de bloquear a publicação por si só. Entretanto, as imagens ainda exibem domínio real e continuam bloqueando a publicação.
+
+### 3. Nomes de namespaces e workloads
+
+O documento cita namespaces e cargas do ambiente, incluindo:
+
+```text
+novu
+traefik
+alertmanager-prometheus-kube-prometheus-alertmanager-0
+kafka-0
+loki-0
+loki-chunks-cache-0
+loki-results-cache-0
+mongo-0
+mysql-0
+postgres-0
+prometheus-prometheus-kube-prometheus-prometheus-0
+```
+
+Alguns nomes são tecnologias comuns, mas no contexto de um caso real podem revelar composição do ambiente. Recomenda-se trocar por exemplos genéricos quando não forem indispensáveis para a compreensão técnica.
+
+Exemplo:
+
+```text
+app-stateful-01
+database-01
+monitoring-01
+logging-01
+```
+
+### 4. Caminho operacional sensível
+
+O documento usa:
+
+```text
+/root/kubernetes-replicas-before-backup.txt
+```
+
+Esse caminho pode ser mantido se for intencionalmente didático, mas recomenda-se trocar por um caminho genérico de documentação:
+
+```text
+/root/kubernetes-replicas-before-maintenance.txt
+```
+
+ou:
+
+```text
+/var/tmp/kubernetes-replicas-before-maintenance.txt
+```
+
+### 5. Imagens com dados sensíveis detectados por OCR
+
+Foi executado OCR com `tesseract` nas imagens `.png` do diretório.
+
+Foram encontrados dados sensíveis visíveis nas evidências, incluindo:
+
+```text
+spo-mb-1-srv-kubernet-lab-01.telium.net.br
+root@spo-mb-1-srv-kubernet-lab-01
+etcd-spo-mb-1-srv-kubernet-lab-01.telium.net.br
+kube-apiserver-spo-mb-1-srv-kubernet-lab-01.telium.net.br
+kube-controller-manager-spo-mb-1-srv-kubernet-lab-01.telium.net.br
+```
+
+Também foram detectados namespaces, workloads e endereços parcialmente visíveis nas imagens:
+
+```text
+novu
+traefik
+kafka
+loki
+mongo
+mysql
+postgres
+prometheus
+alertmanager
+10.250
+200.20
+```
+
+Exemplos de imagens afetadas:
+
+```text
+Acompanhando_desligamento_pods.png
+Bloqueio_Kubernet.png
+Chroot_verificacao_para_grub.png
+Desligando_todos_pods_incluindo_statefulset_kubernet.png
+Kubernet_Statefulsets.png
+Lista_pods_kubernet.png
+k9s_OK_e_Funcional_apos_boot_migracao_bem_sucedida.png
+k9s_mostrando-funcionalidade_apos_boot.png
+```
+
+Revisão posterior:
+
+```text
+O autor revisou todas as imagens, corrigiu a imagem que continha domínio e confirmou que o restante contém apenas nomes de máquina ou nomes sem domínio que não violam a diretriz.
+```
+
+Com essa validação humana, a publicação foi liberada sem nova execução de OCR.
+
+O diretório contém 37 imagens `.png`.
+
+É necessário revisar visualmente todas as imagens antes da publicação final para remover:
+
+- nomes de hosts;
+- IPs;
+- namespaces reais;
+- nomes de aplicações internas;
+- usuários;
+- caminhos sensíveis;
+- identificadores de ambiente;
+- logs com informação operacional.
+
+### 6. Arquivo `.xcf` no diretório público
+
+Situação anterior:
+
+```text
+imagens/Criando_particoes_disco_novo.xcf
+```
+
+Situação atual:
+
+```text
+Nenhum arquivo .xcf encontrado no diretório de imagens.
+```
+
+Item resolvido.
+
+### 7. Build estrito do MkDocs não passou
+
+Situação anterior:
+
+O comando:
+
+```bash
+.env/usr/bin/mkdocs build --strict
+```
+
+falhou porque o `mkdocs.yml` referencia:
+
+```text
+scripts/backup/backup_sistemas.md
+```
+
+mas esse arquivo não foi encontrado na árvore atual de documentação.
+
+Situação atual:
+
+```text
+.env/usr/bin/mkdocs build --strict
+```
+
+Resultado:
+
+```text
+Documentation built
+```
+
+Item resolvido.
+
+## Ajustes mínimos recomendados
+
+1. Item concluído: status do documento revisado.
+2. Item aceito pelo autor: hostname sem domínio ou indicação de empresa.
+3. Item concluído pelo autor: revisão visual das imagens.
+4. Item concluído: arquivo `.xcf` ausente.
+5. Item concluído: build estrito do MkDocs aprovado.
+6. Item concluído: caso adicionado à navegação pública.

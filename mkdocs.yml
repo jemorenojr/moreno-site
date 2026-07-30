@@ -8,3 +8,20 @@ theme:
 
 nav:
   - Início: index.md
+  - Base de Conhecimento:
+      - Redes:
+          - DNS reverso RFC 2317: artigos/DNS/Delegacao_DNS_Reverso_Sub-redes_menores_24.md
+      - Storage:
+          - LVM na prática: artigos/storage/LVM/LVM_na_pratica.md
+          - Storage iSCSI em Linux: artigos/storage/iSCSI/Storage_iSCSI_Linux.md
+  - Casos Reais:
+      - PostgreSQL:
+          - Erro pg_hba.conf em acesso remoto: casos/postgresql/postgresql-erro-acesso-remoto/index.md
+      - systemd:
+          - Status 127 após instalação do Zabbix Agent 2: casos/systemd/systemd-status-127-zabbix-agent2/index.md
+      - backup:
+          - Backup Linux com rsync e hardlink: casos/backup/backup_sistemas.md
+      - Containers:
+          - Backup de MariaDB em Docker: casos/containers/docker/mariadb/configurando_backup_mariadb_docker.md
+      - Migração:
+          - Kubernetes de RAID1 SATA para RAID1 SSD: casos/migracao/migracao_k8s_raid_ssd/Estudo_de_Caso_Migracao_Kubernetes_RAID_SSD_v4.md
