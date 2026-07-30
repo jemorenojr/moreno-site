@@ -21,7 +21,7 @@ nav:
       - PostgreSQL:
           - Erro pg_hba.conf em acesso remoto: casos/postgresql/postgresql-erro-acesso-remoto/index.md
       - systemd:
-          - Status 127 após instalação do Zabbix Agent 2: casos/systemd/systemd-status-127-zabbix-agent2/index.md
+          - Status 127 após instalação do Zabbix Agent 2: casos/systemd/troubleshooting/status-127-zabbix-agent2-systemd.md
       - backup:
           - Backup Linux com rsync e hardlink: casos/backup/backup_sistemas.md
       - Containers:
