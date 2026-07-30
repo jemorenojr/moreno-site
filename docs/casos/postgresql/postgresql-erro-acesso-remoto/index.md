@@ -26,8 +26,6 @@ Este estudo apresenta as hipóteses levantadas, os testes realizados, as evidên
 
 # Ambiente
 
-> Substitua pelos dados reais do ambiente antes da publicação.
-
 | Item | Valor |
 |------|-------|
 | Sistema Operacional | Debian |
@@ -65,7 +63,7 @@ A hipótese inicial foi de que a rede cliente não estivesse autorizada no `pg_h
 Foi adicionada uma regra semelhante a:
 
 ```conf
-host    all    usuario_aplicacao    192.168.100.0/24    md5
+host    all    usuario_aplicacao    198.51.100.0/24    md5
 ```
 
 Após a alteração foi executado:
@@ -107,7 +105,7 @@ Resultado:
 ```text
 line_number | type | database | address | netmask
 ------------+------+----------+---------+--------------
-100         | host | {all}    | 192.168.100.0 | 255.255.255.0
+100         | host | {all}    | 198.51.100.0 | 255.255.255.0
 ```
 
 Isso comprovava que a regra estava correta.

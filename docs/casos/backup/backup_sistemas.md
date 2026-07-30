@@ -1,6 +1,6 @@
 # Backup Linux
 
-## Donwloads
+## Downloads
 
 * [backup_sistemas.sh](../../downloads/scripts/backup_sistemas/backup_sistemas.sh)
 * [backup_geral.conf](../../downloads/scripts/backup_sistemas/backup_geral.conf)
