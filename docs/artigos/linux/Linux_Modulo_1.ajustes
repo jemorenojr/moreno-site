@@ -1,0 +1,164 @@
+# Ajustes necessários antes da publicação
+
+Documento revisado:
+
+```text
+Linux_Modulo_1.pdf
+```
+
+Data da revisão:
+
+```text
+2026-07-30
+```
+
+## Decisão
+
+Publicar por meio de página Markdown de apresentação.
+
+O material tem valor para o site. A forma de inclusão foi ajustada para preservar a organização do MkDocs: a navegação aponta para uma página Markdown e o PDF fica disponível como download.
+
+## Problemas encontrados
+
+### 1. O arquivo no site é um symlink
+
+Situação anterior:
+
+```text
+docs/artigos/Linux_Artigo/Linux_Modulo_1.pdf
+```
+
+é um link simbólico para:
+
+```text
+../../../../../Projetos/Linux_Modulo_1/Linux_Modulo_1.pdf
+```
+
+Para publicação pública, o repositório do site deve conter o arquivo real a ser publicado. Um symlink para fora do repositório pode funcionar localmente, mas é frágil para build, deploy e versionamento.
+
+Situação atual:
+
+```text
+docs/downloads/pdf/linux/Linux_Modulo_1.pdf
+```
+
+O arquivo foi convertido para arquivo regular/hard link antes da publicação e movido para a área de downloads do site.
+
+### 2. Diretório fora do padrão atual
+
+O diretório:
+
+```text
+docs/artigos/Linux_Artigo
+```
+
+não segue o padrão atual do site.
+
+O padrão existente organiza artigos por categoria técnica, por exemplo:
+
+```text
+docs/artigos/storage/LVM/
+docs/artigos/storage/iSCSI/
+docs/artigos/DNS/
+```
+
+Para este material, a organização recomendada é:
+
+```text
+docs/artigos/linux/Linux_Modulo_1.md
+docs/downloads/pdf/linux/Linux_Modulo_1.pdf
+```
+
+Situação atual:
+
+```text
+docs/artigos/linux/Linux_Modulo_1.md
+docs/downloads/pdf/linux/Linux_Modulo_1.pdf
+```
+
+### 3. Publicar por página Markdown, não diretamente pelo PDF
+
+Não é recomendável colocar o PDF diretamente no `nav`.
+
+A melhor abordagem é criar uma página Markdown de apresentação com:
+
+- título;
+- objetivo;
+- público-alvo;
+- tópicos cobertos;
+- versão;
+- data;
+- link para download do PDF;
+- observação de direitos autorais.
+
+O PDF deve ser disponibilizado como arquivo baixável.
+
+Item aplicado.
+
+### 4. Revisão de sanitização do PDF
+
+A extração textual encontrou exemplos didáticos com domínios, URLs e redes privadas.
+
+Há ocorrência de:
+
+```text
+telium.net.br
+```
+
+Também existem exemplos com endereços privados, como:
+
+```text
+192.168.x.x
+10.100.x.x
+```
+
+Redes privadas podem ser aceitáveis quando usadas como laboratório didático.
+
+Decisão do autor:
+
+```text
+As referências a Telium aparecem em contexto de DNS ou explicação de resolução de nomes, junto com referências a outras empresas públicas. Não há dado comprometedor.
+```
+
+Com essa decisão, a ocorrência foi aceita para publicação.
+
+Sugestões:
+
+```text
+example.net
+example.org
+lab.example.net
+```
+
+## Estrutura recomendada
+
+### Arquivo de apresentação
+
+```text
+docs/artigos/linux/Linux_Modulo_1.md
+```
+
+### PDF publicado
+
+```text
+docs/downloads/pdf/linux/Linux_Modulo_1.pdf
+```
+
+### Navegação sugerida
+
+```yaml
+Base de Conhecimento:
+  - Linux:
+      - Linux Módulo 1: artigos/linux/Linux_Modulo_1.md
+```
+
+## Resultado
+
+1. PDF posicionado em `docs/downloads/pdf/linux/Linux_Modulo_1.pdf`.
+2. Página Markdown criada em `docs/artigos/linux/Linux_Modulo_1.md`.
+3. Navegação adicionada ao `mkdocs.yml`.
+4. Validação recomendada:
+
+```bash
+.env/usr/bin/mkdocs build --strict
+```

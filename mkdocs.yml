@@ -9,6 +9,8 @@ theme:
 nav:
   - Início: index.md
   - Base de Conhecimento:
+      - Linux:
+          - Linux Módulo 1: artigos/linux/Linux_Modulo_1.md
       - Redes:
           - DNS reverso RFC 2317: artigos/DNS/Delegacao_DNS_Reverso_Sub-redes_menores_24.md
       - Storage:
