@@ -13,7 +13,7 @@ nav:
           - Linux Módulo 1: artigos/linux/Linux_Modulo_1.md
           - Samba + OpenLDAP em Linux: artigos/linux/Samba_LDAP.md
       - Redes:
-          - DNS reverso RFC 2317: artigos/DNS/Delegacao_DNS_Reverso_Sub-redes_menores_24.md
+          - DNS reverso RFC 2317: artigos/DNS/dns-reverso/delegacao-rfc2317-powerdns.md
       - Storage:
           - LVM na prática: artigos/storage/LVM/LVM_na_pratica.md
           - Storage iSCSI em Linux: artigos/storage/iSCSI/Storage_iSCSI_Linux.md
