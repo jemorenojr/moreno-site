@@ -1,0 +1,2366 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Engenharia de Infraestrutura Linux">
+      
+      
+      
+        <link rel="canonical" href="https://moreno.eco.br/projetos/nexus/desenvolvimento/">
+      
+      
+        <link rel="prev" href="../uso/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Desenvolvimento - MORENO.ECO.BR</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#desenvolvimento" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../../.." title="MORENO.ECO.BR" class="md-header__button md-logo" aria-label="MORENO.ECO.BR" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            MORENO.ECO.BR
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Desenvolvimento
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="MORENO.ECO.BR" class="md-nav__button md-logo" aria-label="MORENO.ECO.BR" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    MORENO.ECO.BR
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Início
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Base de Conhecimento
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Base de Conhecimento
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Linux
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../artigos/linux/Linux_Modulo_1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux Módulo 1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../artigos/linux/Samba_LDAP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Samba + OpenLDAP em Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Redes
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Redes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../artigos/DNS/dns-reverso/delegacao-rfc2317-powerdns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DNS reverso RFC 2317
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Storage
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Storage
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../artigos/storage/LVM/LVM_na_pratica/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LVM na prática
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../artigos/storage/iSCSI/Storage_iSCSI_Linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Storage iSCSI em Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Casos Reais
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Casos Reais
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PostgreSQL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../casos/postgresql/postgresql-erro-acesso-remoto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Erro pg_hba.conf em acesso remoto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    systemd
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    systemd
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../casos/systemd/troubleshooting/status-127-zabbix-agent2-systemd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Status 127 após instalação do Zabbix Agent 2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    backup
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    backup
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../casos/backup/backup_sistemas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backup Linux com rsync e hardlink
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Containers
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Containers
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../casos/containers/docker/mariadb/configurando_backup_mariadb_docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backup de MariaDB em Docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Migração
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Migração
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../casos/migracao/migracao_k8s_raid_ssd/Estudo_de_Caso_Migracao_Kubernetes_RAID_SSD_v4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes de RAID1 SATA para RAID1 SSD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Projetos
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Projetos
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Nexus
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Nexus
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visão geral
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../arquitetura/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Arquitetura
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../instalacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instalação
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uso/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Uso
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Desenvolvimento
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Desenvolvimento
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#organizacao-do-codigo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Organização do código
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decisoes-de-implementacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decisões de implementação
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decisões de implementação">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#funcao-carregada-pelo-shell" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Função carregada pelo shell
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuracao-embutida" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuração embutida
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#json-como-formato-de-sessao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JSON como formato de sessão
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#roteamento-por-regex" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Roteamento por regex
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chamada-sincrona" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chamada síncrona
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#separacao-do-codex" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Separação do Codex
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pontos-tecnicos-relevantes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pontos técnicos relevantes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pontos técnicos relevantes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#arquivo-temporario-da-requisicao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Arquivo temporário da requisição
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#atualizacao-do-historico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Atualização do histórico
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verificacao-exata-do-modelo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verificação exata do modelo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#codigo-de-retorno" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Código de retorno
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limitacoes-conhecidas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitações conhecidas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#roadmap-proposto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Roadmap proposto
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Roadmap proposto">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#etapa-1-robustez-operacional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 1 — Robustez operacional
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapa-2-configuracao-externa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 2 — Configuração externa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapa-3-controle-de-contexto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 3 — Controle de contexto
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapa-4-experiencia-de-uso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 4 — Experiência de uso
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapa-5-roteamento-aprimorado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 5 — Roteamento aprimorado
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapa-6-memoria-semantica-e-rag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 6 — Memória semântica e RAG
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapa-7-auditoria-e-observabilidade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 7 — Auditoria e observabilidade
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estrategia-de-refatoracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Estratégia de refatoração
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testes-recomendados" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testes recomendados
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Testes recomendados">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parser" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parser
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sessoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sessões
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#roteador" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Roteador
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#http" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#persistencia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Persistência
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#criterio-de-evolucao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Critério de evolução
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#organizacao-do-codigo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Organização do código
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decisoes-de-implementacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decisões de implementação
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decisões de implementação">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#funcao-carregada-pelo-shell" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Função carregada pelo shell
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuracao-embutida" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuração embutida
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#json-como-formato-de-sessao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JSON como formato de sessão
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#roteamento-por-regex" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Roteamento por regex
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chamada-sincrona" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chamada síncrona
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#separacao-do-codex" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Separação do Codex
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pontos-tecnicos-relevantes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pontos técnicos relevantes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pontos técnicos relevantes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#arquivo-temporario-da-requisicao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Arquivo temporário da requisição
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#atualizacao-do-historico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Atualização do histórico
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verificacao-exata-do-modelo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verificação exata do modelo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#codigo-de-retorno" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Código de retorno
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limitacoes-conhecidas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitações conhecidas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#roadmap-proposto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Roadmap proposto
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Roadmap proposto">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#etapa-1-robustez-operacional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 1 — Robustez operacional
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapa-2-configuracao-externa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 2 — Configuração externa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapa-3-controle-de-contexto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 3 — Controle de contexto
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapa-4-experiencia-de-uso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 4 — Experiência de uso
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapa-5-roteamento-aprimorado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 5 — Roteamento aprimorado
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapa-6-memoria-semantica-e-rag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 6 — Memória semântica e RAG
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapa-7-auditoria-e-observabilidade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 7 — Auditoria e observabilidade
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estrategia-de-refatoracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Estratégia de refatoração
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testes-recomendados" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testes recomendados
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Testes recomendados">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parser" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parser
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sessoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sessões
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#roteador" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Roteador
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#http" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#persistencia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Persistência
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#criterio-de-evolucao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Critério de evolução
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="desenvolvimento">Desenvolvimento</h1>
+<h2 id="organizacao-do-codigo">Organização do código</h2>
+<p>A implementação atual é uma única função de shell. Internamente, ela pode ser entendida em blocos:</p>
+<pre><code class="language-text">Nexus()
+├── configuração e variáveis
+├── preparação dos diretórios
+├── validação de dependências
+├── parser de opções
+├── validação da sessão
+├── leitura de stdin
+├── inicialização do histórico
+├── roteador
+├── execução pelo Codex
+├── seleção do modelo Ollama
+├── verificação da API e do modelo
+├── definição do prompt de sistema
+├── montagem do JSON
+├── chamada HTTP
+├── extração da resposta
+└── atualização da sessão
+</code></pre>
+<p>A organização linear facilita auditoria e instalação, mas aumenta o acoplamento. Evoluções maiores devem considerar a divisão em funções auxiliares.</p>
+<h2 id="decisoes-de-implementacao">Decisões de implementação</h2>
+<h3 id="funcao-carregada-pelo-shell">Função carregada pelo shell</h3>
+<p>A escolha evita criar um executável separado e permite uso imediato em pipelines. Em contrapartida, a função herda ambiente, diretório atual, limites e peculiaridades do shell chamador.</p>
+<h3 id="configuracao-embutida">Configuração embutida</h3>
+<p>Modelos, URL e limite de histórico ficam no código. Isso simplifica a primeira versão, mas obriga a editar o script para qualquer ajuste.</p>
+<h3 id="json-como-formato-de-sessao">JSON como formato de sessão</h3>
+<p>O JSON permite inspeção direta com <code>jq</code>, integração simples com a API e preservação dos papéis <code>user</code> e <code>assistant</code>.</p>
+<h3 id="roteamento-por-regex">Roteamento por regex</h3>
+<p>As regras são rápidas, auditáveis e não exigem uma inferência adicional. O custo é a baixa compreensão semântica.</p>
+<h3 id="chamada-sincrona">Chamada síncrona</h3>
+<p>A função aguarda o término da resposta. O comportamento é previsível em scripts, mas não oferece feedback progressivo durante gerações longas.</p>
+<h3 id="separacao-do-codex">Separação do Codex</h3>
+<p>A rota <code>codex</code> retorna diretamente após executar a CLI. Ela não grava pergunta ou resposta no histórico do Ollama, pois o contexto e os efeitos pertencem a outro mecanismo.</p>
+<h2 id="pontos-tecnicos-relevantes">Pontos técnicos relevantes</h2>
+<h3 id="arquivo-temporario-da-requisicao">Arquivo temporário da requisição</h3>
+<p>O corpo HTTP é montado em arquivo criado por <code>mktemp</code>:</p>
+<pre><code class="language-bash">TMP_BODY=&quot;$(mktemp)&quot;
+</code></pre>
+<p>O arquivo é removido após a chamada. Há tratamento explícito para falha na montagem do JSON, mas a versão atual não instala <code>trap</code>; uma interrupção abrupta pode deixar o temporário no sistema.</p>
+<h3 id="atualizacao-do-historico">Atualização do histórico</h3>
+<p>A sessão é atualizada por arquivo temporário seguido de <code>mv</code>. Isso protege contra substituição quando o <code>jq</code> falha, mas não resolve concorrência entre processos.</p>
+<h3 id="verificacao-exata-do-modelo">Verificação exata do modelo</h3>
+<p>O nome retornado por <code>/api/tags</code> deve ser idêntico ao configurado. Tags equivalentes ou nomes sem tag não são normalizados.</p>
+<h3 id="codigo-de-retorno">Código de retorno</h3>
+<p>Falhas do <code>curl</code> e do Codex são propagadas. Erros internos de validação normalmente retornam <code>1</code>.</p>
+<h2 id="limitacoes-conhecidas">Limitações conhecidas</h2>
+<ol>
+<li>O roteamento usa palavras e expressões regulares, não classificação semântica.</li>
+<li>O modo <code>assist</code> só é escolhido explicitamente.</li>
+<li>A resposta do Ollama não usa streaming.</li>
+<li>O histórico é limitado por mensagens, não por tokens.</li>
+<li>Mensagens antigas são descartadas, não resumidas.</li>
+<li>Não existe <code>--no-history</code>.</li>
+<li>Não existe limite de tamanho para a entrada recebida por <code>stdin</code>.</li>
+<li>Não existe RAG nem busca em documentação local.</li>
+<li>O <code>embeddinggemma</code> não participa do fluxo.</li>
+<li>O histórico é armazenado sem criptografia.</li>
+<li>Não há lock para execuções concorrentes na mesma sessão.</li>
+<li>Não há <code>trap</code> para limpeza garantida do arquivo temporário.</li>
+<li>A integração com Codex não compartilha contexto com o Ollama.</li>
+<li>A implementação não registra métricas de duração, rota ou volume de dados.</li>
+<li>A função assume a presença de recursos comuns a Bash/Zsh, mas não possui suíte de compatibilidade automatizada.</li>
+</ol>
+<h2 id="roadmap-proposto">Roadmap proposto</h2>
+<h3 id="etapa-1-robustez-operacional">Etapa 1 — Robustez operacional</h3>
+<p>Prioridade alta, sem alterar o modelo arquitetural:</p>
+<ul>
+<li>adicionar <code>trap</code> para limpeza de temporários;</li>
+<li>validar o JSON da sessão antes da chamada;</li>
+<li>restaurar permissões após cada substituição do arquivo;</li>
+<li>implementar lock por sessão;</li>
+<li>limitar o volume de entrada por bytes;</li>
+<li>melhorar a separação entre mensagens de <code>stdout</code> e <code>stderr</code>;</li>
+<li>criar testes para parser, roteador e nomes de sessão.</li>
+</ul>
+<h3 id="etapa-2-configuracao-externa">Etapa 2 — Configuração externa</h3>
+<p>Mover parâmetros para um arquivo como:</p>
+<pre><code class="language-text">~/.config/nexus/config
+</code></pre>
+<p>Itens configuráveis:</p>
+<pre><code class="language-text">OLLAMA_BASE_URL
+MODEL_GENERIC
+MODEL_ASSIST
+MODEL_CODE
+MAX_HISTORY_MESSAGES
+KEEP_ALIVE
+CONNECT_TIMEOUT
+REQUEST_TIMEOUT
+</code></pre>
+<p>A configuração externa deve usar um formato simples e seguro, sem executar conteúdo arbitrário quando isso puder ser evitado.</p>
+<h3 id="etapa-3-controle-de-contexto">Etapa 3 — Controle de contexto</h3>
+<ul>
+<li>adicionar <code>--no-history</code>;</li>
+<li>adicionar opção para listar e remover sessões;</li>
+<li>limitar contexto por tokens;</li>
+<li>preservar um histórico completo separado do contexto ativo;</li>
+<li>resumir mensagens antigas antes de descartá-las.</li>
+</ul>
+<h3 id="etapa-4-experiencia-de-uso">Etapa 4 — Experiência de uso</h3>
+<ul>
+<li>implementar streaming;</li>
+<li>exibir opcionalmente rota e modelo selecionados;</li>
+<li>adicionar modo silencioso e modo verboso;</li>
+<li>aceitar prompt a partir de arquivo;</li>
+<li>permitir saída estruturada quando solicitada;</li>
+<li>oferecer conclusão de opções no shell.</li>
+</ul>
+<h3 id="etapa-5-roteamento-aprimorado">Etapa 5 — Roteamento aprimorado</h3>
+<p>Substituir ou complementar regex com um classificador local curto:</p>
+<pre><code class="language-text">entrada
+  -&gt; regras explícitas de alta prioridade
+  -&gt; classificador local
+  -&gt; fallback generic
+</code></pre>
+<p>As regras explícitas devem continuar existindo para decisões previsíveis, especialmente a delegação ao Codex.</p>
+<h3 id="etapa-6-memoria-semantica-e-rag">Etapa 6 — Memória semântica e RAG</h3>
+<p>Usar embeddings para indexar:</p>
+<ul>
+<li>sessões anteriores;</li>
+<li>documentação técnica;</li>
+<li>arquivos Markdown;</li>
+<li>playbooks Ansible;</li>
+<li>scripts;</li>
+<li>estudos de caso;</li>
+<li>manuais internos.</li>
+</ul>
+<p>Fluxo possível:</p>
+<pre><code class="language-text">pergunta
+  -&gt; geração de embedding
+  -&gt; busca local por similaridade
+  -&gt; seleção de trechos
+  -&gt; composição do contexto
+  -&gt; chamada ao modelo
+</code></pre>
+<p>Essa evolução exige decisões adicionais sobre armazenamento vetorial, atualização de índices, origem dos documentos e proteção de dados.</p>
+<h3 id="etapa-7-auditoria-e-observabilidade">Etapa 7 — Auditoria e observabilidade</h3>
+<p>Registrar separadamente:</p>
+<pre><code class="language-text">data e hora
+sessão
+rota escolhida
+modelo
+latência
+tamanho da entrada
+código de retorno
+resultado da persistência
+</code></pre>
+<p>O log de auditoria não deve duplicar conteúdo sensível por padrão.</p>
+<h2 id="estrategia-de-refatoracao">Estratégia de refatoração</h2>
+<p>Uma evolução sem ruptura pode extrair funções auxiliares mantendo <code>Nexus</code> como interface pública:</p>
+<pre><code class="language-bash">_nexus_parse_args
+_nexus_validate_session
+_nexus_read_input
+_nexus_route
+_nexus_check_ollama
+_nexus_build_request
+_nexus_call_ollama
+_nexus_update_history
+Nexus
+</code></pre>
+<p>A ordem recomendada é:</p>
+<ol>
+<li>criar testes de comportamento da versão atual;</li>
+<li>extrair funções sem mudar saídas nem códigos de retorno;</li>
+<li>introduzir configuração externa;</li>
+<li>adicionar novas capacidades de forma incremental.</li>
+</ol>
+<h2 id="testes-recomendados">Testes recomendados</h2>
+<h3 id="parser">Parser</h3>
+<ul>
+<li>ausência de valor após <code>--session</code>;</li>
+<li>ausência de valor após <code>--mode</code>;</li>
+<li>opção desconhecida tratada como texto;</li>
+<li>combinação de múltiplos argumentos;</li>
+<li>ordem entre <code>--new</code> e <code>--session</code>.</li>
+</ul>
+<h3 id="sessoes">Sessões</h3>
+<ul>
+<li>nomes válidos e inválidos;</li>
+<li>criação com permissões corretas;</li>
+<li>reinício de sessão;</li>
+<li>JSON corrompido;</li>
+<li>concorrência entre duas chamadas.</li>
+</ul>
+<h3 id="roteador">Roteador</h3>
+<ul>
+<li>precedência de <code>codex</code> sobre <code>code</code>;</li>
+<li>termos acentuados e sem acento;</li>
+<li>falsos positivos conhecidos;</li>
+<li>modo forçado ignorando regex.</li>
+</ul>
+<h3 id="http">HTTP</h3>
+<ul>
+<li>API indisponível;</li>
+<li>modelo ausente;</li>
+<li>erro HTTP com corpo;</li>
+<li>timeout;</li>
+<li>JSON sem <code>.message.content</code>;</li>
+<li>resposta válida.</li>
+</ul>
+<h3 id="persistencia">Persistência</h3>
+<ul>
+<li>limite de vinte mensagens;</li>
+<li>manutenção da ordem;</li>
+<li>falha do <code>jq</code> sem perda do arquivo anterior;</li>
+<li>permissões após <code>mv</code>.</li>
+</ul>
+<h2 id="criterio-de-evolucao">Critério de evolução</h2>
+<p>O projeto deve preservar sua principal qualidade: ser compreensível por inspeção. Recursos como classificação semântica, RAG e auditoria devem ser adicionados sem transformar o Nexus em uma camada opaca ou difícil de operar no terminal.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

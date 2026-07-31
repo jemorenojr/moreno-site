@@ -10,26 +10,28 @@
       
       
       
-        <link rel="canonical" href="https://moreno.eco.br/">
+        <link rel="canonical" href="https://moreno.eco.br/casos/systemd/troubleshooting/status-127-zabbix-agent2-systemd/">
       
       
+        <link rel="prev" href="../../../postgresql/postgresql-erro-acesso-remoto/">
       
-        <link rel="next" href="artigos/linux/Linux_Modulo_1/">
+      
+        <link rel="next" href="../../../backup/backup_sistemas/">
       
       
         
       
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="../../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>MORENO.ECO.BR</title>
+        <title>Status 127 após instalação do Zabbix Agent 2 - MORENO.ECO.BR</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
       
       
 
@@ -48,7 +50,7 @@
       
     
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -66,7 +68,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#morenoecobr" class="md-skip">
+        <a href="#diagnostico-de-servicos-systemd-retornando-status127-apos-instalacao-do-zabbix-agent-2" class="md-skip">
           Pular para conteúdo
         </a>
       
@@ -82,7 +84,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
-    <a href="." title="MORENO.ECO.BR" class="md-header__button md-logo" aria-label="MORENO.ECO.BR" data-md-component="logo">
+    <a href="../../../.." title="MORENO.ECO.BR" class="md-header__button md-logo" aria-label="MORENO.ECO.BR" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -102,7 +104,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Início
+              Status 127 após instalação do Zabbix Agent 2
             
           </span>
         </div>
@@ -180,7 +182,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="MORENO.ECO.BR" class="md-nav__button md-logo" aria-label="MORENO.ECO.BR" data-md-component="logo">
+    <a href="../../../.." title="MORENO.ECO.BR" class="md-nav__button md-logo" aria-label="MORENO.ECO.BR" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -195,37 +197,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Início
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
         
   
   
@@ -241,37 +216,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Índice">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Índice
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#engenharia-de-infraestrutura-linux" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Engenharia de Infraestrutura Linux
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -377,7 +321,7 @@
   
   
     <li class="md-nav__item">
-      <a href="artigos/linux/Linux_Modulo_1/" class="md-nav__link">
+      <a href="../../../../artigos/linux/Linux_Modulo_1/" class="md-nav__link">
         
   
   
@@ -405,7 +349,7 @@
   
   
     <li class="md-nav__item">
-      <a href="artigos/linux/Samba_LDAP/" class="md-nav__link">
+      <a href="../../../../artigos/linux/Samba_LDAP/" class="md-nav__link">
         
   
   
@@ -488,7 +432,7 @@
   
   
     <li class="md-nav__item">
-      <a href="artigos/DNS/dns-reverso/delegacao-rfc2317-powerdns/" class="md-nav__link">
+      <a href="../../../../artigos/DNS/dns-reverso/delegacao-rfc2317-powerdns/" class="md-nav__link">
         
   
   
@@ -571,7 +515,7 @@
   
   
     <li class="md-nav__item">
-      <a href="artigos/storage/LVM/LVM_na_pratica/" class="md-nav__link">
+      <a href="../../../../artigos/storage/LVM/LVM_na_pratica/" class="md-nav__link">
         
   
   
@@ -599,7 +543,7 @@
   
   
     <li class="md-nav__item">
-      <a href="artigos/storage/iSCSI/Storage_iSCSI_Linux/" class="md-nav__link">
+      <a href="../../../../artigos/storage/iSCSI/Storage_iSCSI_Linux/" class="md-nav__link">
         
   
   
@@ -639,18 +583,20 @@
       
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
@@ -671,7 +617,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -736,7 +682,7 @@
   
   
     <li class="md-nav__item">
-      <a href="casos/postgresql/postgresql-erro-acesso-remoto/" class="md-nav__link">
+      <a href="../../../postgresql/postgresql-erro-acesso-remoto/" class="md-nav__link">
         
   
   
@@ -769,18 +715,20 @@
                 
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" checked>
         
           
           <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
@@ -801,7 +749,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -816,10 +764,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="casos/systemd/troubleshooting/status-127-zabbix-agent2-systemd/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Status 127 após instalação do Zabbix Agent 2
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -835,6 +810,158 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objetivo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objetivo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ambiente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ambiente
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cenario" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cenário
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#primeiras-hipoteses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Primeiras hipóteses
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validacao-da-configuracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validação da configuração
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ampliando-a-investigacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ampliando a investigação
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#confirmando-a-hipotese" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Confirmando a hipótese
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hipoteses-descartadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hipóteses descartadas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#descobrindo-a-causa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Descobrindo a causa
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#correcao-aplicada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Correção aplicada
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validação
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusão
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -902,7 +1029,7 @@
   
   
     <li class="md-nav__item">
-      <a href="casos/backup/backup_sistemas/" class="md-nav__link">
+      <a href="../../../backup/backup_sistemas/" class="md-nav__link">
         
   
   
@@ -985,7 +1112,7 @@
   
   
     <li class="md-nav__item">
-      <a href="casos/containers/docker/mariadb/configurando_backup_mariadb_docker/" class="md-nav__link">
+      <a href="../../../containers/docker/mariadb/configurando_backup_mariadb_docker/" class="md-nav__link">
         
   
   
@@ -1068,7 +1195,7 @@
   
   
     <li class="md-nav__item">
-      <a href="casos/migracao/migracao_k8s_raid_ssd/Estudo_de_Caso_Migracao_Kubernetes_RAID_SSD_v4/" class="md-nav__link">
+      <a href="../../../migracao/migracao_k8s_raid_ssd/Estudo_de_Caso_Migracao_Kubernetes_RAID_SSD_v4/" class="md-nav__link">
         
   
   
@@ -1205,7 +1332,7 @@
   
   
     <li class="md-nav__item">
-      <a href="projetos/nexus/" class="md-nav__link">
+      <a href="../../../../projetos/nexus/" class="md-nav__link">
         
   
   
@@ -1233,7 +1360,7 @@
   
   
     <li class="md-nav__item">
-      <a href="projetos/nexus/arquitetura/" class="md-nav__link">
+      <a href="../../../../projetos/nexus/arquitetura/" class="md-nav__link">
         
   
   
@@ -1261,7 +1388,7 @@
   
   
     <li class="md-nav__item">
-      <a href="projetos/nexus/instalacao/" class="md-nav__link">
+      <a href="../../../../projetos/nexus/instalacao/" class="md-nav__link">
         
   
   
@@ -1289,7 +1416,7 @@
   
   
     <li class="md-nav__item">
-      <a href="projetos/nexus/uso/" class="md-nav__link">
+      <a href="../../../../projetos/nexus/uso/" class="md-nav__link">
         
   
   
@@ -1317,7 +1444,7 @@
   
   
     <li class="md-nav__item">
-      <a href="projetos/nexus/desenvolvimento/" class="md-nav__link">
+      <a href="../../../../projetos/nexus/desenvolvimento/" class="md-nav__link">
         
   
   
@@ -1380,10 +1507,131 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#engenharia-de-infraestrutura-linux" class="md-nav__link">
+  <a href="#objetivo" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Engenharia de Infraestrutura Linux
+        Objetivo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ambiente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ambiente
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cenario" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cenário
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#primeiras-hipoteses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Primeiras hipóteses
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validacao-da-configuracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validação da configuração
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ampliando-a-investigacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ampliando a investigação
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#confirmando-a-hipotese" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Confirmando a hipótese
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hipoteses-descartadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hipóteses descartadas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#descobrindo-a-causa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Descobrindo a causa
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#correcao-aplicada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Correção aplicada
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validação
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusão
       
     </span>
   </a>
@@ -1407,13 +1655,240 @@
 
 
 
-<h1 id="morenoecobr">MORENO.ECO.BR</h1>
-<h2 id="engenharia-de-infraestrutura-linux">Engenharia de Infraestrutura Linux</h2>
-<p>Projeto em construção.</p>
-<p>Em breve serão publicados estudos de caso, documentação técnica, scripts e laboratórios relacionados a ambientes Linux.</p>
+<h1 id="diagnostico-de-servicos-systemd-retornando-status127-apos-instalacao-do-zabbix-agent-2">Diagnóstico de serviços systemd retornando status=127 após instalação do Zabbix Agent 2</h1>
+<table>
+<thead>
+<tr>
+<th>Informação</th>
+<th>Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tipo</td>
+<td>Estudo de Caso</td>
+</tr>
+<tr>
+<td>Categoria</td>
+<td>Linux / systemd</td>
+</tr>
+<tr>
+<td>Nível</td>
+<td>Avançado</td>
+</tr>
+<tr>
+<td>Ambiente</td>
+<td>Debian</td>
+</tr>
+<tr>
+<td>Data</td>
+<td>2025-05-23</td>
+</tr>
+</tbody>
+</table>
 <hr />
-<p><strong>Contato:</strong> edson.moreno@gmail.com</p>
-<p>Site publicado em 16 de julho de 2026.</p>
+<h2 id="objetivo">Objetivo</h2>
+<p>Documentar a investigação realizada após a instalação do <strong>Zabbix Agent 2</strong>, onde o serviço não iniciava e retornava <strong>status=127</strong>.</p>
+<p>Embora o problema tenha sido inicialmente associado ao Zabbix, a investigação demonstrou que a causa estava em uma inconsistência do sistema operacional, decorrente de uma atualização parcial do Debian.</p>
+<p>Este estudo apresenta o processo de diagnóstico, as hipóteses levantadas, os testes realizados, as evidências coletadas e a solução aplicada.</p>
+<hr />
+<h2 id="ambiente">Ambiente</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sistema Operacional</td>
+<td>Debian Jessie</td>
+</tr>
+<tr>
+<td>Kernel</td>
+<td>3.16</td>
+</tr>
+<tr>
+<td>systemd</td>
+<td>230</td>
+</tr>
+<tr>
+<td>libc</td>
+<td>2.31</td>
+</tr>
+<tr>
+<td>Serviço instalado</td>
+<td>Zabbix Agent 2</td>
+</tr>
+<tr>
+<td>Outros serviços</td>
+<td>MySQL, Wazuh Agent</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="cenario">Cenário</h2>
+<p>Após a instalação do <strong>Zabbix Agent 2</strong>, o serviço não iniciava.</p>
+<p>A execução do comando:</p>
+<pre><code class="language-bash">systemctl status zabbix-agent2
+</code></pre>
+<p>retornava:</p>
+<pre><code class="language-text">Main process exited, code=exited, status=127
+</code></pre>
+<p>Inicialmente, tudo indicava um problema relacionado à instalação ou configuração do agente.</p>
+<hr />
+<blockquote>
+<p><strong>PRINT 01</strong></p>
+</blockquote>
+<p>Status inicial do serviço apresentando erro <strong>status=127</strong>.</p>
+<p><img alt="alt text" src="../imagens/01-zabbix-status127.png.png" /></p>
+<hr />
+<h2 id="primeiras-hipoteses">Primeiras hipóteses</h2>
+<p>Como o erro ocorreu imediatamente após a instalação do agente, as primeiras linhas de investigação concentraram-se no próprio Zabbix.</p>
+<p>Foram consideradas as seguintes possibilidades:</p>
+<ul>
+<li>erro na instalação do pacote;</li>
+<li>configuração incorreta;</li>
+<li>permissões do usuário <code>zabbix</code>;</li>
+<li>arquivo de configuração inválido;</li>
+<li>bibliotecas ausentes;</li>
+<li>problemas no PATH;</li>
+<li>falha nas variáveis de ambiente.</li>
+</ul>
+<hr />
+<h2 id="validacao-da-configuracao">Validação da configuração</h2>
+<p>O primeiro passo foi validar a configuração do agente.</p>
+<pre><code class="language-bash">sudo -u zabbix \
+/usr/sbin/zabbix_agent2 \
+-T \
+-c /etc/zabbix/zabbix_agent2.conf
+</code></pre>
+<p>Resultado:</p>
+<pre><code class="language-text">Validation successful
+</code></pre>
+<p>Conclusão:</p>
+<p>A configuração do agente estava correta.</p>
+<hr />
+<h2 id="ampliando-a-investigacao">Ampliando a investigação</h2>
+<p>Como a configuração estava válida, passou-se a verificar se o problema era realmente do Zabbix.</p>
+<p>Para isso, o serviço foi alterado temporariamente para executar apenas:</p>
+<pre><code class="language-ini">ExecStart=/bin/sleep 300
+</code></pre>
+<p>O resultado foi surpreendente.</p>
+<p>Mesmo sem executar o Zabbix, o serviço continuava encerrando com:</p>
+<pre><code class="language-text">status=127
+</code></pre>
+<p>Esse teste foi o primeiro indício de que o problema não estava relacionado ao agente.</p>
+<hr />
+<blockquote>
+<p><strong>PRINT 02</strong></p>
+</blockquote>
+<p>Teste substituindo o serviço por <code>/bin/sleep</code>.
+<img alt="alt text" src="../imagens/02-sleep-status127.png" /></p>
+<hr />
+<p>!!! tip "Ponto de inflexão da investigação"</p>
+<pre><code>A substituição do Zabbix por um simples `/bin/sleep` demonstrou que qualquer processo iniciado pelo **systemd** utilizando um usuário não privilegiado falhava com `status=127`.
+
+A partir desse momento a investigação deixou de focar no Zabbix e passou a analisar o sistema operacional.
+</code></pre>
+<hr />
+<h2 id="confirmando-a-hipotese">Confirmando a hipótese</h2>
+<p>Para eliminar definitivamente qualquer influência do agente, foi criado um novo serviço de teste utilizando o usuário <code>nobody</code>.</p>
+<pre><code class="language-ini">[Service]
+User=nobody
+Group=nogroup
+ExecStart=/bin/sleep 300
+</code></pre>
+<p>O comportamento foi exatamente o mesmo.</p>
+<pre><code class="language-text">status=127
+</code></pre>
+<p>Conclusão:</p>
+<p>O problema afetava qualquer serviço iniciado pelo <strong>systemd</strong> utilizando usuários não privilegiados.</p>
+<hr />
+<h2 id="hipoteses-descartadas">Hipóteses descartadas</h2>
+<p>Durante a investigação foram descartadas:</p>
+<ul>
+<li>configuração do Zabbix;</li>
+<li>permissões do usuário;</li>
+<li>grupos;</li>
+<li>PATH;</li>
+<li>LD_PRELOAD;</li>
+<li>LD_LIBRARY_PATH;</li>
+<li>AppArmor;</li>
+<li>Audit;</li>
+<li>shell;</li>
+<li>executável;</li>
+<li>arquivo de configuração.</li>
+</ul>
+<hr />
+<h2 id="descobrindo-a-causa">Descobrindo a causa</h2>
+<p>Com o foco deslocado para o sistema operacional, foi realizado um levantamento completo do ambiente.</p>
+<p>Foi identificado que o servidor encontrava-se em um estado inconsistente, resultado de uma atualização parcial do Debian.</p>
+<p>Resumo das versões encontradas:</p>
+<table>
+<thead>
+<tr>
+<th>Componente</th>
+<th>Versão</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Debian</td>
+<td>Jessie</td>
+</tr>
+<tr>
+<td>Kernel</td>
+<td>3.16</td>
+</tr>
+<tr>
+<td>systemd</td>
+<td>230</td>
+</tr>
+<tr>
+<td>libc</td>
+<td>2.31</td>
+</tr>
+</tbody>
+</table>
+<p>Além disso, centenas de pacotes permaneciam pendentes de atualização, caracterizando um ambiente híbrido entre versões do Debian.</p>
+<hr />
+<p><img alt="alt text" src="../imagens/evidencias.png" /></p>
+<p>Isso é reforçado pelo <code>apt-cache policy</code>:</p>
+<pre><code>libc6:
+  Installed: 2.31-13+deb11u14
+  Candidate: 2.31-13+deb11u14
+
+     2.31-13+deb11u14
+        https://security.debian.org/debian-security/ bullseye-security/main
+</code></pre>
+<hr />
+<h2 id="correcao-aplicada">Correção aplicada</h2>
+<p>Como o problema estava relacionado ao ambiente e não ao Zabbix, foi realizada uma atualização dos componentes responsáveis pelo gerenciamento de serviços.</p>
+<pre><code class="language-bash">apt install \
+systemd \
+systemd-sysv \
+udev \
+libpam-systemd
+</code></pre>
+<p>Após a atualização foi executado:</p>
+<pre><code class="language-bash">systemctl daemon-reload
+</code></pre>
+<p>Em seguida, os serviços foram reiniciados.</p>
+<hr />
+<h2 id="validacao">Validação</h2>
+<p>Após a atualização:</p>
+<p><img alt="alt text" src="../imagens/04-servicos-ok.png" /></p>
+<p>O Zabbix Agent 2 iniciou sem qualquer alteração adicional em sua configuração.</p>
+<hr />
+<p><img alt="alt text" src="../imagens/04-servicos_outros-ok.png" /></p>
+<p>Outros serviços que apresentaram problemas, foram iniciados com sucesso.</p>
+<hr />
+<h2 id="conclusao">Conclusão</h2>
+<p>Embora a falha tenha sido identificada durante a instalação do <strong>Zabbix Agent 2</strong>, o agente não era a causa do problema.</p>
+<p>A investigação demonstrou que o erro estava relacionado ao próprio sistema operacional, que apresentava uma atualização parcial do Debian e uma inconsistência nos componentes do <strong>systemd</strong>.</p>
+<p>A atualização desses componentes restaurou o funcionamento normal dos serviços executados por usuários não privilegiados.</p>
 
 
 
@@ -1463,10 +1938,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": [], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>

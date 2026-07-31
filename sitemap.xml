@@ -2,46 +2,66 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://moreno.eco.br/</loc>
-         <lastmod>2026-07-30</lastmod>
+         <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://moreno.eco.br/artigos/DNS/Delegacao_DNS_Reverso_Sub-redes_menores_24/</loc>
-         <lastmod>2026-07-30</lastmod>
+         <loc>https://moreno.eco.br/artigos/DNS/dns-reverso/delegacao-rfc2317-powerdns/</loc>
+         <lastmod>2026-07-31</lastmod>
     </url>
     <url>
          <loc>https://moreno.eco.br/artigos/linux/Linux_Modulo_1/</loc>
-         <lastmod>2026-07-30</lastmod>
+         <lastmod>2026-07-31</lastmod>
     </url>
     <url>
          <loc>https://moreno.eco.br/artigos/linux/Samba_LDAP/</loc>
-         <lastmod>2026-07-30</lastmod>
+         <lastmod>2026-07-31</lastmod>
     </url>
     <url>
          <loc>https://moreno.eco.br/artigos/storage/LVM/LVM_na_pratica/</loc>
-         <lastmod>2026-07-30</lastmod>
+         <lastmod>2026-07-31</lastmod>
     </url>
     <url>
          <loc>https://moreno.eco.br/artigos/storage/iSCSI/Storage_iSCSI_Linux/</loc>
-         <lastmod>2026-07-30</lastmod>
+         <lastmod>2026-07-31</lastmod>
     </url>
     <url>
          <loc>https://moreno.eco.br/casos/backup/backup_sistemas/</loc>
-         <lastmod>2026-07-30</lastmod>
+         <lastmod>2026-07-31</lastmod>
     </url>
     <url>
          <loc>https://moreno.eco.br/casos/containers/docker/mariadb/configurando_backup_mariadb_docker/</loc>
-         <lastmod>2026-07-30</lastmod>
+         <lastmod>2026-07-31</lastmod>
     </url>
     <url>
          <loc>https://moreno.eco.br/casos/migracao/migracao_k8s_raid_ssd/Estudo_de_Caso_Migracao_Kubernetes_RAID_SSD_v4/</loc>
-         <lastmod>2026-07-30</lastmod>
+         <lastmod>2026-07-31</lastmod>
     </url>
     <url>
          <loc>https://moreno.eco.br/casos/postgresql/postgresql-erro-acesso-remoto/</loc>
-         <lastmod>2026-07-30</lastmod>
+         <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://moreno.eco.br/casos/systemd/systemd-status-127-zabbix-agent2/</loc>
-         <lastmod>2026-07-30</lastmod>
+         <loc>https://moreno.eco.br/casos/systemd/troubleshooting/status-127-zabbix-agent2-systemd/</loc>
+         <lastmod>2026-07-31</lastmod>
+    </url>
+    <url>
+         <loc>https://moreno.eco.br/projetos/nexus/</loc>
+         <lastmod>2026-07-31</lastmod>
+    </url>
+    <url>
+         <loc>https://moreno.eco.br/projetos/nexus/arquitetura/</loc>
+         <lastmod>2026-07-31</lastmod>
+    </url>
+    <url>
+         <loc>https://moreno.eco.br/projetos/nexus/desenvolvimento/</loc>
+         <lastmod>2026-07-31</lastmod>
+    </url>
+    <url>
+         <loc>https://moreno.eco.br/projetos/nexus/instalacao/</loc>
+         <lastmod>2026-07-31</lastmod>
+    </url>
+    <url>
+         <loc>https://moreno.eco.br/projetos/nexus/uso/</loc>
+         <lastmod>2026-07-31</lastmod>
     </url>
 </urlset>
