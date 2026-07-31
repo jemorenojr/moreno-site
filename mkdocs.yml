@@ -28,3 +28,10 @@ nav:
           - Backup de MariaDB em Docker: casos/containers/docker/mariadb/configurando_backup_mariadb_docker.md
       - Migração:
           - Kubernetes de RAID1 SATA para RAID1 SSD: casos/migracao/migracao_k8s_raid_ssd/Estudo_de_Caso_Migracao_Kubernetes_RAID_SSD_v4.md
+  - Projetos:
+      - Nexus:
+          - Visão geral: projetos/nexus/index.md
+          - Arquitetura: projetos/nexus/arquitetura.md
+          - Instalação: projetos/nexus/instalacao.md
+          - Uso: projetos/nexus/uso.md
+          - Desenvolvimento: projetos/nexus/desenvolvimento.md
