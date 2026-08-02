@@ -10,28 +10,28 @@
       
       
       
-        <link rel="canonical" href="https://moreno.eco.br/artigos/storage/LVM/LVM_na_pratica/">
+        <link rel="canonical" href="https://moreno.eco.br/projetos/ssh-mfa-chroot/">
       
       
-        <link rel="prev" href="../../../DNS/dns-reverso/delegacao-rfc2317-powerdns/">
+        <link rel="prev" href="../nexus/desenvolvimento/">
       
       
-        <link rel="next" href="../../iSCSI/Storage_iSCSI_Linux/">
+        <link rel="next" href="arquitetura/">
       
       
         
       
       
-      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>LVM na prática - MORENO.ECO.BR</title>
+        <title>Visão geral - MORENO.ECO.BR</title>
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
       
       
 
@@ -50,7 +50,7 @@
       
     
     
-    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -68,7 +68,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#lvm-na-pratica" class="md-skip">
+        <a href="#jump-server-linux-com-autenticacao-multifator-e-ambiente-restrito" class="md-skip">
           Pular para conteúdo
         </a>
       
@@ -84,7 +84,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
-    <a href="../../../.." title="MORENO.ECO.BR" class="md-header__button md-logo" aria-label="MORENO.ECO.BR" data-md-component="logo">
+    <a href="../.." title="MORENO.ECO.BR" class="md-header__button md-logo" aria-label="MORENO.ECO.BR" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -104,7 +104,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              LVM na prática
+              Visão geral
             
           </span>
         </div>
@@ -182,7 +182,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../.." title="MORENO.ECO.BR" class="md-nav__button md-logo" aria-label="MORENO.ECO.BR" data-md-component="logo">
+    <a href="../.." title="MORENO.ECO.BR" class="md-nav__button md-logo" aria-label="MORENO.ECO.BR" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -200,7 +200,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../.." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -224,20 +224,18 @@
       
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
         
           
           <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
@@ -258,7 +256,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -323,7 +321,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../linux/Linux_Modulo_1/" class="md-nav__link">
+      <a href="../../artigos/linux/Linux_Modulo_1/" class="md-nav__link">
         
   
   
@@ -351,7 +349,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../linux/Samba_LDAP/" class="md-nav__link">
+      <a href="../../artigos/linux/Samba_LDAP/" class="md-nav__link">
         
   
   
@@ -434,7 +432,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../DNS/dns-reverso/delegacao-rfc2317-powerdns/" class="md-nav__link">
+      <a href="../../artigos/DNS/dns-reverso/delegacao-rfc2317-powerdns/" class="md-nav__link">
         
   
   
@@ -467,20 +465,18 @@
                 
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
         
           
           <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
@@ -501,7 +497,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -516,37 +512,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    LVM na prática
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../artigos/storage/LVM/LVM_na_pratica/" class="md-nav__link">
         
   
   
@@ -562,319 +531,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Índice">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Índice
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#problema-resolvido" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Problema resolvido
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#publico" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Público
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ambiente-de-exemplo" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Ambiente de exemplo
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#conceitos-necessarios" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Conceitos necessários
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Conceitos necessários">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#physical-volume" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Physical Volume
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#volume-group" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Volume Group
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#logical-volume" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Logical Volume
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#procedimento" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Procedimento
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Procedimento">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-identificar-o-disco-disponivel" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Identificar o disco disponível
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-criar-o-physical-volume" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Criar o Physical Volume
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-criar-o-volume-group" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Criar o Volume Group
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-criar-o-logical-volume" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Criar o Logical Volume
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#5-criar-o-sistema-de-arquivos" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5. Criar o sistema de arquivos
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#6-criar-o-ponto-de-montagem" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6. Criar o ponto de montagem
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#7-montar-o-volume" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7. Montar o volume
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#8-configurar-montagem-persistente" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        8. Configurar montagem persistente
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#expansao-de-volume" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Expansão de volume
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Expansão de volume">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#cenario" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cenário
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#expandir-o-logical-volume" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Expandir o Logical Volume
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#expandir-o-sistema-de-arquivos-ext4" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Expandir o sistema de arquivos ext4
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#alternativa-em-um-unico-comando" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Alternativa em um único comando
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#adicionando-um-novo-disco-ao-volume-group" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Adicionando um novo disco ao Volume Group
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#validacao" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Validação
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cuidados-operacionais" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cuidados operacionais
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#conclusao" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Conclusão
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -887,7 +543,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../iSCSI/Storage_iSCSI_Linux/" class="md-nav__link">
+      <a href="../../artigos/storage/iSCSI/Storage_iSCSI_Linux/" class="md-nav__link">
         
   
   
@@ -1024,7 +680,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../casos/postgresql/postgresql-erro-acesso-remoto/" class="md-nav__link">
+      <a href="../../casos/postgresql/postgresql-erro-acesso-remoto/" class="md-nav__link">
         
   
   
@@ -1107,7 +763,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../casos/systemd/troubleshooting/status-127-zabbix-agent2-systemd/" class="md-nav__link">
+      <a href="../../casos/systemd/troubleshooting/status-127-zabbix-agent2-systemd/" class="md-nav__link">
         
   
   
@@ -1190,7 +846,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../casos/backup/backup_sistemas/" class="md-nav__link">
+      <a href="../../casos/backup/backup_sistemas/" class="md-nav__link">
         
   
   
@@ -1273,7 +929,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../casos/containers/docker/mariadb/configurando_backup_mariadb_docker/" class="md-nav__link">
+      <a href="../../casos/containers/docker/mariadb/configurando_backup_mariadb_docker/" class="md-nav__link">
         
   
   
@@ -1356,7 +1012,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../casos/migracao/migracao_k8s_raid_ssd/Estudo_de_Caso_Migracao_Kubernetes_RAID_SSD_v4/" class="md-nav__link">
+      <a href="../../casos/migracao/migracao_k8s_raid_ssd/Estudo_de_Caso_Migracao_Kubernetes_RAID_SSD_v4/" class="md-nav__link">
         
   
   
@@ -1396,18 +1052,20 @@
       
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
@@ -1428,7 +1086,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1493,7 +1151,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../projetos/nexus/" class="md-nav__link">
+      <a href="../nexus/" class="md-nav__link">
         
   
   
@@ -1521,7 +1179,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../projetos/nexus/arquitetura/" class="md-nav__link">
+      <a href="../nexus/arquitetura/" class="md-nav__link">
         
   
   
@@ -1549,7 +1207,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../projetos/nexus/instalacao/" class="md-nav__link">
+      <a href="../nexus/instalacao/" class="md-nav__link">
         
   
   
@@ -1577,7 +1235,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../projetos/nexus/uso/" class="md-nav__link">
+      <a href="../nexus/uso/" class="md-nav__link">
         
   
   
@@ -1605,7 +1263,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../projetos/nexus/desenvolvimento/" class="md-nav__link">
+      <a href="../nexus/desenvolvimento/" class="md-nav__link">
         
   
   
@@ -1638,18 +1296,20 @@
                 
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" checked>
         
           
           <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
@@ -1670,7 +1330,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1685,10 +1345,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../../../projetos/ssh-mfa-chroot/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visão geral
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1704,6 +1391,264 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objetivo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objetivo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fluxo-do-procedimento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fluxo do procedimento
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#premissas-usadas-nos-exemplos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Premissas usadas nos exemplos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pre-requisitos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pré-requisitos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuração
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuração">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuracao-do-openssh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuração do OpenSSH
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuração do OpenSSH">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bloco-para-usuarios-confinados" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bloco para usuários confinados
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bloco-para-conta-administrativa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bloco para conta administrativa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuracao-debian-12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuração Debian 12
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuracao-ubuntu-server-20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuração Ubuntu Server 20
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validação
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pam-para-mfa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PAM para MFA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuracao-do-chroot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuração do chroot
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuração do chroot">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#criacao-do-grupo-e-associacao-do-usuario" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Criação do grupo e associação do usuário
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#construcao-manual-do-chroot-jail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Construção manual do Chroot Jail
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#copia-de-binarios-e-bibliotecas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cópia de binários e bibliotecas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#teste-do-chroot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Teste do chroot
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#criacao-manual-do-mfa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Criação manual do MFA
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#procedimento-automatico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Procedimento automático
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validacao-final" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validação final
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1716,7 +1661,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../projetos/ssh-mfa-chroot/arquitetura/" class="md-nav__link">
+      <a href="arquitetura/" class="md-nav__link">
         
   
   
@@ -1744,7 +1689,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../projetos/ssh-mfa-chroot/conceitos/" class="md-nav__link">
+      <a href="conceitos/" class="md-nav__link">
         
   
   
@@ -1772,7 +1717,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../projetos/ssh-mfa-chroot/implantacao/" class="md-nav__link">
+      <a href="implantacao/" class="md-nav__link">
         
   
   
@@ -1800,7 +1745,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../projetos/ssh-mfa-chroot/configuracao_openssh_explicacao/" class="md-nav__link">
+      <a href="configuracao_openssh_explicacao/" class="md-nav__link">
         
   
   
@@ -1828,7 +1773,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../projetos/ssh-mfa-chroot/configuracao-pam-mfa/" class="md-nav__link">
+      <a href="configuracao-pam-mfa/" class="md-nav__link">
         
   
   
@@ -1856,7 +1801,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../projetos/ssh-mfa-chroot/construcao-chroot/" class="md-nav__link">
+      <a href="construcao-chroot/" class="md-nav__link">
         
   
   
@@ -1884,7 +1829,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../projetos/ssh-mfa-chroot/operacao-diagnostico/" class="md-nav__link">
+      <a href="operacao-diagnostico/" class="md-nav__link">
         
   
   
@@ -1912,7 +1857,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../projetos/ssh-mfa-chroot/seguranca-limitacoes/" class="md-nav__link">
+      <a href="seguranca-limitacoes/" class="md-nav__link">
         
   
   
@@ -1940,7 +1885,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../projetos/ssh-mfa-chroot/scripts/" class="md-nav__link">
+      <a href="scripts/" class="md-nav__link">
         
   
   
@@ -2003,10 +1948,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#problema-resolvido" class="md-nav__link">
+  <a href="#objetivo" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Problema resolvido
+        Objetivo
       
     </span>
   </a>
@@ -2014,10 +1959,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#publico" class="md-nav__link">
+  <a href="#fluxo-do-procedimento" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Público
+        Fluxo do procedimento
       
     </span>
   </a>
@@ -2025,10 +1970,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#ambiente-de-exemplo" class="md-nav__link">
+  <a href="#premissas-usadas-nos-exemplos" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Ambiente de exemplo
+        Premissas usadas nos exemplos
       
     </span>
   </a>
@@ -2036,72 +1981,45 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#conceitos-necessarios" class="md-nav__link">
+  <a href="#pre-requisitos" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Conceitos necessários
+        Pré-requisitos
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Conceitos necessários">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuração
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuração">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#physical-volume" class="md-nav__link">
+  <a href="#configuracao-do-openssh" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Physical Volume
+        Configuração do OpenSSH
       
     </span>
   </a>
   
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#volume-group" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Volume Group
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#logical-volume" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Logical Volume
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#procedimento" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Procedimento
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Procedimento">
+    <nav class="md-nav" aria-label="Configuração do OpenSSH">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-identificar-o-disco-disponivel" class="md-nav__link">
+  <a href="#bloco-para-usuarios-confinados" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Identificar o disco disponível
+        Bloco para usuários confinados
       
     </span>
   </a>
@@ -2109,10 +2027,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-criar-o-physical-volume" class="md-nav__link">
+  <a href="#bloco-para-conta-administrativa" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Criar o Physical Volume
+        Bloco para conta administrativa
       
     </span>
   </a>
@@ -2120,10 +2038,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-criar-o-volume-group" class="md-nav__link">
+  <a href="#configuracao-debian-12" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Criar o Volume Group
+        Configuração Debian 12
       
     </span>
   </a>
@@ -2131,10 +2049,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-criar-o-logical-volume" class="md-nav__link">
+  <a href="#configuracao-ubuntu-server-20" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Criar o Logical Volume
+        Configuração Ubuntu Server 20
       
     </span>
   </a>
@@ -2142,127 +2060,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#5-criar-o-sistema-de-arquivos" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5. Criar o sistema de arquivos
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#6-criar-o-ponto-de-montagem" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6. Criar o ponto de montagem
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#7-montar-o-volume" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7. Montar o volume
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#8-configurar-montagem-persistente" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        8. Configurar montagem persistente
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#expansao-de-volume" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Expansão de volume
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Expansão de volume">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#cenario" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cenário
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#expandir-o-logical-volume" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Expandir o Logical Volume
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#expandir-o-sistema-de-arquivos-ext4" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Expandir o sistema de arquivos ext4
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#alternativa-em-um-unico-comando" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Alternativa em um único comando
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#adicionando-um-novo-disco-ao-volume-group" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Adicionando um novo disco ao Volume Group
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#validacao" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2272,12 +2069,105 @@
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#cuidados-operacionais" class="md-nav__link">
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pam-para-mfa" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Cuidados operacionais
+        PAM para MFA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuracao-do-chroot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuração do chroot
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuração do chroot">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#criacao-do-grupo-e-associacao-do-usuario" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Criação do grupo e associação do usuário
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#construcao-manual-do-chroot-jail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Construção manual do Chroot Jail
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#copia-de-binarios-e-bibliotecas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cópia de binários e bibliotecas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#teste-do-chroot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Teste do chroot
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#criacao-manual-do-mfa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Criação manual do MFA
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#procedimento-automatico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Procedimento automático
       
     </span>
   </a>
@@ -2285,10 +2175,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#conclusao" class="md-nav__link">
+  <a href="#validacao-final" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Conclusão
+        Validação final
       
     </span>
   </a>
@@ -2312,186 +2202,296 @@
 
 
 
-<h1 id="lvm-na-pratica">LVM na prática</h1>
-<h2 id="problema-resolvido">Problema resolvido</h2>
-<p>Administradores Linux frequentemente precisam aumentar espaço de diretórios como <code>/var</code>, <code>/home</code>, <code>/srv</code> ou áreas de dados sem reinstalar o sistema e sem copiar tudo para outro disco.</p>
-<p>O LVM ajuda nesse cenário porque cria uma camada flexível entre discos físicos e sistemas de arquivos. Com ele é possível agrupar dispositivos, criar volumes lógicos e expandir esses volumes quando houver espaço disponível.</p>
-<p>Este artigo mostra um fluxo prático para criar e expandir volumes LVM em Linux, usando nomes genéricos e comandos reproduzíveis.</p>
-<hr />
-<h2 id="publico">Público</h2>
-<p>Este conteúdo foi escrito para administradores Linux, analistas de infraestrutura e profissionais que precisam operar storage local em servidores físicos, virtuais ou ambientes de laboratório.</p>
-<p>O foco é operação prática. Os exemplos usam comandos diretos e validações simples, sem depender de uma distribuição específica além das ferramentas comuns do LVM.</p>
-<hr />
-<h2 id="ambiente-de-exemplo">Ambiente de exemplo</h2>
-<p>Exemplo utilizado:</p>
-<pre><code class="language-text">Disco novo:       /dev/sdb
-Volume group:    vg_dados
-Logical volume:  lv_aplicacao
-Ponto de montagem: /srv/aplicacao
-Sistema de arquivos: ext4
+<h1 id="jump-server-linux-com-autenticacao-multifator-e-ambiente-restrito">Jump Server Linux com Autenticação Multifator e Ambiente Restrito</h1>
+<h2 id="objetivo">Objetivo</h2>
+<p>Configurar um Jump Server Linux no qual o usuário acessa o ambiente por meio de SSH, autentica-se com chave individual e passa por validação adicional com MFA TOTP. Após o acesso, a sessão fica restrita a um ambiente mínimo baseado em Chroot Jail.</p>
+<h2 id="fluxo-do-procedimento">Fluxo do procedimento</h2>
+<pre><code class="language-text">1. Preparar pacotes
+2. Configurar OpenSSH
+3. Configurar PAM com Google Authenticator
+4. Criar grupo jail
+5. Criar ou associar usuário ao grupo jail
+6. Construir o ambiente chroot
+7. Copiar binários e bibliotecas
+8. Testar o chroot
+9. Gerar MFA do usuário
+10. Liberar acesso SSH
 </code></pre>
+<p>Para a visão arquitetural completa, consulte <a href="arquitetura/">Arquitetura</a>.</p>
+<h2 id="premissas-usadas-nos-exemplos">Premissas usadas nos exemplos</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Valor sanitizado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Usuário de exemplo</td>
+<td><code>usuario-exemplo</code></td>
+</tr>
+<tr>
+<td>Grupo de confinamento</td>
+<td><code>jail</code></td>
+</tr>
+<tr>
+<td>Diretório base do jail</td>
+<td><code>/srv/secure-jail</code></td>
+</tr>
+<tr>
+<td>Diretório do usuário no jail</td>
+<td><code>/srv/secure-jail/usuario-exemplo</code></td>
+</tr>
+<tr>
+<td>Jump Server</td>
+<td><code>jump.example.net</code></td>
+</tr>
+<tr>
+<td>Relay SMTP, se usado</td>
+<td><code>relay.example.net</code></td>
+</tr>
+</tbody>
+</table>
+<p>No material original existem caminhos, domínios, usuários e IPs específicos do ambiente de produção. Eles foram substituídos por exemplos neutros nesta versão derivada.</p>
+<h2 id="pre-requisitos">Pré-requisitos</h2>
+<p>O servidor precisa ter:</p>
+<ul>
+<li>sistema Linux instalado;</li>
+<li>rede configurada;</li>
+<li>OpenSSH Server;</li>
+<li>PAM habilitado para SSH;</li>
+<li>pacote <code>libpam-google-authenticator</code>;</li>
+<li>pacote <code>qrencode</code>, quando houver geração de QR Code;</li>
+<li>uma conta administrativa de contingência já testada.</li>
+</ul>
+<p>Exemplo de instalação em distribuições compatíveis com <code>apt</code>:</p>
+<pre><code class="language-bash">apt-get update
+apt-get install openssh-server libpam-google-authenticator qrencode
+</code></pre>
+<h2 id="configuracao">Configuração</h2>
+<h3 id="configuracao-do-openssh">Configuração do OpenSSH</h3>
+<p>No arquivo de configuração do OpenSSH, validar as diretivas relacionadas à autenticação por chave pública, PAM e autenticação interativa.</p>
+<p>Exemplo sanitizado:</p>
+<pre><code class="language-text">PermitRootLogin no
+PasswordAuthentication no
+PermitEmptyPasswords no
+PubkeyAuthentication yes
+UsePAM yes
+AuthenticationMethods publickey,keyboard-interactive
+</code></pre>
+<p>Também é necessário <code>ChallengeResponseAuthentication yes</code>. Em algumas versões do OpenSSH, a diretiva equivalente pode ser <code>KbdInteractiveAuthentication</code>. Confirme a diretiva correta na versão instalada.</p>
+<p>Em seguida, configurar a regra para usuários do grupo <code>jail</code>:</p>
+<h4 id="bloco-para-usuarios-confinados">Bloco para usuários confinados</h4>
+<p>Exemplo sanitizado:</p>
+<pre><code class="language-text">Match Group jail
+    ChrootDirectory /srv/secure-jail/%u
+</code></pre>
+<p>O grupo seleciona os usuários que receberão a raiz de sistema de arquivos restrita após autenticação.</p>
+<h4 id="bloco-para-conta-administrativa">Bloco para conta administrativa</h4>
+<p>Exemplo sanitizado:</p>
+<pre><code class="language-text">Match User admin-local
+    AllowUsers admin-local@localhost admin-local@127.0.0.1 admin-local@::1
+</code></pre>
+<p>O objetivo é ter uma conta de gerenciamento com escopo restrito. O contrato dessa conta deve ser validado fora do chroot, uma vez que ela será usada para acesso ao sistema e para sua administração. É uma conta crítica; a disponibilidade da chave SSH e da senha deve ser controlada e protegida.</p>
+<h4 id="configuracao-debian-12">Configuração Debian 12</h4>
+<pre><code>PermitRootLogin no
+IgnoreRhosts yes
+PasswordAuthentication no
+PubkeyAuthentication yes
+PermitEmptyPasswords no
+ChallengeResponseAuthentication yes
+GSSAPIAuthentication yes
+GSSAPICleanupCredentials yes
+UsePAM yes
+AuthenticationMethods publickey,password publickey,keyboard-interactive
+X11Forwarding yes
+PrintMotd no
+ClientAliveInterval 1800
+ClientAliveCountMax 3
+Banner /etc/ssh/ssh_banner
+AcceptEnv LANG LC_*
+Subsystem   sftp    /usr/lib/openssh/sftp-server
+Match User admin
+        AllowUsers admin@localhost admin@127.0.0.1 admin@::1
+Match Group jail
+        ChrootDirectory /home/Secure/Jail/%u
+</code></pre>
+<h4 id="configuracao-ubuntu-server-20">Configuração Ubuntu Server 20</h4>
+<pre><code>HostKey /etc/ssh/ssh_host_rsa_key
+HostKey /etc/ssh/ssh_host_ecdsa_key
+HostKey /etc/ssh/ssh_host_ed25519_key
+SyslogFacility AUTHPRIV
+PubkeyAuthentication yes
+AuthorizedKeysFile  .ssh/authorized_keys
+PermitEmptyPasswords no
+PasswordAuthentication no
+ChallengeResponseAuthentication yes
+GSSAPIAuthentication yes
+GSSAPICleanupCredentials no
+UsePAM yes
+ClientAliveInterval 120
+ClientAliveCountMax 2
+AuthenticationMethods publickey,password publickey,keyboard-interactive
+X11Forwarding yes
+UseDNS no
+ChrootDirectory none
+AcceptEnv LANG LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES
+AcceptEnv LC_PAPER LC_NAME LC_ADDRESS LC_TELEPHONE LC_MEASUREMENT
+AcceptEnv LC_IDENTIFICATION LC_ALL LANGUAGE
+AcceptEnv XMODIFIERS
+Subsystem   sftp    /usr/libexec/openssh/sftp-server
+
+Match User admin
+    AllowUsers admin@localhost admin@127.0.0.1
+Match Group jail
+    ChrootDirectory /home/Secure/Jail/%u
+</code></pre>
+<h4 id="validacao">Validação</h4>
+<p>Antes de recarregar o serviço SSH:</p>
+<pre><code class="language-bash">sshd -t
+</code></pre>
+<p>Mantenha uma sessão administrativa aberta antes de testar novo login.</p>
+<p>Aprofundamento: <a href="configuracao_openssh_explicacao/">Configuração OpenSSH</a>.</p>
+<h3 id="pam-para-mfa">PAM para MFA</h3>
+<p>A complementação da configuração do SSH ocorre no arquivo PAM usado pelo serviço, normalmente <code>/etc/pam.d/sshd</code>. O procedimento consiste em adicionar o módulo do Google Authenticator ao final do arquivo.</p>
+<p>Arquivo <code>/etc/pam.d/sshd</code>:</p>
+<pre><code class="language-text">auth required pam_google_authenticator.so nullok
+</code></pre>
+<p>O parâmetro <code>nullok</code> permite login sem MFA para usuários que ainda não possuem <code>.google_authenticator</code>. Isso pode ser útil durante a implantação, mas precisa ser tratado como exceção controlada e, se possível, removido ao final.</p>
+<p>No Debian é necessário que estas linhas estejam comentadas, já no Ubuntu estas linhas não comprometeram o funcionamento:</p>
+<pre><code class="language-text">#@include common-auth
+#@include common-password
+</code></pre>
+<p>Essa mudança altera o fluxo de autenticação e deve ser validada por distribuição antes de uso.</p>
+<p>Aprofundamento: <a href="configuracao-pam-mfa/">Configuração PAM/MFA</a>.</p>
+<h3 id="configuracao-do-chroot">Configuração do chroot</h3>
+<h4 id="criacao-do-grupo-e-associacao-do-usuario">Criação do grupo e associação do usuário</h4>
+<p>Garantir que exista o grupo usado pelo bloco <code>Match</code>:</p>
+<pre><code class="language-bash">groupadd -r jail
+</code></pre>
+<p>Se o usuário já existir, associar ao grupo:</p>
+<pre><code class="language-bash">usermod -a -G jail usuario-exemplo
+</code></pre>
+<p>Se o usuário ainda não existir, ele deve ser criado com home, shell e chave pública antes da liberação do acesso.</p>
+<p>Aprofundamento operacional: <a href="operacao-diagnostico/">Operação e diagnóstico</a>.</p>
+<h4 id="construcao-manual-do-chroot-jail">Construção manual do Chroot Jail</h4>
 <blockquote>
-<p>Ajuste os nomes conforme o padrão do ambiente. Antes de executar qualquer comando destrutivo, confirme o dispositivo correto com <code>lsblk</code>.</p>
+<p><strong>Nota operacional:</strong> O ambiente disponibilizado neste procedimento é mínimo e foi pensado para reduzir ao máximo a superfície de um possível ataque. Nele são disponibilizados apenas o shell, comandos mínimos para estabelecimento da sessão, <code>screen</code> e <code>ssh</code> para acesso à próxima máquina. Outros programas foram excluídos propositalmente.</p>
 </blockquote>
-<hr />
-<h2 id="conceitos-necessarios">Conceitos necessários</h2>
-<h3 id="physical-volume">Physical Volume</h3>
-<p>Um Physical Volume, ou PV, é o dispositivo preparado para uso pelo LVM. Pode ser um disco inteiro, uma partição, um volume virtual ou outro dispositivo de bloco.</p>
-<h3 id="volume-group">Volume Group</h3>
-<p>Um Volume Group, ou VG, agrupa um ou mais PVs e forma um conjunto de espaço disponível para criação de volumes lógicos.</p>
-<h3 id="logical-volume">Logical Volume</h3>
-<p>Um Logical Volume, ou LV, é o volume entregue ao sistema operacional para receber sistema de arquivos e ser montado em um diretório.</p>
-<p>Fluxo resumido:</p>
-<pre><code class="language-text">Disco ou partição -&gt; PV -&gt; VG -&gt; LV -&gt; Sistema de arquivos -&gt; Montagem
+<p>Criar o diretório do usuário dentro do jail:</p>
+<pre><code class="language-bash">mkdir -p /srv/secure-jail/usuario-exemplo
+cd /srv/secure-jail/usuario-exemplo
+mkdir -p etc home sys usr/bin usr/sbin var tmp dev
+ln -s usr/bin bin
+ln -s usr/sbin sbin
+ln -s usr/lib lib
+ln -s usr/lib64 lib64
+chmod 1777 tmp
 </code></pre>
-<hr />
-<h2 id="procedimento">Procedimento</h2>
-<h3 id="1-identificar-o-disco-disponivel">1. Identificar o disco disponível</h3>
-<p>Liste os dispositivos de bloco:</p>
-<pre><code class="language-bash">lsblk
+<p>Criar dispositivos básicos dentro do jail:</p>
+<pre><code class="language-bash">mknod -m 666 /srv/secure-jail/usuario-exemplo/dev/null c 1 3
+mknod -m 622 /srv/secure-jail/usuario-exemplo/dev/tty c 5 0
+mknod -m 666 /srv/secure-jail/usuario-exemplo/dev/zero c 1 5
+mknod -m 444 /srv/secure-jail/usuario-exemplo/dev/random c 1 8
+mknod -m 444 /srv/secure-jail/usuario-exemplo/dev/urandom c 1 9
 </code></pre>
-<p>Exemplo de saída esperada:</p>
-<pre><code class="language-text">NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
-sda      8:0    0   40G  0 disk
-├─sda1   8:1    0  512M  0 part /boot
-└─sda2   8:2    0 39.5G  0 part /
-sdb      8:16   0  100G  0 disk
+<p>Copiar dados mínimos do usuário e do grupo para dentro do jail:</p>
+<pre><code class="language-bash">getent passwd usuario-exemplo &gt; /srv/secure-jail/usuario-exemplo/etc/passwd
+getent group jail &gt; /srv/secure-jail/usuario-exemplo/etc/group
+getent group usuario-exemplo &gt;&gt; /srv/secure-jail/usuario-exemplo/etc/group || true
 </code></pre>
-<p>Neste exemplo, o disco livre é <code>/dev/sdb</code>.</p>
-<h3 id="2-criar-o-physical-volume">2. Criar o Physical Volume</h3>
-<pre><code class="language-bash">pvcreate /dev/sdb
+<p>Aprofundamento: <a href="construcao-chroot/">Construção do chroot</a>.</p>
+<h4 id="copia-de-binarios-e-bibliotecas">Cópia de binários e bibliotecas</h4>
+<p>Copiar os programas mínimos. O procedimento mostra o exemplo com <code>bash</code> e <code>ls</code>; a mesma lógica se aplica aos demais comandos que forem necessários.</p>
+<pre><code class="language-bash">cp /bin/bash /bin/ls /srv/secure-jail/usuario-exemplo/bin/
 </code></pre>
-<p>Saída esperada:</p>
-<pre><code class="language-text">Physical volume &quot;/dev/sdb&quot; successfully created.
+<p>Identificar as bibliotecas usadas por cada binário:</p>
+<pre><code class="language-bash">ldd /bin/bash
+ldd /bin/ls
 </code></pre>
-<p>Valide:</p>
-<pre><code class="language-bash">pvs
+<p>Copiar as bibliotecas preservando caminhos:</p>
+<pre><code class="language-bash">cp --parents /lib/x86_64-linux-gnu/libtinfo.so.6 /srv/secure-jail/usuario-exemplo/usr
+cp --parents /lib/x86_64-linux-gnu/libdl.so.2 /srv/secure-jail/usuario-exemplo/usr
+cp --parents /lib/x86_64-linux-gnu/libc.so.6 /srv/secure-jail/usuario-exemplo/usr
+cp --parents /lib64/ld-linux-x86-64.so.2 /srv/secure-jail/usuario-exemplo/usr
 </code></pre>
-<h3 id="3-criar-o-volume-group">3. Criar o Volume Group</h3>
-<pre><code class="language-bash">vgcreate vg_dados /dev/sdb
+<p>Copiar também componentes auxiliares quando necessário:</p>
+<pre><code class="language-bash">libnss=$(dpkg -L libc6 | egrep &quot;libnss_files.*\.so$&quot;)
+cp --preserve=all --parents ${libnss} /srv/secure-jail/usuario-exemplo
+cp -r --preserve=all --parents /usr/share/locale/en /srv/secure-jail/usuario-exemplo
+cp -r --preserve=all --parents /lib/terminfo /srv/secure-jail/usuario-exemplo
+cp -r --preserve=all --parents /usr/share/terminfo /srv/secure-jail/usuario-exemplo
 </code></pre>
-<p>Saída esperada:</p>
-<pre><code class="language-text">Volume group &quot;vg_dados&quot; successfully created
+<p>Essa é a parte mais sensível do procedimento: copiar somente o binário não basta. Se faltar biblioteca, loader, NSS ou terminfo, o comando pode existir dentro do jail e ainda assim não funcionar.</p>
+<p>Aprofundamento: <a href="construcao-chroot/">Construção do chroot</a>.</p>
+<h4 id="teste-do-chroot">Teste do chroot</h4>
+<p>Testar o ambiente antes de liberar o login SSH:</p>
+<pre><code class="language-bash">chroot /srv/secure-jail/usuario-exemplo
 </code></pre>
-<p>Valide:</p>
-<pre><code class="language-bash">vgs
+<p>Dentro do jail, testar:</p>
+<pre><code class="language-bash">ls /
+whoami
+id
 </code></pre>
-<h3 id="4-criar-o-logical-volume">4. Criar o Logical Volume</h3>
-<p>Crie um volume lógico de 40 GB:</p>
-<pre><code class="language-bash">lvcreate -n lv_aplicacao -L 40G vg_dados
+<p>Se o shell não abrir ou algum comando falhar, consultar <a href="operacao-diagnostico/">Operação e diagnóstico</a>.</p>
+<h3 id="criacao-manual-do-mfa">Criação manual do MFA</h3>
+<p>Quando o jail foi criado manualmente, gerar o MFA para o usuário:</p>
+<pre><code class="language-bash">su -l usuario-exemplo -c &quot;google-authenticator -t -d -f -r 3 -R 30 -W -C&quot;
 </code></pre>
-<p>Saída esperada:</p>
-<pre><code class="language-text">Logical volume &quot;lv_aplicacao&quot; created.
-</code></pre>
-<p>Valide:</p>
-<pre><code class="language-bash">lvs
-</code></pre>
-<p>O caminho do volume será:</p>
-<pre><code class="language-text">/dev/vg_dados/lv_aplicacao
-</code></pre>
-<h3 id="5-criar-o-sistema-de-arquivos">5. Criar o sistema de arquivos</h3>
-<pre><code class="language-bash">mkfs.ext4 /dev/vg_dados/lv_aplicacao
-</code></pre>
-<h3 id="6-criar-o-ponto-de-montagem">6. Criar o ponto de montagem</h3>
-<pre><code class="language-bash">mkdir -p /srv/aplicacao
-</code></pre>
-<h3 id="7-montar-o-volume">7. Montar o volume</h3>
-<pre><code class="language-bash">mount /dev/vg_dados/lv_aplicacao /srv/aplicacao
-</code></pre>
-<p>Valide:</p>
-<pre><code class="language-bash">df -h /srv/aplicacao
-</code></pre>
-<h3 id="8-configurar-montagem-persistente">8. Configurar montagem persistente</h3>
-<p>Obtenha o UUID:</p>
-<pre><code class="language-bash">blkid /dev/vg_dados/lv_aplicacao
-</code></pre>
-<p>Exemplo:</p>
-<pre><code class="language-text">/dev/vg_dados/lv_aplicacao: UUID=&quot;11111111-2222-3333-4444-555555555555&quot; TYPE=&quot;ext4&quot;
-</code></pre>
-<p>Inclua no <code>/etc/fstab</code>:</p>
-<pre><code class="language-text">UUID=11111111-2222-3333-4444-555555555555 /srv/aplicacao ext4 defaults 0 2
-</code></pre>
-<p>Teste a configuração antes de reiniciar:</p>
-<pre><code class="language-bash">umount /srv/aplicacao
-mount -a
-df -h /srv/aplicacao
-</code></pre>
-<hr />
-<h2 id="expansao-de-volume">Expansão de volume</h2>
-<h3 id="cenario">Cenário</h3>
-<p>O volume <code>/srv/aplicacao</code> foi criado com 40 GB e precisa crescer para 60 GB.</p>
-<p>Confira o estado atual:</p>
-<pre><code class="language-bash">lvs
-df -h /srv/aplicacao
-</code></pre>
-<h3 id="expandir-o-logical-volume">Expandir o Logical Volume</h3>
-<pre><code class="language-bash">lvextend -L 60G /dev/vg_dados/lv_aplicacao
-</code></pre>
-<p>Saída esperada:</p>
-<pre><code class="language-text">Size of logical volume vg_dados/lv_aplicacao changed from 40.00 GiB to 60.00 GiB.
-Logical volume vg_dados/lv_aplicacao successfully resized.
-</code></pre>
-<h3 id="expandir-o-sistema-de-arquivos-ext4">Expandir o sistema de arquivos ext4</h3>
-<pre><code class="language-bash">resize2fs /dev/vg_dados/lv_aplicacao
-</code></pre>
-<p>Valide:</p>
-<pre><code class="language-bash">df -h /srv/aplicacao
-lvs
-</code></pre>
-<h3 id="alternativa-em-um-unico-comando">Alternativa em um único comando</h3>
-<p>Em muitos ambientes, é possível expandir o LV e o sistema de arquivos juntos:</p>
-<pre><code class="language-bash">lvextend -r -L 60G /dev/vg_dados/lv_aplicacao
-</code></pre>
-<p>O parâmetro <code>-r</code> aciona a expansão do sistema de arquivos quando suportado.</p>
-<hr />
-<h2 id="adicionando-um-novo-disco-ao-volume-group">Adicionando um novo disco ao Volume Group</h2>
-<p>Quando o VG não possui espaço livre suficiente, adicione outro disco.</p>
-<p>Exemplo com <code>/dev/sdc</code>:</p>
-<pre><code class="language-bash">lsblk
-pvcreate /dev/sdc
-vgextend vg_dados /dev/sdc
-vgs
-</code></pre>
-<p>Depois disso, o espaço passa a estar disponível para novos LVs ou expansão dos existentes.</p>
-<hr />
-<h2 id="validacao">Validação</h2>
-<p>Comandos úteis para revisão:</p>
-<pre><code class="language-bash">pvs
-vgs
-lvs
-lsblk
-df -h
-findmnt /srv/aplicacao
-</code></pre>
-<p>Pontos que devem ser confirmados:</p>
+<p>O QR Code, a URL <code>otpauth</code> e os códigos de emergência são dados sensíveis. Não registre esses dados em documentação pública.</p>
+<p>Aprofundamento: <a href="configuracao-pam-mfa/">Configuração PAM/MFA</a> e <a href="seguranca-limitacoes/">Segurança e limitações</a>.</p>
+<h2 id="procedimento-automatico">Procedimento automático</h2>
+<p>A fim de facilitar a manutenção dos usuários em jail, foi criado um script para automatizar a criação e remoção de usuário, do jail e do MFA.</p>
+<table>
+<thead>
+<tr>
+<th><strong>Script</strong></th>
+<th><strong>Descrição</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="scripts/useradd_jail.sh">useradd_jail.sh</a></td>
+<td>Automatiza o processo de criação do usuário, home do usuário em chroot e MFA. <a href="scripts/">Detalhamento do script</a></td>
+</tr>
+<tr>
+<td><a href="scripts/userdel_jail.sh">userdel_jail.sh</a></td>
+<td>Automatiza o processo de remoção do usuário e da home do usuário em chroot ( em resumo é userdel com remoção da home ).</td>
+</tr>
+</tbody>
+</table>
+<p>O script exige previamente:</p>
 <ul>
-<li>o PV aparece associado ao VG correto;</li>
-<li>o VG possui o tamanho esperado;</li>
-<li>o LV aparece com o tamanho configurado;</li>
-<li>o filesystem está montado no diretório correto;</li>
-<li>o <code>/etc/fstab</code> monta o volume sem erro com <code>mount -a</code>.</li>
+<li>nome do usuário;</li>
+<li>nome completo;</li>
+<li>e-mail para envio do QR Code;</li>
+<li>chave pública SSH.</li>
 </ul>
-<hr />
-<h2 id="cuidados-operacionais">Cuidados operacionais</h2>
-<p>Antes de executar comandos LVM em produção:</p>
+<p>Ele executa, em sequência:</p>
+<ol>
+<li>validação básica dos dados;</li>
+<li>criação do usuário;</li>
+<li>instalação da chave pública;</li>
+<li>inclusão no grupo <code>jail</code>;</li>
+<li>criação do chroot;</li>
+<li>cópia de binários e bibliotecas;</li>
+<li>geração do MFA;</li>
+<li>envio do QR Code por e-mail.</li>
+</ol>
+<p>A documentação específica do <code>useradd_jail.sh</code> está disponível em <a href="scripts/">Detalhamento do script</a>.</p>
+<h2 id="validacao-final">Validação final</h2>
+<p>Antes de considerar o acesso liberado:</p>
 <ul>
-<li>confirme o nome do disco com <code>lsblk</code>, <code>blkid</code> e documentação do ambiente;</li>
-<li>valide se o disco não possui dados úteis antes de usar <code>pvcreate</code>;</li>
-<li>mantenha backup atualizado antes de expandir volumes críticos;</li>
-<li>teste o <code>/etc/fstab</code> com <code>mount -a</code> antes de reiniciar o servidor;</li>
-<li>monitore espaço livre no VG com <code>vgs</code>;</li>
-<li>documente o padrão de nomes dos VGs e LVs;</li>
-<li>evite misturar discos de finalidades muito diferentes no mesmo VG sem necessidade operacional.</li>
+<li>validar <code>sshd -t</code>;</li>
+<li>manter sessão administrativa paralela;</li>
+<li>testar login com chave pública;</li>
+<li>confirmar solicitação de MFA;</li>
+<li>confirmar entrada no chroot;</li>
+<li>executar comandos básicos dentro do jail;</li>
+<li>registrar usuário, data, chave por fingerprint e responsável;</li>
+<li>não registrar segredo MFA nem QR Code.</li>
 </ul>
-<p>Para filesystems XFS, a expansão usa outro comando:</p>
-<pre><code class="language-bash">xfs_growfs /srv/aplicacao
-</code></pre>
-<p>O XFS cresce montado, mas não reduz tamanho. Essa diferença deve ser considerada no planejamento.</p>
-<hr />
-<h2 id="conclusao">Conclusão</h2>
-<p>O LVM permite administrar storage local com mais flexibilidade do que o particionamento tradicional. O fluxo básico envolve preparar o disco como PV, criar ou expandir um VG, criar um LV, formatar, montar e validar.</p>
-<p>Na prática, o maior cuidado não está no comando em si, mas na identificação correta dos dispositivos, na validação do ponto de montagem e na existência de backup antes de qualquer alteração em ambiente produtivo.</p>
-<hr />
 
 
 
@@ -2541,10 +2541,10 @@ findmnt /srv/aplicacao
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>
