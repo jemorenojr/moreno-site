@@ -35,3 +35,14 @@ nav:
           - Instalação: projetos/nexus/instalacao.md
           - Uso: projetos/nexus/uso.md
           - Desenvolvimento: projetos/nexus/desenvolvimento.md
+      - SSH com MFA e Chroot:
+          - Visão geral: projetos/ssh-mfa-chroot/index.md
+          - Arquitetura: projetos/ssh-mfa-chroot/arquitetura.md
+          - Conceitos: projetos/ssh-mfa-chroot/conceitos.md
+          - Implantação: projetos/ssh-mfa-chroot/implantacao.md
+          - OpenSSH: projetos/ssh-mfa-chroot/configuracao_openssh_explicacao.md
+          - PAM e MFA: projetos/ssh-mfa-chroot/configuracao-pam-mfa.md
+          - Construção do chroot: projetos/ssh-mfa-chroot/construcao-chroot.md
+          - Operação e diagnóstico: projetos/ssh-mfa-chroot/operacao-diagnostico.md
+          - Segurança e limitações: projetos/ssh-mfa-chroot/seguranca-limitacoes.md
+          - Scripts: projetos/ssh-mfa-chroot/scripts/index.md
