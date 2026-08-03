@@ -14,6 +14,8 @@ nav:
           - Samba + OpenLDAP em Linux: artigos/linux/Samba_LDAP.md
       - Redes:
           - DNS reverso RFC 2317: artigos/DNS/dns-reverso/delegacao-rfc2317-powerdns.md
+          - SSH Port Forwarding: artigos/ssh/ssh-port_forwarding.md
+          - Git via túnel SSH: artigos/ssh/ssh-git_port_forwarding.md
       - Storage:
           - LVM na prática: artigos/storage/LVM/LVM_na_pratica.md
           - Storage iSCSI em Linux: artigos/storage/iSCSI/Storage_iSCSI_Linux.md
