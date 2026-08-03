@@ -10,13 +10,11 @@
       
       
       
-        <link rel="canonical" href="https://moreno.eco.br/projetos/ssh-mfa-chroot/configuracao_openssh_explicacao/">
+        <link rel="canonical" href="https://moreno.eco.br/projetos/ipsec-monitor/updown-ipsec/">
       
       
-        <link rel="prev" href="../implantacao/">
+        <link rel="prev" href="../">
       
-      
-        <link rel="next" href="../configuracao-pam-mfa/">
       
       
         
@@ -27,7 +25,7 @@
     
     
       
-        <title>OpenSSH - MORENO.ECO.BR</title>
+        <title>updown-ipsec.sh - MORENO.ECO.BR</title>
       
     
     
@@ -68,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#detalhamento-da-configuracao-do-openssh-sshd_config" class="md-skip">
+        <a href="#script-updown-ipsecsh" class="md-skip">
           Pular para conteúdo
         </a>
       
@@ -104,7 +102,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              OpenSSH
+              updown-ipsec.sh
             
           </span>
         </div>
@@ -1296,20 +1294,18 @@
                 
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
         
           
           <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
@@ -1330,12 +1326,349 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4_2">
             <span class="md-nav__icon md-icon"></span>
             
   
     SSH com MFA e Chroot
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ssh-mfa-chroot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visão geral
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ssh-mfa-chroot/arquitetura/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Arquitetura
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ssh-mfa-chroot/conceitos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Conceitos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ssh-mfa-chroot/implantacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Implantação
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ssh-mfa-chroot/configuracao_openssh_explicacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenSSH
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ssh-mfa-chroot/configuracao-pam-mfa/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PAM e MFA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ssh-mfa-chroot/construcao-chroot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Construção do chroot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ssh-mfa-chroot/operacao-diagnostico/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Operação e diagnóstico
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ssh-mfa-chroot/seguranca-limitacoes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Segurança e limitações
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ssh-mfa-chroot/scripts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scripts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ipsec-monitor
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    ipsec-monitor
   
 
           </label>
@@ -1373,90 +1706,6 @@
                 
   
   
-  
-  
-    <li class="md-nav__item">
-      <a href="../arquitetura/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Arquitetura
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../conceitos/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Conceitos
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../implantacao/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Implantação
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
     
   
   
@@ -1476,7 +1725,7 @@
   <span class="md-ellipsis">
     
   
-    OpenSSH
+    updown-ipsec.sh
   
 
     
@@ -1494,7 +1743,7 @@
   <span class="md-ellipsis">
     
   
-    OpenSSH
+    updown-ipsec.sh
   
 
     
@@ -1520,10 +1769,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#resumo-da-politica-de-seguranca" class="md-nav__link">
+  <a href="#objetivo" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Resumo da política de segurança
+        Objetivo
       
     </span>
   </a>
@@ -1531,99 +1780,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#autenticacao-e-controle-de-acesso" class="md-nav__link">
+  <a href="#contexto" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Autenticação e controle de acesso
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Autenticação e controle de acesso">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#bloqueio-do-usuario-root" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Bloqueio do usuário root
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#desativacao-de-mecanismos-legados-e-senhas-vazias" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Desativação de mecanismos legados e senhas vazias
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#integracao-com-pam-e-gssapi-kerberos" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Integração com PAM e GSSAPI (Kerberos)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#requisito-de-multiplos-fatores-mfa2fa" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Requisito de múltiplos fatores (MFA/2FA)
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Requisito de múltiplos fatores (MFA/2FA)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#detalhamento-dos-mecanismos" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Detalhamento dos mecanismos
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#aplicacao-de-mfa-authenticationmethods" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Aplicação de MFA (AuthenticationMethods)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#sessao-ambiente-e-mensagens" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Sessão, ambiente e mensagens
+        Contexto
       
     </span>
   </a>
@@ -1631,49 +1791,208 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#subsistema-sftp-e-bloco-condicional-match" class="md-nav__link">
+  <a href="#ambientes-validados" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Subsistema SFTP e bloco condicional (Match)
+        Ambientes validados
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Subsistema SFTP e bloco condicional (Match)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#restricao-do-usuario-administrador" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Restrição do usuário administrador
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#isolamento-em-chroot-grupo-jail" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Isolamento em chroot (grupo jail)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#verificacao-e-aplicacao-das-alteracoes" class="md-nav__link">
+  <a href="#responsabilidade" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Verificação e aplicação das alterações
+        Responsabilidade
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fora-do-escopo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fora do escopo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#acionamento-pelo-strongswan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Acionamento pelo StrongSwan
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interface-ipsec0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interface ipsec0
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tabela-de-roteamento-separada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tabela de roteamento separada
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#regras-de-roteamento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Regras de roteamento
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fonte-externa-de-rotas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fonte externa de rotas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#formato-esperado-das-rotas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Formato esperado das rotas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DNS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#remocao-de-rota-default" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Remoção de rota default
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fluxo-de-subida" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fluxo de subida
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fluxo-de-queda" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fluxo de queda
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dependencias-externas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dependências externas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tratamento-de-erros" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tratamento de erros
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decisoes-de-projeto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decisões de projeto
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limitacoes-conhecidas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitações conhecidas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aspectos-de-seguranca" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Aspectos de segurança
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#relacao-com-outros-componentes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relação com outros componentes
       
     </span>
   </a>
@@ -1684,257 +2003,6 @@
   
 </nav>
       
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../configuracao-pam-mfa/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    PAM e MFA
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../construcao-chroot/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Construção do chroot
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../operacao-diagnostico/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Operação e diagnóstico
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../seguranca-limitacoes/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Segurança e limitações
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../scripts/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Scripts
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    ipsec-monitor
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    ipsec-monitor
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../ipsec-monitor/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Visão geral
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../ipsec-monitor/updown-ipsec/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    updown-ipsec.sh
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -1982,10 +2050,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#resumo-da-politica-de-seguranca" class="md-nav__link">
+  <a href="#objetivo" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Resumo da política de segurança
+        Objetivo
       
     </span>
   </a>
@@ -1993,99 +2061,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#autenticacao-e-controle-de-acesso" class="md-nav__link">
+  <a href="#contexto" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Autenticação e controle de acesso
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Autenticação e controle de acesso">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#bloqueio-do-usuario-root" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Bloqueio do usuário root
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#desativacao-de-mecanismos-legados-e-senhas-vazias" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Desativação de mecanismos legados e senhas vazias
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#integracao-com-pam-e-gssapi-kerberos" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Integração com PAM e GSSAPI (Kerberos)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#requisito-de-multiplos-fatores-mfa2fa" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Requisito de múltiplos fatores (MFA/2FA)
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Requisito de múltiplos fatores (MFA/2FA)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#detalhamento-dos-mecanismos" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Detalhamento dos mecanismos
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#aplicacao-de-mfa-authenticationmethods" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Aplicação de MFA (AuthenticationMethods)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#sessao-ambiente-e-mensagens" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Sessão, ambiente e mensagens
+        Contexto
       
     </span>
   </a>
@@ -2093,49 +2072,208 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#subsistema-sftp-e-bloco-condicional-match" class="md-nav__link">
+  <a href="#ambientes-validados" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Subsistema SFTP e bloco condicional (Match)
+        Ambientes validados
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Subsistema SFTP e bloco condicional (Match)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#restricao-do-usuario-administrador" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Restrição do usuário administrador
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#isolamento-em-chroot-grupo-jail" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Isolamento em chroot (grupo jail)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#verificacao-e-aplicacao-das-alteracoes" class="md-nav__link">
+  <a href="#responsabilidade" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Verificação e aplicação das alterações
+        Responsabilidade
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fora-do-escopo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fora do escopo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#acionamento-pelo-strongswan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Acionamento pelo StrongSwan
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interface-ipsec0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interface ipsec0
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tabela-de-roteamento-separada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tabela de roteamento separada
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#regras-de-roteamento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Regras de roteamento
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fonte-externa-de-rotas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fonte externa de rotas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#formato-esperado-das-rotas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Formato esperado das rotas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DNS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#remocao-de-rota-default" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Remoção de rota default
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fluxo-de-subida" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fluxo de subida
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fluxo-de-queda" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fluxo de queda
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dependencias-externas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dependências externas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tratamento-de-erros" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tratamento de erros
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decisoes-de-projeto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decisões de projeto
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limitacoes-conhecidas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitações conhecidas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aspectos-de-seguranca" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Aspectos de segurança
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#relacao-com-outros-componentes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relação com outros componentes
       
     </span>
   </a>
@@ -2159,124 +2297,214 @@
 
 
 
-<h1 id="detalhamento-da-configuracao-do-openssh-sshd_config">Detalhamento da configuração do OpenSSH (<code>sshd_config</code>)</h1>
-<p>Esta documentação fornece uma análise detalhada e estruturada da política de segurança e dos parâmetros aplicados no arquivo de configuração do servidor SSH (<code>/etc/ssh/sshd_config</code>).</p>
-<p>A configuração analisada adota uma <strong>postura de segurança robusta (<em>hardening</em>)</strong>, implementando <strong>autenticação de múltiplos fatores (MFA)</strong>, restrição estrita do usuário administrador e isolamento de usuários em ambiente fechado (<em>Chroot Jail</em>).</p>
-<hr />
-<h2 id="resumo-da-politica-de-seguranca">Resumo da política de segurança</h2>
-<ul>
-<li><strong>MFA obrigatório:</strong> exige chave pública <strong>+</strong> senha/código interativo para autenticação.</li>
-<li><strong>Acesso root:</strong> bloqueado diretamente via SSH.</li>
-<li><strong>Usuário admin:</strong> restrito exclusivamente a conexões com origem no próprio servidor (<code>localhost</code>).</li>
-<li><strong>Grupo jail:</strong> usuários isolados dentro de um diretório chroot dedicado.</li>
-</ul>
-<hr />
-<h2 id="autenticacao-e-controle-de-acesso">Autenticação e controle de acesso</h2>
-<h3 id="bloqueio-do-usuario-root">Bloqueio do usuário root</h3>
-<pre><code class="language-ssh">PermitRootLogin no
-</code></pre>
-<ul>
-<li><strong>Descrição:</strong> impede que o usuário <code>root</code> faça login direto via SSH.</li>
-<li><strong>Impacto de segurança:</strong> reduz a superfície de ataque para tentativas de força bruta contra a conta superusuária. Administradores devem se autenticar com uma conta comum e elevar privilégios via <code>sudo</code>.</li>
-</ul>
-<h3 id="desativacao-de-mecanismos-legados-e-senhas-vazias">Desativação de mecanismos legados e senhas vazias</h3>
-<pre><code class="language-ssh">IgnoreRhosts yes
-PermitEmptyPasswords no
-</code></pre>
-<ul>
-<li><code>IgnoreRhosts yes</code>: ignora arquivos <code>.rhosts</code> e <code>.shosts</code>, prevenindo autenticações baseadas na confiança fraca legada do protocolo <code>rlogin</code>.</li>
-<li><code>PermitEmptyPasswords no</code>: impede o acesso de qualquer conta de usuário que não possua uma senha definida.</li>
-</ul>
-<h3 id="integracao-com-pam-e-gssapi-kerberos">Integração com PAM e GSSAPI (Kerberos)</h3>
-<pre><code class="language-ssh">GSSAPIAuthentication yes
-GSSAPICleanupCredentials yes
-UsePAM yes
-</code></pre>
-<ul>
-<li><code>GSSAPIAuthentication yes</code>: habilita suporte à autenticação centralizada, como Kerberos ou Active Directory.</li>
-<li><code>GSSAPICleanupCredentials yes</code>: garante que os privilégios e <em>tickets</em> do Kerberos sejam removidos ao encerrar a sessão.</li>
-<li><code>UsePAM yes</code>: ativa a integração com o <em>Pluggable Authentication Modules</em> (PAM) do Linux para gerenciamento centralizado de regras de autenticação, políticas de senha e módulos de segurança adicionais.</li>
-</ul>
-<hr />
-<h2 id="requisito-de-multiplos-fatores-mfa2fa">Requisito de múltiplos fatores (MFA/2FA)</h2>
-<p>Esta seção define a regra mais crítica de acesso ao servidor:</p>
-<pre><code class="language-ssh">PasswordAuthentication no
-PubkeyAuthentication yes
-ChallengeResponseAuthentication yes
-AuthenticationMethods publickey,password publickey,keyboard-interactive
-</code></pre>
-<h3 id="detalhamento-dos-mecanismos">Detalhamento dos mecanismos</h3>
-<ul>
-<li><code>PasswordAuthentication no</code>: desativa a autenticação tradicional que exige <em>apenas</em> a senha do usuário.</li>
-<li><code>PubkeyAuthentication yes</code>: habilita a autenticação via pares de chaves SSH (<code>id_rsa</code>, <code>id_ed25519</code>, etc.).</li>
-<li><code>ChallengeResponseAuthentication yes</code>: habilita a autenticação interativa baseada em desafios, necessária para módulos OTP/PAM como Google Authenticator.</li>
-</ul>
-<h3 id="aplicacao-de-mfa-authenticationmethods">Aplicação de MFA (<code>AuthenticationMethods</code>)</h3>
-<p>A linha <code>AuthenticationMethods publickey,password publickey,keyboard-interactive</code> estabelece que o cliente deve fornecer <strong>dois fatores sequenciais</strong> para obter acesso:</p>
-<ol>
-<li><strong>Fator 1:</strong> uma <strong>chave pública</strong> (<em>pubkey</em>) válida.</li>
-<li><strong>Fator 2:</strong> uma <strong>senha</strong> ou um desafio interativo (<strong>keyboard-interactive</strong>/OTP).</li>
-</ol>
+<h1 id="script-updown-ipsecsh">Script updown-ipsec.sh</h1>
 <blockquote>
-<p><strong>Nota operacional:</strong> Embora <code>PasswordAuthentication</code> esteja desativado isoladamente, o uso em <code>AuthenticationMethods</code> permite que a senha seja solicitada <em>exclusivamente</em> como segundo fator, após a validação bem-sucedida da chave pública.</p>
+<p>Esta página documenta o comportamento do script. Antes de reutilizar o arquivo em outro ambiente, revise valores fixos, rotas, DNS, validação TLS e política de logs.</p>
 </blockquote>
-<hr />
-<h2 id="sessao-ambiente-e-mensagens">Sessão, ambiente e mensagens</h2>
-<pre><code class="language-ssh">X11Forwarding yes
-PrintMotd no
-ClientAliveInterval 1800
-ClientAliveCountMax 3
-Banner /etc/ssh/ssh_banner
-AcceptEnv LANG LC_*
-</code></pre>
+<h2 id="objetivo">Objetivo</h2>
+<p>O <code>updown-ipsec.sh</code> é um script de integração com StrongSwan executado pelo mecanismo <code>leftupdown</code> durante a subida e a queda de um túnel IPsec.</p>
+<p>Sua responsabilidade é preparar o ambiente de rede local depois que o StrongSwan recebe os parâmetros do túnel, criando uma interface lógica <code>ipsec0</code>, carregando rotas em uma tabela de roteamento separada e ajustando a resolução DNS durante a conexão.</p>
+<p>Esse comportamento não corresponde ao fluxo padrão de uma distribuição Linux. Ele é uma adaptação operacional específica para concentrar o tráfego IPsec em uma interface local controlada e em uma tabela de roteamento própria.</p>
+<h2 id="contexto">Contexto</h2>
+<p>Em uma configuração StrongSwan tradicional, o túnel pode ser estabelecido sem a criação de uma interface Linux dedicada. O tráfego é tratado pela pilha XFRM/IPsec do kernel e pelas políticas instaladas pelo StrongSwan.</p>
+<p>Este script adota outro modelo operacional: cria uma interface <code>dummy</code> chamada <code>ipsec0</code>, atribui a ela o IP recebido pelo cliente IPsec e direciona rotas específicas para uma tabela separada chamada <code>ipsec</code>.</p>
+<p>Essa abordagem facilita inspeção, separação de rotas, aplicação de regras por origem/destino e limpeza operacional ao desconectar o túnel.</p>
+<h2 id="ambientes-validados">Ambientes validados</h2>
+<p>O uso do <code>updown-ipsec.sh</code> foi validado nos seguintes sistemas:</p>
 <ul>
-<li><code>X11Forwarding yes</code>: permite o redirecionamento da interface gráfica de aplicações do servidor para a máquina do cliente. <em>(Recomendação: desativar se não for utilizado).</em></li>
-<li><code>PrintMotd no</code>: impede que o próprio serviço <code>sshd</code> exiba a mensagem do dia (<em>Message of the Day</em>), delegando essa exibição ao módulo PAM.</li>
-<li><code>ClientAliveInterval 1800</code> &amp; <code>ClientAliveCountMax 3</code>:</li>
-<li>o servidor envia uma sondagem a cada <strong>1800 segundos (30 minutos)</strong> para verificar a presença do cliente;</li>
-<li>caso o cliente não responda por <strong>3 vezes consecutivas</strong>, a sessão é encerrada por inatividade, com tempo total sem resposta de <strong>1,5 hora</strong>.</li>
-<li><code>Banner /etc/ssh/ssh_banner</code>: exibe o texto do arquivo <code>/etc/ssh/ssh_banner</code> antes da autenticação, utilizado para avisos legais de privacidade e autorização.</li>
-<li><code>AcceptEnv LANG LC_*</code>: permite a transferência das variáveis de ambiente de idioma e codificação do cliente para o servidor.</li>
+<li>Debian 11;</li>
+<li>Debian 12;</li>
+<li>Debian 13;</li>
+<li>Ubuntu 22.04;</li>
+<li>Ubuntu 24.04.</li>
 </ul>
-<hr />
-<h2 id="subsistema-sftp-e-bloco-condicional-match">Subsistema SFTP e bloco condicional (<code>Match</code>)</h2>
-<pre><code class="language-ssh">Subsystem sftp /usr/lib/openssh/sftp-server
-</code></pre>
-<p>Define o executável encarregado de processar as conexões de transferência de arquivos via SFTP.</p>
-<h3 id="restricao-do-usuario-administrador">Restrição do usuário administrador</h3>
-<pre><code class="language-ssh">Match User admin
-        AllowUsers admin@localhost admin@127.0.0.1 admin@::1
-</code></pre>
+<p>Em todos os testes, o StrongSwan utilizado foi o pacote fornecido pela própria distribuição. Não foi usada versão compilada manualmente nem pacote externo ao repositório padrão do sistema operacional.</p>
+<p>Essa validação cobre o comportamento do script com o StrongSwan dessas distribuições, incluindo o acionamento por <code>leftupdown</code>, a criação da interface <code>ipsec0</code>, o uso da tabela de roteamento separada e o carregamento de rotas externas.</p>
+<h2 id="responsabilidade">Responsabilidade</h2>
+<p>O script é responsável por:</p>
 <ul>
-<li><strong>Descrição:</strong> aplica uma regra condicional para a conta <code>admin</code>.</li>
-<li><strong>Efeito:</strong> o usuário <code>admin</code> fica estritamente restrito a conexões com origem na própria máquina local (<code>localhost</code>, <code>127.0.0.1</code> ou <code>::1</code> em IPv6). Conexões diretas da rede externa para essa conta serão rejeitadas.</li>
+<li>receber variáveis de ambiente fornecidas pelo StrongSwan, como <code>PLUTO_VERB</code>, <code>PLUTO_INTERFACE</code>, <code>PLUTO_ME</code>, <code>PLUTO_PEER</code>, <code>PLUTO_MY_SOURCEIP</code>, <code>PLUTO_PEER_CLIENT</code> e <code>PLUTO_MY_ID</code>;</li>
+<li>criar e remover a interface lógica <code>ipsec0</code>;</li>
+<li>atribuir o IP recebido pelo túnel à interface <code>ipsec0</code>;</li>
+<li>criar ou localizar a tabela de roteamento separada <code>ipsec</code>;</li>
+<li>usar o ID numérico <code>220</code> como tabela de roteamento quando o alias <code>ipsec</code> não estiver disponível;</li>
+<li>adicionar regras <code>ip rule</code> para tráfego de origem e destino associado ao IP do túnel;</li>
+<li>carregar rotas obtidas de um servidor HTTPS externo;</li>
+<li>remover rotas default que tenham sido criadas para a interface ou para a tabela do IPsec;</li>
+<li>ajustar DNS via <code>systemd-resolved</code> ou <code>/etc/resolv.conf</code>;</li>
+<li>registrar execução e variáveis em <code>/var/log/ipsec-updown.log</code>.</li>
 </ul>
-<h3 id="isolamento-em-chroot-grupo-jail">Isolamento em chroot (grupo jail)</h3>
-<pre><code class="language-ssh">Match Group jail
-        ChrootDirectory /home/Secure/Jail/%u
-</code></pre>
+<h2 id="fora-do-escopo">Fora do escopo</h2>
+<p>O script não:</p>
 <ul>
-<li><strong>Descrição:</strong> aplica uma regra condicional para qualquer usuário pertencente ao grupo <code>jail</code>.</li>
-<li><strong>Efeito:</strong> redireciona a raiz do sistema de arquivos (<code>/</code>) do usuário para o diretório <code>/home/Secure/Jail/&lt;nome_do_usuario&gt;</code> no momento do login. O usuário fica restrito à sua pasta e impedido de navegar na estrutura do sistema operacional.</li>
+<li>estabelece o túnel IPsec por conta própria;</li>
+<li>autentica usuários;</li>
+<li>valida credenciais;</li>
+<li>define parâmetros criptográficos;</li>
+<li>cria uma configuração StrongSwan completa;</li>
+<li>substitui a análise de segurança das rotas carregadas;</li>
+<li>valida a integridade do conteúdo baixado do servidor de rotas.</li>
 </ul>
-<hr />
-<h2 id="verificacao-e-aplicacao-das-alteracoes">Verificação e aplicação das alterações</h2>
-<p>Antes de reiniciar o serviço em produção, recomenda-se validar a sintaxe das configurações para prevenir interrupções de acesso:</p>
-<pre><code class="language-bash"># Validar a sintaxe do arquivo de configuração
-sudo sshd -t
-
-# Recarregar as configurações do serviço sem derrubar conexões ativas
-sudo systemctl reload sshd
+<h2 id="acionamento-pelo-strongswan">Acionamento pelo StrongSwan</h2>
+<p>O uso esperado é por meio da diretiva <code>leftupdown</code> no bloco <code>conn</code> do <code>/etc/ipsec.conf</code>.</p>
+<p>Exemplo:</p>
+<pre><code class="language-text">conn Minha_VPN
+  leftupdown=/etc/ipsec.d/updown-ipsec.sh
 </code></pre>
-<p>Durante o teste:</p>
+<p>O script reage ao valor da variável <code>PLUTO_VERB</code>:</p>
+<pre><code class="language-text">up-client
+down-client
+</code></pre>
+<p>Quando recebe <code>up-client</code>, executa a função <code>start</code>. Quando recebe <code>down-client</code>, executa a função <code>stop</code>.</p>
+<h2 id="interface-ipsec0">Interface ipsec0</h2>
+<p>Durante a subida do túnel, o script verifica se a interface <code>ipsec0</code> existe. Se não existir, cria uma interface do tipo <code>dummy</code>:</p>
+<pre><code class="language-bash">ip link add ipsec0 type dummy
+</code></pre>
+<p>Depois, ativa a interface com MTU 1400:</p>
+<pre><code class="language-bash">ip link set ipsec0 up mtu 1400
+</code></pre>
+<p>O IP recebido do StrongSwan em <code>PLUTO_MY_SOURCEIP</code> é configurado como endereço <code>/32</code> nessa interface.</p>
+<p>Esse comportamento é relevante porque a distribuição padrão não cria essa interface para túneis IPsec tradicionais. A interface é uma abstração local criada pelo pacote para concentrar o endereço e as rotas da VPN em um ponto operacional visível.</p>
+<h2 id="tabela-de-roteamento-separada">Tabela de roteamento separada</h2>
+<p>O script usa uma tabela de roteamento dedicada para o tráfego associado ao IPsec.</p>
+<p>Os valores usados são:</p>
+<pre><code class="language-text">Nome da tabela: ipsec
+ID da tabela: 220
+Arquivo de registro: /etc/iproute2/rt_tables
+</code></pre>
+<p>Quando <code>/etc/iproute2/rt_tables</code> existe e já possui uma tabela chamada <code>ipsec</code>, o script usa esse nome.</p>
+<p>Quando o arquivo ou o alias não estão disponíveis, o script usa o ID numérico <code>220</code> como fallback. Em ambientes onde <code>/etc/iproute2</code> ainda não existe, o script tenta criar o diretório e um <code>rt_tables</code> mínimo.</p>
+<p>Essa decisão evita misturar as rotas do túnel na tabela <code>main</code> e permite limpar a tabela do IPsec durante a desconexão.</p>
+<h2 id="regras-de-roteamento">Regras de roteamento</h2>
+<p>Durante a conexão, o script cria regras com <code>ip rule</code> para direcionar tráfego relacionado ao IP do túnel para a tabela separada:</p>
+<pre><code class="language-bash">ip rule add from ${PLUTO_MY_SOURCEIP} lookup ipsec
+ip rule add to ${PLUTO_MY_SOURCEIP} lookup ipsec
+</code></pre>
+<p>Também adiciona uma regra para manter o tráfego destinado ao peer remoto na tabela principal:</p>
+<pre><code class="language-bash">ip rule add to ${PLUTO_PEER} lookup main
+</code></pre>
+<p>Na desconexão, essas regras são removidas e a tabela separada é esvaziada.</p>
+<h2 id="fonte-externa-de-rotas">Fonte externa de rotas</h2>
+<p>Além da rota inicial, o script consulta um servidor HTTPS definido na variável <code>SRVROTAS</code>.</p>
+<p>No código analisado, esse servidor é um valor operacional fixo. Na versão pública, o endereço real foi omitido e representado pelo exemplo abaixo:</p>
+<pre><code class="language-text">198.51.100.36
+</code></pre>
+<p>Antes de carregar rotas, o script testa conectividade TCP na porta <code>443</code>:</p>
+<pre><code class="language-bash">nc -z -w3 &quot;${SRVROTAS}&quot; &quot;443&quot;
+</code></pre>
+<p>Se o servidor não responder, a configuração é interrompida com erro.</p>
+<p>As rotas adicionais são baixadas por HTTPS:</p>
+<pre><code class="language-text">https://${SRVROTAS}/Ipsec_Routes
+</code></pre>
+<p>Cada item retornado é tratado como uma rota e adicionado à tabela separada:</p>
+<pre><code class="language-bash">ip route add ${ROUTE_IPSEC} dev ipsec0 table ipsec
+</code></pre>
+<h2 id="formato-esperado-das-rotas">Formato esperado das rotas</h2>
+<p>O endpoint de rotas deve retornar uma lista simples, consumível por expansão de shell no laço <code>for</code>.</p>
+<p>Exemplo esperado:</p>
+<pre><code class="language-text">198.51.100.0/24
+203.0.113.0/24
+192.0.2.10/32
+</code></pre>
+<p>Cada linha ou item deve ser aceito pelo comando <code>ip route add</code>.</p>
+<p>O script não valida o conteúdo antes de executar o comando <code>ip route add</code>; portanto, a fonte de rotas deve ser considerada parte confiável da operação.</p>
+<h2 id="dns">DNS</h2>
+<p>Antes de alterar DNS, o script salva a configuração atual em:</p>
+<pre><code class="language-text">/etc/ipsec.d/resolv.conf_save
+</code></pre>
+<p>Quando <code>systemd-resolved</code> está ativo, ele usa <code>resolvectl</code> para registrar DNS e domínio na interface <code>ipsec0</code>.</p>
+<p>Quando <code>systemd-resolved</code> não está ativo, o script substitui temporariamente <code>/etc/resolv.conf</code> pelo conteúdo obtido em:</p>
+<pre><code class="language-text">https://${SRVROTAS}/Ipsec_DNS
+</code></pre>
+<p>Na desconexão, tenta restaurar a configuração salva.</p>
+<h2 id="remocao-de-rota-default">Remoção de rota default</h2>
+<p>O script remove rotas default associadas à interface <code>ipsec0</code> ou à tabela separada <code>ipsec</code>.</p>
+<p>Essa decisão impede que o túnel assuma todo o tráfego do host por padrão. O comportamento esperado é carregar apenas as redes explicitamente retornadas pela fonte externa de rotas, além da rota inicial configurada pelo script.</p>
+<h2 id="fluxo-de-subida">Fluxo de subida</h2>
+<p>O fluxo executado em <code>up-client</code> é:</p>
+<ol>
+<li>Salvar DNS atual.</li>
+<li>Criar a interface <code>ipsec0</code>, se necessário.</li>
+<li>Ativar <code>ipsec0</code> com MTU 1400.</li>
+<li>Atribuir o IP do túnel à interface.</li>
+<li>Preparar a tabela de roteamento <code>ipsec</code> ou <code>220</code>.</li>
+<li>Limpar a tabela de roteamento separada.</li>
+<li>Adicionar a rota inicial.</li>
+<li>Criar regras <code>ip rule</code>.</li>
+<li>Remover o IP da interface padrão recebida em <code>PLUTO_INTERFACE</code>.</li>
+<li>Ajustar parâmetros <code>rp_filter</code> e <code>accept_local</code>.</li>
+<li>Validar se a interface <code>ipsec0</code> está disponível.</li>
+<li>Validar conectividade com o servidor de rotas.</li>
+<li>Baixar e carregar rotas adicionais.</li>
+<li>Remover rotas default indesejadas.</li>
+<li>Aplicar DNS recebido do servidor de rotas.</li>
+<li>Registrar o resultado em <code>/var/log/ipsec-updown.log</code>.</li>
+</ol>
+<h2 id="fluxo-de-queda">Fluxo de queda</h2>
+<p>O fluxo executado em <code>down-client</code> é:</p>
+<ol>
+<li>Remover regras <code>ip rule</code> associadas ao IP do túnel.</li>
+<li>Esvaziar a tabela de roteamento separada.</li>
+<li>Desativar a interface <code>ipsec0</code>.</li>
+<li>Remover a interface <code>ipsec0</code>.</li>
+<li>Restaurar DNS salvo.</li>
+<li>Registrar a remoção da interface.</li>
+</ol>
+<h2 id="dependencias-externas">Dependências externas</h2>
+<p>O script depende de:</p>
 <ul>
-<li>manter sessão administrativa já autenticada;</li>
-<li>testar novo login com usuário controlado;</li>
-<li>validar autenticação por chave;</li>
-<li>validar solicitação de TOTP, que depende da configuração MFA explicada em seção própria;</li>
-<li>validar aplicação do chroot, que depende de ambiente chroot já preparado;</li>
-<li>revisar logs do serviço SSH.</li>
+<li>StrongSwan chamando o script com variáveis <code>PLUTO_*</code>;</li>
+<li><code>iproute2</code>;</li>
+<li><code>systemctl</code>;</li>
+<li><code>resolvectl</code>, quando <code>systemd-resolved</code> está ativo;</li>
+<li><code>wget</code>;</li>
+<li><code>nc</code>;</li>
+<li><code>awk</code>;</li>
+<li><code>grep</code>;</li>
+<li>acesso HTTPS ao servidor definido em <code>SRVROTAS</code>;</li>
+<li>permissão de escrita em <code>/var/log/ipsec-updown.log</code>;</li>
+<li>permissão para alterar interfaces, rotas, regras de roteamento e DNS.</li>
 </ul>
+<h2 id="tratamento-de-erros">Tratamento de erros</h2>
+<p>O script interrompe a configuração quando:</p>
+<ul>
+<li>a interface <code>ipsec0</code> não aparece após cinco tentativas;</li>
+<li>o servidor de rotas não responde na porta <code>443</code>.</li>
+</ul>
+<p>Falhas ao adicionar rotas adicionais são contabilizadas, mas não interrompem necessariamente a execução. O script registra a quantidade de rotas carregadas e a quantidade de falhas.</p>
+<h2 id="decisoes-de-projeto">Decisões de projeto</h2>
+<p>A criação da interface <code>ipsec0</code> é uma decisão operacional para tornar o tráfego IPsec mais explícito no sistema Linux, mesmo quando o modelo padrão do StrongSwan não cria uma interface dedicada.</p>
+<p>O uso da tabela separada <code>ipsec</code> evita poluir a tabela principal e permite limpar rotas do túnel de forma concentrada na desconexão.</p>
+<p>O uso do ID <code>220</code> como fallback mantém compatibilidade com ambientes em que o alias da tabela ainda não foi registrado.</p>
+<p>A fonte externa de rotas permite alterar redes acessíveis pela VPN sem reconstruir o pacote e sem editar manualmente cada estação. Essa decisão exige que o servidor de rotas seja confiável e disponível durante a subida do túnel.</p>
+<blockquote>
+<p>Motivo da decisão ainda não documentado: uso de um endereço padrão fixo como servidor de rotas.</p>
+</blockquote>
+<h2 id="limitacoes-conhecidas">Limitações conhecidas</h2>
+<p>O script possui valores operacionais fixos, como <code>SRVROTAS</code>, <code>IPSEC_IF</code>, <code>IPSEC_TABLE_ID</code> e <code>IPSEC_TABLE_NAME</code>.</p>
+<p>O valor inicial de <code>PLUTO_PEER_CLIENT</code> é sobrescrito no código por:</p>
+<pre><code class="language-bash">IPSEC_ROUTE=&quot;198.51.100.0/24&quot;
+</code></pre>
+<p>Portanto, a rota inicial documentada pelo StrongSwan não é usada diretamente no comportamento atual.</p>
+<p>O script calcula a variável <code>grupo_vpn</code> a partir de <code>PLUTO_MY_ID</code>, mas a URL de rotas usa <code>${grupo_vpnx:-}</code>. Como <code>grupo_vpnx</code> não é definida no script, o sufixo por grupo não é aplicado no carregamento atual das rotas.</p>
+<p>O download das rotas usa <code>wget --no-check-certificate</code>, portanto a validação de certificado TLS é desabilitada.</p>
+<p>O conteúdo retornado pelo servidor de rotas é usado diretamente em comandos <code>ip route add</code>.</p>
+<p>O script substitui <code>/etc/resolv.conf</code> quando <code>systemd-resolved</code> não está ativo.</p>
+<h2 id="aspectos-de-seguranca">Aspectos de segurança</h2>
+<p>O servidor de rotas é uma dependência crítica. Quem controla esse endpoint controla quais rotas serão carregadas na tabela do IPsec.</p>
+<p>Antes de uso fora de ambiente controlado, é recomendável revisar:</p>
+<ul>
+<li>origem e autenticação do servidor de rotas;</li>
+<li>validação TLS;</li>
+<li>formato permitido para rotas;</li>
+<li>remoção de valores fixos;</li>
+<li>comportamento de DNS;</li>
+<li>necessidade real de criar uma interface <code>dummy</code>;</li>
+<li>política de logs em <code>/var/log/ipsec-updown.log</code>, pois o script registra o ambiente recebido do StrongSwan.</li>
+</ul>
+<h2 id="relacao-com-outros-componentes">Relação com outros componentes</h2>
+<p>O script é referenciado pelo arquivo de exemplo <code>_sample_ipsec.conf</code> por meio de <code>leftupdown</code>.</p>
+<p>O pacote também instala ajustes de AppArmor para permitir sua execução pelo processo <code>charon</code> do StrongSwan.</p>
 
 
 

@@ -2,106 +2,114 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://moreno.eco.br/</loc>
-         <lastmod>2026-08-02</lastmod>
+         <lastmod>2026-08-03</lastmod>
     </url>
     <url>
          <loc>https://moreno.eco.br/artigos/DNS/dns-reverso/delegacao-rfc2317-powerdns/</loc>
-         <lastmod>2026-08-02</lastmod>
+         <lastmod>2026-08-03</lastmod>
     </url>
     <url>
          <loc>https://moreno.eco.br/artigos/linux/Linux_Modulo_1/</loc>
-         <lastmod>2026-08-02</lastmod>
+         <lastmod>2026-08-03</lastmod>
     </url>
     <url>
          <loc>https://moreno.eco.br/artigos/linux/Samba_LDAP/</loc>
-         <lastmod>2026-08-02</lastmod>
+         <lastmod>2026-08-03</lastmod>
     </url>
     <url>
          <loc>https://moreno.eco.br/artigos/storage/LVM/LVM_na_pratica/</loc>
-         <lastmod>2026-08-02</lastmod>
+         <lastmod>2026-08-03</lastmod>
     </url>
     <url>
          <loc>https://moreno.eco.br/artigos/storage/iSCSI/Storage_iSCSI_Linux/</loc>
-         <lastmod>2026-08-02</lastmod>
+         <lastmod>2026-08-03</lastmod>
     </url>
     <url>
          <loc>https://moreno.eco.br/casos/backup/backup_sistemas/</loc>
-         <lastmod>2026-08-02</lastmod>
+         <lastmod>2026-08-03</lastmod>
     </url>
     <url>
          <loc>https://moreno.eco.br/casos/containers/docker/mariadb/configurando_backup_mariadb_docker/</loc>
-         <lastmod>2026-08-02</lastmod>
+         <lastmod>2026-08-03</lastmod>
     </url>
     <url>
          <loc>https://moreno.eco.br/casos/migracao/migracao_k8s_raid_ssd/Estudo_de_Caso_Migracao_Kubernetes_RAID_SSD_v4/</loc>
-         <lastmod>2026-08-02</lastmod>
+         <lastmod>2026-08-03</lastmod>
     </url>
     <url>
          <loc>https://moreno.eco.br/casos/postgresql/postgresql-erro-acesso-remoto/</loc>
-         <lastmod>2026-08-02</lastmod>
+         <lastmod>2026-08-03</lastmod>
     </url>
     <url>
          <loc>https://moreno.eco.br/casos/systemd/troubleshooting/status-127-zabbix-agent2-systemd/</loc>
-         <lastmod>2026-08-02</lastmod>
+         <lastmod>2026-08-03</lastmod>
+    </url>
+    <url>
+         <loc>https://moreno.eco.br/projetos/ipsec-monitor/</loc>
+         <lastmod>2026-08-03</lastmod>
+    </url>
+    <url>
+         <loc>https://moreno.eco.br/projetos/ipsec-monitor/updown-ipsec/</loc>
+         <lastmod>2026-08-03</lastmod>
     </url>
     <url>
          <loc>https://moreno.eco.br/projetos/nexus/</loc>
-         <lastmod>2026-08-02</lastmod>
+         <lastmod>2026-08-03</lastmod>
     </url>
     <url>
          <loc>https://moreno.eco.br/projetos/nexus/arquitetura/</loc>
-         <lastmod>2026-08-02</lastmod>
+         <lastmod>2026-08-03</lastmod>
     </url>
     <url>
          <loc>https://moreno.eco.br/projetos/nexus/desenvolvimento/</loc>
-         <lastmod>2026-08-02</lastmod>
+         <lastmod>2026-08-03</lastmod>
     </url>
     <url>
          <loc>https://moreno.eco.br/projetos/nexus/instalacao/</loc>
-         <lastmod>2026-08-02</lastmod>
+         <lastmod>2026-08-03</lastmod>
     </url>
     <url>
          <loc>https://moreno.eco.br/projetos/nexus/uso/</loc>
-         <lastmod>2026-08-02</lastmod>
+         <lastmod>2026-08-03</lastmod>
     </url>
     <url>
          <loc>https://moreno.eco.br/projetos/ssh-mfa-chroot/</loc>
-         <lastmod>2026-08-02</lastmod>
+         <lastmod>2026-08-03</lastmod>
     </url>
     <url>
          <loc>https://moreno.eco.br/projetos/ssh-mfa-chroot/arquitetura/</loc>
-         <lastmod>2026-08-02</lastmod>
+         <lastmod>2026-08-03</lastmod>
     </url>
     <url>
          <loc>https://moreno.eco.br/projetos/ssh-mfa-chroot/conceitos/</loc>
-         <lastmod>2026-08-02</lastmod>
+         <lastmod>2026-08-03</lastmod>
     </url>
     <url>
          <loc>https://moreno.eco.br/projetos/ssh-mfa-chroot/configuracao-pam-mfa/</loc>
-         <lastmod>2026-08-02</lastmod>
+         <lastmod>2026-08-03</lastmod>
     </url>
     <url>
          <loc>https://moreno.eco.br/projetos/ssh-mfa-chroot/configuracao_openssh_explicacao/</loc>
-         <lastmod>2026-08-02</lastmod>
+         <lastmod>2026-08-03</lastmod>
     </url>
     <url>
          <loc>https://moreno.eco.br/projetos/ssh-mfa-chroot/construcao-chroot/</loc>
-         <lastmod>2026-08-02</lastmod>
+         <lastmod>2026-08-03</lastmod>
     </url>
     <url>
          <loc>https://moreno.eco.br/projetos/ssh-mfa-chroot/implantacao/</loc>
-         <lastmod>2026-08-02</lastmod>
+         <lastmod>2026-08-03</lastmod>
     </url>
     <url>
          <loc>https://moreno.eco.br/projetos/ssh-mfa-chroot/operacao-diagnostico/</loc>
-         <lastmod>2026-08-02</lastmod>
+         <lastmod>2026-08-03</lastmod>
     </url>
     <url>
          <loc>https://moreno.eco.br/projetos/ssh-mfa-chroot/seguranca-limitacoes/</loc>
-         <lastmod>2026-08-02</lastmod>
+         <lastmod>2026-08-03</lastmod>
     </url>
     <url>
          <loc>https://moreno.eco.br/projetos/ssh-mfa-chroot/scripts/</loc>
-         <lastmod>2026-08-02</lastmod>
+         <lastmod>2026-08-03</lastmod>
     </url>
 </urlset>
