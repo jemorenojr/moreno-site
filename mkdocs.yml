@@ -46,3 +46,6 @@ nav:
           - Operação e diagnóstico: projetos/ssh-mfa-chroot/operacao-diagnostico.md
           - Segurança e limitações: projetos/ssh-mfa-chroot/seguranca-limitacoes.md
           - Scripts: projetos/ssh-mfa-chroot/scripts/index.md
+      - ipsec-monitor:
+          - Visão geral: projetos/ipsec-monitor/index.md
+          - updown-ipsec.sh: projetos/ipsec-monitor/updown-ipsec.md
