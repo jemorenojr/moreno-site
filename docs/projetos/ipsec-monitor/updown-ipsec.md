@@ -1,6 +1,6 @@
 # Script updown-ipsec.sh
 
-> Esta página documenta o comportamento do script. Antes de reutilizar o arquivo em outro ambiente, revise valores fixos, rotas, DNS, validação TLS e política de logs.
+ - [Download updown-ipsec.sh](https://raw.githubusercontent.com/jemorenojr/ipsec-monitor/refs/heads/main/src/etc/ipsec.d/updown-ipsec.sh)
 
 ## Objetivo
 
@@ -136,10 +136,10 @@ Na desconexão, essas regras são removidas e a tabela separada é esvaziada.
 
 Além da rota inicial, o script consulta um servidor HTTPS definido na variável `SRVROTAS`.
 
-No código analisado, esse servidor é um valor operacional fixo. Na versão pública, o endereço real foi omitido e representado pelo exemplo abaixo:
+No código atual, o valor é:
 
 ```text
-198.51.100.36
+10.16.144.36
 ```
 
 Antes de carregar rotas, o script testa conectividade TCP na porta `443`:
@@ -169,9 +169,9 @@ O endpoint de rotas deve retornar uma lista simples, consumível por expansão d
 Exemplo esperado:
 
 ```text
-198.51.100.0/24
-203.0.113.0/24
-192.0.2.10/32
+10.10.0.0/16
+172.16.20.0/24
+192.168.50.10/32
 ```
 
 Cada linha ou item deve ser aceito pelo comando `ip route add`.
@@ -269,7 +269,7 @@ O uso do ID `220` como fallback mantém compatibilidade com ambientes em que o a
 
 A fonte externa de rotas permite alterar redes acessíveis pela VPN sem reconstruir o pacote e sem editar manualmente cada estação. Essa decisão exige que o servidor de rotas seja confiável e disponível durante a subida do túnel.
 
-> Motivo da decisão ainda não documentado: uso de um endereço padrão fixo como servidor de rotas.
+> Motivo da decisão ainda não documentado: uso do endereço padrão `10.16.144.36` como servidor de rotas.
 
 ## Limitações conhecidas
 
@@ -278,7 +278,7 @@ O script possui valores operacionais fixos, como `SRVROTAS`, `IPSEC_IF`, `IPSEC_
 O valor inicial de `PLUTO_PEER_CLIENT` é sobrescrito no código por:
 
 ```bash
-IPSEC_ROUTE="198.51.100.0/24"
+IPSEC_ROUTE="10.16.144.0/24"
 ```
 
 Portanto, a rota inicial documentada pelo StrongSwan não é usada diretamente no comportamento atual.

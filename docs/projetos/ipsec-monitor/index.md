@@ -3,11 +3,9 @@
 > Esta página não é uma documentação oficial do StrongSwan, do IPsec ou de qualquer distribuição Linux.
 > Trata-se de uma documentação autoral sobre uma ferramenta pessoal para facilitar o controle local de túneis IPsec em ambientes desktop Linux.
 
-## Artefatos
+## Download
 
-O projeto possui pacote Debian versionado como `ipsec-monitor_1.5.0_all.deb`.
-
-Antes de distribuir ou instalar o pacote em outro ambiente, revise a configuração embutida no artefato e confirme que não há valores operacionais fixos, rotas internas, servidores de DNS ou parâmetros de VPN específicos do ambiente original.
+ - [ipsec-monitor_1.5.0_all.deb](https://github.com/jemorenojr/ipsec-monitor/raw/refs/heads/main/binary/ipsec-monitor_1.5.0_all.deb)
 
 ## Objetivo
 
