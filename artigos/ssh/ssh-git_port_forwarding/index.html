@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://moreno.eco.br/projetos/nexus/instalacao/">
+        <link rel="canonical" href="https://moreno.eco.br/artigos/ssh/ssh-git_port_forwarding/">
       
       
-        <link rel="prev" href="../arquitetura/">
+        <link rel="prev" href="../ssh-port_forwarding/">
       
       
-        <link rel="next" href="../uso/">
+        <link rel="next" href="../../storage/LVM/LVM_na_pratica/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Instalação - MORENO.ECO.BR</title>
+        <title>Git via túnel SSH - MORENO.ECO.BR</title>
       
     
     
@@ -68,7 +68,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#instalacao" class="md-skip">
+        <a href="#root-acessando-git-de-usuario-comum-via-tunel-ssh" class="md-skip">
           Pular para conteúdo
         </a>
       
@@ -104,7 +104,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Instalação
+              Git via túnel SSH
             
           </span>
         </div>
@@ -224,18 +224,20 @@
       
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
           <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
@@ -256,7 +258,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -321,7 +323,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../artigos/linux/Linux_Modulo_1/" class="md-nav__link">
+      <a href="../../linux/Linux_Modulo_1/" class="md-nav__link">
         
   
   
@@ -349,7 +351,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../artigos/linux/Samba_LDAP/" class="md-nav__link">
+      <a href="../../linux/Samba_LDAP/" class="md-nav__link">
         
   
   
@@ -382,18 +384,20 @@
                 
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" checked>
         
           
           <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
@@ -414,7 +418,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -432,7 +436,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../artigos/DNS/dns-reverso/delegacao-rfc2317-powerdns/" class="md-nav__link">
+      <a href="../../DNS/dns-reverso/delegacao-rfc2317-powerdns/" class="md-nav__link">
         
   
   
@@ -460,7 +464,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../artigos/ssh/ssh-port_forwarding/" class="md-nav__link">
+      <a href="../ssh-port_forwarding/" class="md-nav__link">
         
   
   
@@ -485,10 +489,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../../artigos/ssh/ssh-git_port_forwarding/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Git via túnel SSH
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -504,6 +535,104 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-criar-tunel-ssh-a-partir-da-sua-maquina-local" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Criar túnel SSH a partir da sua máquina local
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-clonar-ou-dar-pull-no-repositorio-git-como-usuario-normal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Clonar ou dar pull no repositório Git como usuário normal
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Clonar ou dar pull no repositório Git como usuário normal">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#git_ssh_command" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GIT_SSH_COMMAND
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-executando-como-usuario-root-se-necessario" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Executando como usuário root (se necessário)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Executando como usuário root (se necessário)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ssh_auth_sock" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SSH_AUTH_SOCK
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Referência
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -571,7 +700,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../artigos/storage/LVM/LVM_na_pratica/" class="md-nav__link">
+      <a href="../../storage/LVM/LVM_na_pratica/" class="md-nav__link">
         
   
   
@@ -599,7 +728,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../artigos/storage/iSCSI/Storage_iSCSI_Linux/" class="md-nav__link">
+      <a href="../../storage/iSCSI/Storage_iSCSI_Linux/" class="md-nav__link">
         
   
   
@@ -1108,20 +1237,18 @@
       
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
@@ -1142,7 +1269,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1157,20 +1284,18 @@
                 
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" >
         
           
           <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
@@ -1191,7 +1316,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4_1">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1209,7 +1334,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../" class="md-nav__link">
+      <a href="../../../projetos/nexus/" class="md-nav__link">
         
   
   
@@ -1237,7 +1362,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../arquitetura/" class="md-nav__link">
+      <a href="../../../projetos/nexus/arquitetura/" class="md-nav__link">
         
   
   
@@ -1262,37 +1387,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Instalação
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../projetos/nexus/instalacao/" class="md-nav__link">
         
   
   
@@ -1308,275 +1406,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Índice">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Índice
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#pre-requisitos" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Pré-requisitos
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#instalacao-das-dependencias-auxiliares" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Instalação das dependências auxiliares
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Instalação das dependências auxiliares">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#debian-e-ubuntu" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Debian e Ubuntu
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#fedora-rocky-linux-e-almalinux" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Fedora, Rocky Linux e AlmaLinux
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#arch-linux" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Arch Linux
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ollama" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Ollama
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#modelos" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Modelos
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#instalacao-do-nexus" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Instalação do Nexus
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Instalação do Nexus">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#zsh" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Zsh
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#bash" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Bash
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#validacao" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Validação
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#codex-cli" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Codex CLI
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#arquivos-criados-em-tempo-de-execucao" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Arquivos criados em tempo de execução
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ajustes-de-configuracao" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Ajustes de configuração
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#diagnostico-de-instalacao" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Diagnóstico de instalação
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Diagnóstico de instalação">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#jq-nao-encontrado" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        jq não encontrado
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#curl-nao-encontrado" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        curl não encontrado
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ollama-nao-encontrado" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Ollama não encontrado
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#api-indisponivel" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        API indisponível
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#modelo-ausente" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Modelo ausente
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sessao-invalida" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Sessão inválida
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1589,7 +1418,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../uso/" class="md-nav__link">
+      <a href="../../../projetos/nexus/uso/" class="md-nav__link">
         
   
   
@@ -1617,7 +1446,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../desenvolvimento/" class="md-nav__link">
+      <a href="../../../projetos/nexus/desenvolvimento/" class="md-nav__link">
         
   
   
@@ -1700,7 +1529,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ssh-mfa-chroot/" class="md-nav__link">
+      <a href="../../../projetos/ssh-mfa-chroot/" class="md-nav__link">
         
   
   
@@ -1728,7 +1557,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ssh-mfa-chroot/arquitetura/" class="md-nav__link">
+      <a href="../../../projetos/ssh-mfa-chroot/arquitetura/" class="md-nav__link">
         
   
   
@@ -1756,7 +1585,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ssh-mfa-chroot/conceitos/" class="md-nav__link">
+      <a href="../../../projetos/ssh-mfa-chroot/conceitos/" class="md-nav__link">
         
   
   
@@ -1784,7 +1613,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ssh-mfa-chroot/implantacao/" class="md-nav__link">
+      <a href="../../../projetos/ssh-mfa-chroot/implantacao/" class="md-nav__link">
         
   
   
@@ -1812,7 +1641,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ssh-mfa-chroot/configuracao_openssh_explicacao/" class="md-nav__link">
+      <a href="../../../projetos/ssh-mfa-chroot/configuracao_openssh_explicacao/" class="md-nav__link">
         
   
   
@@ -1840,7 +1669,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ssh-mfa-chroot/configuracao-pam-mfa/" class="md-nav__link">
+      <a href="../../../projetos/ssh-mfa-chroot/configuracao-pam-mfa/" class="md-nav__link">
         
   
   
@@ -1868,7 +1697,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ssh-mfa-chroot/construcao-chroot/" class="md-nav__link">
+      <a href="../../../projetos/ssh-mfa-chroot/construcao-chroot/" class="md-nav__link">
         
   
   
@@ -1896,7 +1725,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ssh-mfa-chroot/operacao-diagnostico/" class="md-nav__link">
+      <a href="../../../projetos/ssh-mfa-chroot/operacao-diagnostico/" class="md-nav__link">
         
   
   
@@ -1924,7 +1753,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ssh-mfa-chroot/seguranca-limitacoes/" class="md-nav__link">
+      <a href="../../../projetos/ssh-mfa-chroot/seguranca-limitacoes/" class="md-nav__link">
         
   
   
@@ -1952,7 +1781,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ssh-mfa-chroot/scripts/" class="md-nav__link">
+      <a href="../../../projetos/ssh-mfa-chroot/scripts/" class="md-nav__link">
         
   
   
@@ -2035,7 +1864,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ipsec-monitor/" class="md-nav__link">
+      <a href="../../../projetos/ipsec-monitor/" class="md-nav__link">
         
   
   
@@ -2063,7 +1892,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ipsec-monitor/updown-ipsec/" class="md-nav__link">
+      <a href="../../../projetos/ipsec-monitor/updown-ipsec/" class="md-nav__link">
         
   
   
@@ -2126,10 +1955,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#pre-requisitos" class="md-nav__link">
+  <a href="#1-criar-tunel-ssh-a-partir-da-sua-maquina-local" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Pré-requisitos
+        1. Criar túnel SSH a partir da sua máquina local
       
     </span>
   </a>
@@ -2137,44 +1966,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#instalacao-das-dependencias-auxiliares" class="md-nav__link">
+  <a href="#2-clonar-ou-dar-pull-no-repositorio-git-como-usuario-normal" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Instalação das dependências auxiliares
+        2. Clonar ou dar pull no repositório Git como usuário normal
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Instalação das dependências auxiliares">
+    <nav class="md-nav" aria-label="2. Clonar ou dar pull no repositório Git como usuário normal">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#debian-e-ubuntu" class="md-nav__link">
+  <a href="#git_ssh_command" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Debian e Ubuntu
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#fedora-rocky-linux-e-almalinux" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Fedora, Rocky Linux e AlmaLinux
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#arch-linux" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Arch Linux
+        GIT_SSH_COMMAND
       
     </span>
   </a>
@@ -2187,55 +1994,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#ollama" class="md-nav__link">
+  <a href="#3-executando-como-usuario-root-se-necessario" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Ollama
+        3. Executando como usuário root (se necessário)
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#modelos" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Modelos
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#instalacao-do-nexus" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Instalação do Nexus
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Instalação do Nexus">
+    <nav class="md-nav" aria-label="3. Executando como usuário root (se necessário)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#zsh" class="md-nav__link">
+  <a href="#ssh_auth_sock" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Zsh
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#bash" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Bash
+        SSH_AUTH_SOCK
       
     </span>
   </a>
@@ -2248,129 +2022,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#validacao" class="md-nav__link">
+  <a href="#referencia" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Validação
+        Referência
       
     </span>
   </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#codex-cli" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Codex CLI
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#arquivos-criados-em-tempo-de-execucao" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Arquivos criados em tempo de execução
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ajustes-de-configuracao" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Ajustes de configuração
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#diagnostico-de-instalacao" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Diagnóstico de instalação
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Diagnóstico de instalação">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#jq-nao-encontrado" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        jq não encontrado
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#curl-nao-encontrado" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        curl não encontrado
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ollama-nao-encontrado" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Ollama não encontrado
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#api-indisponivel" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        API indisponível
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#modelo-ausente" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Modelo ausente
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sessao-invalida" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Sessão inválida
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -2391,186 +2049,47 @@
 
 
 
-<h1 id="instalacao">Instalação</h1>
-<h2 id="pre-requisitos">Pré-requisitos</h2>
-<p>O Nexus depende de um ambiente Linux com Bash ou Zsh e dos seguintes componentes:</p>
-<table>
-<thead>
-<tr>
-<th>Componente</th>
-<th style="text-align: right;">Obrigatório</th>
-<th>Função</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>curl</code></td>
-<td style="text-align: right;">Sim</td>
-<td>Chamadas HTTP ao Ollama</td>
-</tr>
-<tr>
-<td><code>jq</code></td>
-<td style="text-align: right;">Sim</td>
-<td>Construção e manipulação de JSON</td>
-</tr>
-<tr>
-<td>Ollama</td>
-<td style="text-align: right;">Sim</td>
-<td>Execução dos modelos locais</td>
-</tr>
-<tr>
-<td>Codex CLI</td>
-<td style="text-align: right;">Não</td>
-<td>Delegação de projetos e repositórios</td>
-</tr>
-</tbody>
-</table>
-<h2 id="instalacao-das-dependencias-auxiliares">Instalação das dependências auxiliares</h2>
-<h3 id="debian-e-ubuntu">Debian e Ubuntu</h3>
-<pre><code class="language-bash">sudo apt update
-sudo apt install curl jq
+<h1 id="root-acessando-git-de-usuario-comum-via-tunel-ssh">Root acessando Git de usuário comum via túnel SSH</h1>
+<p>Em alguns ambientes, uma máquina intermediária não possui acesso direto ao servidor Git. Nesses casos, é possível utilizar um túnel SSH reverso para encaminhar a conexão até o servidor Git, permitindo operações como git clone, git pull e git push sem alterar a topologia da rede.</p>
+<p>Quando o acesso é realizado utilizando autenticação por chave pública, também é possível reutilizar o agente SSH (ssh-agent) da máquina de origem por meio do Agent Forwarding. Dessa forma, a chave privada permanece na estação de trabalho do usuário, sem necessidade de ser copiada para o servidor remoto.</p>
+<p>Este documento demonstra como utilizar o encaminhamento de portas (SSH Port Forwarding) em conjunto com o encaminhamento do agente SSH (SSH Agent Forwarding) para permitir que um usuário remoto — inclusive o root — acesse um repositório Git utilizando a chave armazenada na máquina de origem.</p>
+<p><img alt="alt text" src="../imagens/esquema_ssh_git_root.png" /></p>
+<h2 id="1-criar-tunel-ssh-a-partir-da-sua-maquina-local">1. Criar túnel SSH a partir da sua máquina local</h2>
+<p>Execute o comando abaixo para criar um túnel SSH encaminhando a porta local do Git para a máquina de destino:</p>
+<p><code>ssh -A -R 2222:git.example.net:22 usuario@bastion.example.net</code></p>
+<p>Exemplo de saída:</p>
+<p><img alt="" src="../imagens/ssh_forwarding_bastion.jpg" /></p>
+<h2 id="2-clonar-ou-dar-pull-no-repositorio-git-como-usuario-normal">2. Clonar ou dar pull no repositório Git como usuário normal</h2>
+<p>Já dentro da máquina remota, execute:</p>
+<p><code>GIT_SSH_COMMAND="ssh -p 2222" git clone git@127.0.0.1:infra/exemplo.git</code></p>
+<p>Exemplo de saída:</p>
+<p><img alt="alt text" src="../imagens/ssh_forwarding_bastion_git_clone.jpg" /></p>
+<h3 id="git_ssh_command">GIT_SSH_COMMAND</h3>
+<p>O Git utiliza o cliente SSH padrão do sistema para estabelecer conexão com o servidor remoto.</p>
+<p>Como neste procedimento o servidor Git está acessível através do túnel SSH criado na porta <strong>2222</strong>, é necessário instruir o Git a utilizar essa porta em vez da porta padrão (<strong>22</strong>).</p>
+<p>Isso é feito através da variável de ambiente:</p>
+<pre><code>GIT_SSH_COMMAND=&quot;ssh -p 2222&quot;
 </code></pre>
-<h3 id="fedora-rocky-linux-e-almalinux">Fedora, Rocky Linux e AlmaLinux</h3>
-<pre><code class="language-bash">sudo dnf install curl jq
+<p>Assim, todas as conexões iniciadas pelo Git serão realizadas utilizando o cliente SSH configurado para acessar o túnel local.</p>
+<h2 id="3-executando-como-usuario-root-se-necessario">3. Executando como usuário root (se necessário)</h2>
+<p>Se precisar executar como <code>root</code>, primeiro exporte o agente SSH atual:</p>
+<p><code>sudo -u root SSH_AUTH_SOCK=$SSH_AUTH_SOCK bash</code></p>
+<p>E então clone ou faça pull normalmente:</p>
+<p><code>GIT_SSH_COMMAND="ssh -p 2222" git clone git@127.0.0.1:infra/exemplo.git</code></p>
+<p>Exemplo de saída:</p>
+<p><img alt="alt text" src="../imagens/ssh_forwarding_bastion_git_clone_root.jpg" /></p>
+<h3 id="ssh_auth_sock">SSH_AUTH_SOCK</h3>
+<p>Durante a conexão com a opção -A, o SSH encaminha o acesso ao ssh-agent da máquina de origem para a máquina remota.</p>
+<p>Esse acesso é disponibilizado através da variável de ambiente:</p>
+<pre><code>SSH_AUTH_SOCK
 </code></pre>
-<h3 id="arch-linux">Arch Linux</h3>
-<pre><code class="language-bash">sudo pacman -S curl jq
+<p>Ao executar comandos com sudo ou iniciar uma sessão como root, essa variável normalmente deixa de existir, fazendo com que o usuário root perca acesso ao agente SSH encaminhado.</p>
+<p>Ao iniciar uma sessão preservando o valor de SSH_AUTH_SOCK:</p>
+<pre><code>sudo -u root SSH_AUTH_SOCK=$SSH_AUTH_SOCK bash 
 </code></pre>
-<h2 id="ollama">Ollama</h2>
-<p>Instale o Ollama pelo procedimento oficial adequado à distribuição. Depois, confirme o serviço:</p>
-<pre><code class="language-bash">systemctl status ollama
-</code></pre>
-<p>Valide a API local:</p>
-<pre><code class="language-bash">curl -fsS http://localhost:11434/api/tags | jq
-</code></pre>
-<p>Também é possível verificar a porta:</p>
-<pre><code class="language-bash">ss -lntp | grep 11434
-</code></pre>
-<h2 id="modelos">Modelos</h2>
-<p>A versão documentada usa:</p>
-<pre><code class="language-bash">ollama pull llama3:latest
-ollama pull qwen3.5:latest
-ollama pull qwen3-coder:latest
-</code></pre>
-<p>Confira a instalação:</p>
-<pre><code class="language-bash">ollama list
-</code></pre>
-<p>Mapeamento padrão:</p>
-<table>
-<thead>
-<tr>
-<th>Modo</th>
-<th>Modelo</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>generic</code></td>
-<td><code>llama3:latest</code></td>
-</tr>
-<tr>
-<td><code>assist</code></td>
-<td><code>qwen3.5:latest</code></td>
-</tr>
-<tr>
-<td><code>code</code></td>
-<td><code>qwen3-coder:latest</code></td>
-</tr>
-</tbody>
-</table>
-<p>O modelo <code>embeddinggemma:latest</code> é apenas uma reserva para futuras funções de embeddings, RAG ou memória semântica. O código atual não o utiliza.</p>
-<h2 id="instalacao-do-nexus">Instalação do Nexus</h2>
-<p>O arquivo distribuído contém apenas a função e seus comentários. Ele deve ser mantido separado do arquivo principal de configuração do shell.</p>
-<h3 id="zsh">Zsh</h3>
-<pre><code class="language-bash">mkdir -p ~/.config/nexus
-cp nexus.sh ~/.config/nexus/nexus.zsh
-chmod 600 ~/.config/nexus/nexus.zsh
-</code></pre>
-<p>Acrescente ao <code>~/.zshrc</code>:</p>
-<pre><code class="language-bash">source ~/.config/nexus/nexus.zsh
-</code></pre>
-<p>Recarregue:</p>
-<pre><code class="language-bash">source ~/.zshrc
-</code></pre>
-<h3 id="bash">Bash</h3>
-<pre><code class="language-bash">mkdir -p ~/.config/nexus
-cp nexus.sh ~/.config/nexus/nexus.sh
-chmod 600 ~/.config/nexus/nexus.sh
-</code></pre>
-<p>Acrescente ao <code>~/.bashrc</code>:</p>
-<pre><code class="language-bash">source ~/.config/nexus/nexus.sh
-</code></pre>
-<p>Recarregue:</p>
-<pre><code class="language-bash">source ~/.bashrc
-</code></pre>
-<h2 id="validacao">Validação</h2>
-<p>Confirme que a função foi carregada:</p>
-<pre><code class="language-bash">type Nexus
-</code></pre>
-<p>Exiba a ajuda:</p>
-<pre><code class="language-bash">Nexus --help
-</code></pre>
-<p>Teste uma chamada simples:</p>
-<pre><code class="language-bash">Nexus --mode generic &quot;responda apenas: Nexus operacional&quot;
-</code></pre>
-<h2 id="codex-cli">Codex CLI</h2>
-<p>A integração com Codex é opcional. Sem ela, os modos locais continuam operacionais.</p>
-<p>Valide uma instalação existente:</p>
-<pre><code class="language-bash">command -v codex
-codex --version
-</code></pre>
-<p>A autenticação e o provedor usados pelo Codex são administrados pela própria ferramenta. Não se deve assumir que essa rota processa tudo localmente.</p>
-<h2 id="arquivos-criados-em-tempo-de-execucao">Arquivos criados em tempo de execução</h2>
-<p>Na primeira chamada, o Nexus cria:</p>
-<pre><code class="language-text">~/.nexus/
-└── sessions/
-    └── default.json
-</code></pre>
-<p>As permissões esperadas são:</p>
-<pre><code class="language-bash">stat -c '%a %n' ~/.nexus ~/.nexus/sessions ~/.nexus/sessions/default.json
-</code></pre>
-<p>Resultado esperado:</p>
-<pre><code class="language-text">700 ~/.nexus
-700 ~/.nexus/sessions
-600 ~/.nexus/sessions/default.json
-</code></pre>
-<h2 id="ajustes-de-configuracao">Ajustes de configuração</h2>
-<p>Na versão 0.1, a configuração permanece no início da função:</p>
-<pre><code class="language-bash">local MAX_HISTORY_MESSAGES=20
-local OLLAMA_BASE_URL=&quot;http://localhost:11434&quot;
-local MODEL_ASSIST=&quot;qwen3.5:latest&quot;
-local MODEL_GENERIC=&quot;llama3:latest&quot;
-local MODEL_CODE=&quot;qwen3-coder:latest&quot;
-</code></pre>
-<p>Após qualquer alteração, recarregue o arquivo do shell.</p>
-<h2 id="diagnostico-de-instalacao">Diagnóstico de instalação</h2>
-<h3 id="jq-nao-encontrado"><code>jq</code> não encontrado</h3>
-<pre><code class="language-bash">command -v jq
-jq --version
-</code></pre>
-<h3 id="curl-nao-encontrado"><code>curl</code> não encontrado</h3>
-<pre><code class="language-bash">command -v curl
-curl --version
-</code></pre>
-<h3 id="ollama-nao-encontrado">Ollama não encontrado</h3>
-<pre><code class="language-bash">command -v ollama
-ollama --version
-</code></pre>
-<h3 id="api-indisponivel">API indisponível</h3>
-<pre><code class="language-bash">systemctl status ollama
-ss -lntp | grep 11434
-curl -v http://localhost:11434/api/tags
-</code></pre>
-<h3 id="modelo-ausente">Modelo ausente</h3>
-<pre><code class="language-bash">ollama list
-ollama pull NOME_DO_MODELO
-</code></pre>
-<h3 id="sessao-invalida">Sessão inválida</h3>
-<pre><code class="language-bash">jq . ~/.nexus/sessions/default.json
-</code></pre>
-<p>Para descartá-la e iniciar novamente:</p>
-<pre><code class="language-bash">Nexus --new --session default &quot;inicie uma nova conversa&quot;
-</code></pre>
+<p>o processo executado como root continua utilizando o mesmo agente SSH da sessão original, sem necessidade de copiar ou duplicar a chave privada.</p>
+<h2 id="referencia">Referência</h2>
+<p>Este procedimento segue a documentação <a href="../ssh-port_forwarding/">"SSH - Port Forwarding"</a></p>
 
 
 

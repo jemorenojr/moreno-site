@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://moreno.eco.br/projetos/nexus/instalacao/">
+        <link rel="canonical" href="https://moreno.eco.br/artigos/ssh/ssh-port_forwarding/">
       
       
-        <link rel="prev" href="../arquitetura/">
+        <link rel="prev" href="../../DNS/dns-reverso/delegacao-rfc2317-powerdns/">
       
       
-        <link rel="next" href="../uso/">
+        <link rel="next" href="../ssh-git_port_forwarding/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Instalação - MORENO.ECO.BR</title>
+        <title>SSH Port Forwarding - MORENO.ECO.BR</title>
       
     
     
@@ -68,7 +68,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#instalacao" class="md-skip">
+        <a href="#ssh-port-forwarding" class="md-skip">
           Pular para conteúdo
         </a>
       
@@ -104,7 +104,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Instalação
+              SSH Port Forwarding
             
           </span>
         </div>
@@ -224,18 +224,20 @@
       
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
           <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
@@ -256,7 +258,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -321,7 +323,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../artigos/linux/Linux_Modulo_1/" class="md-nav__link">
+      <a href="../../linux/Linux_Modulo_1/" class="md-nav__link">
         
   
   
@@ -349,7 +351,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../artigos/linux/Samba_LDAP/" class="md-nav__link">
+      <a href="../../linux/Samba_LDAP/" class="md-nav__link">
         
   
   
@@ -382,18 +384,20 @@
                 
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" checked>
         
           
           <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
@@ -414,7 +418,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -432,7 +436,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../artigos/DNS/dns-reverso/delegacao-rfc2317-powerdns/" class="md-nav__link">
+      <a href="../../DNS/dns-reverso/delegacao-rfc2317-powerdns/" class="md-nav__link">
         
   
   
@@ -457,10 +461,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../../artigos/ssh/ssh-port_forwarding/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SSH Port Forwarding
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -476,6 +507,337 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introducao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Introdução
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#port-forward-local-para-remoto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Port Forward Local para Remoto
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Port Forward Local para Remoto">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exemplo-de-uso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemplo de Uso
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sintaxe-do-comando" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sintaxe do Comando
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sintaxe do Comando">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parametros" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parâmetros:
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemplo-pratico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemplo Prático
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#teste-de-acesso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Teste de Acesso
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#port-forwarding-local-para-maquina-e-porta-remota" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Port Forwarding local para máquina e porta remota
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Port Forwarding local para máquina e porta remota">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exemplo-de-uso_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemplo de Uso
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sintaxe-do-comando_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sintaxe do Comando
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemplo-pratico_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemplo Prático
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#teste-de-acesso_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Teste de Acesso
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#port-forward-remoto-para-local" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Port Forward Remoto para Local
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Port Forward Remoto para Local">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exemplo-de-uso_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemplo de Uso
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sintaxe-do-comando_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sintaxe do Comando
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sintaxe do Comando">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parametros_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parâmetros:
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemplo-pratico_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemplo Prático
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#teste-de-acesso_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Teste de Acesso
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#port-forward-remoto-para-local-usando-maquina-local-como-bastion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Port Forward Remoto para Local usando Máquina Local como Bastion
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Port Forward Remoto para Local usando Máquina Local como Bastion">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exemplo-de-uso_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemplo de Uso
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sintaxe-do-comando_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sintaxe do Comando
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemplo-pratico_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemplo Prático
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#teste-de-acesso_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Teste de Acesso
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consideracoes-de-seguranca" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Considerações de Segurança
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusão
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -488,7 +850,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../artigos/ssh/ssh-git_port_forwarding/" class="md-nav__link">
+      <a href="../ssh-git_port_forwarding/" class="md-nav__link">
         
   
   
@@ -571,7 +933,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../artigos/storage/LVM/LVM_na_pratica/" class="md-nav__link">
+      <a href="../../storage/LVM/LVM_na_pratica/" class="md-nav__link">
         
   
   
@@ -599,7 +961,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../artigos/storage/iSCSI/Storage_iSCSI_Linux/" class="md-nav__link">
+      <a href="../../storage/iSCSI/Storage_iSCSI_Linux/" class="md-nav__link">
         
   
   
@@ -1108,20 +1470,18 @@
       
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
@@ -1142,7 +1502,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1157,20 +1517,18 @@
                 
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" >
         
           
           <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
@@ -1191,7 +1549,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4_1">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1209,7 +1567,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../" class="md-nav__link">
+      <a href="../../../projetos/nexus/" class="md-nav__link">
         
   
   
@@ -1237,7 +1595,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../arquitetura/" class="md-nav__link">
+      <a href="../../../projetos/nexus/arquitetura/" class="md-nav__link">
         
   
   
@@ -1262,37 +1620,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Instalação
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../projetos/nexus/instalacao/" class="md-nav__link">
         
   
   
@@ -1308,275 +1639,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Índice">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Índice
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#pre-requisitos" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Pré-requisitos
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#instalacao-das-dependencias-auxiliares" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Instalação das dependências auxiliares
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Instalação das dependências auxiliares">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#debian-e-ubuntu" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Debian e Ubuntu
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#fedora-rocky-linux-e-almalinux" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Fedora, Rocky Linux e AlmaLinux
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#arch-linux" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Arch Linux
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ollama" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Ollama
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#modelos" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Modelos
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#instalacao-do-nexus" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Instalação do Nexus
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Instalação do Nexus">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#zsh" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Zsh
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#bash" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Bash
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#validacao" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Validação
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#codex-cli" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Codex CLI
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#arquivos-criados-em-tempo-de-execucao" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Arquivos criados em tempo de execução
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ajustes-de-configuracao" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Ajustes de configuração
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#diagnostico-de-instalacao" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Diagnóstico de instalação
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Diagnóstico de instalação">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#jq-nao-encontrado" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        jq não encontrado
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#curl-nao-encontrado" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        curl não encontrado
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ollama-nao-encontrado" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Ollama não encontrado
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#api-indisponivel" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        API indisponível
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#modelo-ausente" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Modelo ausente
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sessao-invalida" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Sessão inválida
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1589,7 +1651,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../uso/" class="md-nav__link">
+      <a href="../../../projetos/nexus/uso/" class="md-nav__link">
         
   
   
@@ -1617,7 +1679,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../desenvolvimento/" class="md-nav__link">
+      <a href="../../../projetos/nexus/desenvolvimento/" class="md-nav__link">
         
   
   
@@ -1700,7 +1762,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ssh-mfa-chroot/" class="md-nav__link">
+      <a href="../../../projetos/ssh-mfa-chroot/" class="md-nav__link">
         
   
   
@@ -1728,7 +1790,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ssh-mfa-chroot/arquitetura/" class="md-nav__link">
+      <a href="../../../projetos/ssh-mfa-chroot/arquitetura/" class="md-nav__link">
         
   
   
@@ -1756,7 +1818,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ssh-mfa-chroot/conceitos/" class="md-nav__link">
+      <a href="../../../projetos/ssh-mfa-chroot/conceitos/" class="md-nav__link">
         
   
   
@@ -1784,7 +1846,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ssh-mfa-chroot/implantacao/" class="md-nav__link">
+      <a href="../../../projetos/ssh-mfa-chroot/implantacao/" class="md-nav__link">
         
   
   
@@ -1812,7 +1874,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ssh-mfa-chroot/configuracao_openssh_explicacao/" class="md-nav__link">
+      <a href="../../../projetos/ssh-mfa-chroot/configuracao_openssh_explicacao/" class="md-nav__link">
         
   
   
@@ -1840,7 +1902,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ssh-mfa-chroot/configuracao-pam-mfa/" class="md-nav__link">
+      <a href="../../../projetos/ssh-mfa-chroot/configuracao-pam-mfa/" class="md-nav__link">
         
   
   
@@ -1868,7 +1930,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ssh-mfa-chroot/construcao-chroot/" class="md-nav__link">
+      <a href="../../../projetos/ssh-mfa-chroot/construcao-chroot/" class="md-nav__link">
         
   
   
@@ -1896,7 +1958,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ssh-mfa-chroot/operacao-diagnostico/" class="md-nav__link">
+      <a href="../../../projetos/ssh-mfa-chroot/operacao-diagnostico/" class="md-nav__link">
         
   
   
@@ -1924,7 +1986,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ssh-mfa-chroot/seguranca-limitacoes/" class="md-nav__link">
+      <a href="../../../projetos/ssh-mfa-chroot/seguranca-limitacoes/" class="md-nav__link">
         
   
   
@@ -1952,7 +2014,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ssh-mfa-chroot/scripts/" class="md-nav__link">
+      <a href="../../../projetos/ssh-mfa-chroot/scripts/" class="md-nav__link">
         
   
   
@@ -2035,7 +2097,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ipsec-monitor/" class="md-nav__link">
+      <a href="../../../projetos/ipsec-monitor/" class="md-nav__link">
         
   
   
@@ -2063,7 +2125,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ipsec-monitor/updown-ipsec/" class="md-nav__link">
+      <a href="../../../projetos/ipsec-monitor/updown-ipsec/" class="md-nav__link">
         
   
   
@@ -2126,10 +2188,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#pre-requisitos" class="md-nav__link">
+  <a href="#introducao" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Pré-requisitos
+        Introdução
       
     </span>
   </a>
@@ -2137,22 +2199,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#instalacao-das-dependencias-auxiliares" class="md-nav__link">
+  <a href="#port-forward-local-para-remoto" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Instalação das dependências auxiliares
+        Port Forward Local para Remoto
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Instalação das dependências auxiliares">
+    <nav class="md-nav" aria-label="Port Forward Local para Remoto">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#debian-e-ubuntu" class="md-nav__link">
+  <a href="#exemplo-de-uso" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Debian e Ubuntu
+        Exemplo de Uso
       
     </span>
   </a>
@@ -2160,10 +2222,38 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#fedora-rocky-linux-e-almalinux" class="md-nav__link">
+  <a href="#sintaxe-do-comando" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Fedora, Rocky Linux e AlmaLinux
+        Sintaxe do Comando
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sintaxe do Comando">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parametros" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parâmetros:
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemplo-pratico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemplo Prático
       
     </span>
   </a>
@@ -2171,10 +2261,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#arch-linux" class="md-nav__link">
+  <a href="#teste-de-acesso" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Arch Linux
+        Teste de Acesso
       
     </span>
   </a>
@@ -2187,44 +2277,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#ollama" class="md-nav__link">
+  <a href="#port-forwarding-local-para-maquina-e-porta-remota" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Ollama
+        Port Forwarding local para máquina e porta remota
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#modelos" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Modelos
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#instalacao-do-nexus" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Instalação do Nexus
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Instalação do Nexus">
+    <nav class="md-nav" aria-label="Port Forwarding local para máquina e porta remota">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#zsh" class="md-nav__link">
+  <a href="#exemplo-de-uso_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Zsh
+        Exemplo de Uso
       
     </span>
   </a>
@@ -2232,10 +2300,32 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#bash" class="md-nav__link">
+  <a href="#sintaxe-do-comando_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Bash
+        Sintaxe do Comando
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemplo-pratico_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemplo Prático
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#teste-de-acesso_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Teste de Acesso
       
     </span>
   </a>
@@ -2248,66 +2338,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#validacao" class="md-nav__link">
+  <a href="#port-forward-remoto-para-local" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Validação
+        Port Forward Remoto para Local
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#codex-cli" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Codex CLI
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#arquivos-criados-em-tempo-de-execucao" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Arquivos criados em tempo de execução
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ajustes-de-configuracao" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Ajustes de configuração
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#diagnostico-de-instalacao" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Diagnóstico de instalação
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Diagnóstico de instalação">
+    <nav class="md-nav" aria-label="Port Forward Remoto para Local">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#jq-nao-encontrado" class="md-nav__link">
+  <a href="#exemplo-de-uso_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        jq não encontrado
+        Exemplo de Uso
       
     </span>
   </a>
@@ -2315,54 +2361,22 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#curl-nao-encontrado" class="md-nav__link">
+  <a href="#sintaxe-do-comando_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        curl não encontrado
+        Sintaxe do Comando
       
     </span>
   </a>
   
-</li>
+    <nav class="md-nav" aria-label="Sintaxe do Comando">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#ollama-nao-encontrado" class="md-nav__link">
+  <a href="#parametros_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Ollama não encontrado
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#api-indisponivel" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        API indisponível
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#modelo-ausente" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Modelo ausente
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sessao-invalida" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Sessão inválida
+        Parâmetros:
       
     </span>
   </a>
@@ -2371,6 +2385,116 @@
         
       </ul>
     </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemplo-pratico_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemplo Prático
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#teste-de-acesso_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Teste de Acesso
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#port-forward-remoto-para-local-usando-maquina-local-como-bastion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Port Forward Remoto para Local usando Máquina Local como Bastion
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Port Forward Remoto para Local usando Máquina Local como Bastion">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exemplo-de-uso_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemplo de Uso
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sintaxe-do-comando_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sintaxe do Comando
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemplo-pratico_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemplo Prático
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#teste-de-acesso_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Teste de Acesso
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consideracoes-de-seguranca" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Considerações de Segurança
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusão
+      
+    </span>
+  </a>
   
 </li>
       
@@ -2391,186 +2515,132 @@
 
 
 
-<h1 id="instalacao">Instalação</h1>
-<h2 id="pre-requisitos">Pré-requisitos</h2>
-<p>O Nexus depende de um ambiente Linux com Bash ou Zsh e dos seguintes componentes:</p>
-<table>
-<thead>
-<tr>
-<th>Componente</th>
-<th style="text-align: right;">Obrigatório</th>
-<th>Função</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>curl</code></td>
-<td style="text-align: right;">Sim</td>
-<td>Chamadas HTTP ao Ollama</td>
-</tr>
-<tr>
-<td><code>jq</code></td>
-<td style="text-align: right;">Sim</td>
-<td>Construção e manipulação de JSON</td>
-</tr>
-<tr>
-<td>Ollama</td>
-<td style="text-align: right;">Sim</td>
-<td>Execução dos modelos locais</td>
-</tr>
-<tr>
-<td>Codex CLI</td>
-<td style="text-align: right;">Não</td>
-<td>Delegação de projetos e repositórios</td>
-</tr>
-</tbody>
-</table>
-<h2 id="instalacao-das-dependencias-auxiliares">Instalação das dependências auxiliares</h2>
-<h3 id="debian-e-ubuntu">Debian e Ubuntu</h3>
-<pre><code class="language-bash">sudo apt update
-sudo apt install curl jq
+<h1 id="ssh-port-forwarding">SSH - Port Forwarding</h1>
+<h2 id="introducao">Introdução</h2>
+<p>O encaminhamento de porta (Port Forwarding) no SSH é uma técnica usada para redirecionar conexões de rede por meio de um túnel seguro. Este documento aborda os diferentes tipos de encaminhamento de porta via SSH.</p>
+<h2 id="port-forward-local-para-remoto">Port Forward Local para Remoto</h2>
+<p>O encaminhamento local para remoto permite que uma máquina local (cliente) encaminhe conexões para um servidor remoto, que então direciona essa conexão para outro destino. Isso é útil, por exemplo, para acessar serviços protegidos atrás de firewalls ou restritos a redes internas.</p>
+<h3 id="exemplo-de-uso">Exemplo de Uso</h3>
+<p>Se você possui um serviço de banco de dados (BD) rodando em uma máquina na porta 3306, e o BD  nessa máquina não é diretamente acessível, você pode usar um túnel SSH para acessar o serviço.</p>
+<p>Consiste em criar uma porta local e redirecionar tudo que for para esta porta para a porta remota :</p>
+<p><img alt="" src="../imagens/exemplo_uso.png" /></p>
+<h3 id="sintaxe-do-comando">Sintaxe do Comando</h3>
+<pre><code>ssh -L [porta_local]:[host_remoto]:[porta_remota] [usuario]@[servidor]
 </code></pre>
-<h3 id="fedora-rocky-linux-e-almalinux">Fedora, Rocky Linux e AlmaLinux</h3>
-<pre><code class="language-bash">sudo dnf install curl jq
+<h4 id="parametros">Parâmetros:</h4>
+<ul>
+<li><code>-L</code>: Indica que é um túnel local.</li>
+<li><code>[porta_local]</code>: Porta na máquina local onde o cliente escutará.</li>
+<li><code>[host_remoto]</code>: Endereço do destino final ao qual o servidor remoto irá encaminhar a conexão.</li>
+<li><code>[porta_remota]</code>: Porta no host remoto que será acessada.</li>
+<li><code>[usuario]@[servidor]</code>: Credenciais e endereço do servidor SSH intermediário.</li>
+</ul>
+<h3 id="exemplo-pratico">Exemplo Prático</h3>
+<p>Acessando o servidor de banco de dados que está configurado para aceitar conexões apenas de localhost:</p>
+<pre><code>ssh -L 3308:127.0.0.1:3306 usuario@db.example.net
 </code></pre>
-<h3 id="arch-linux">Arch Linux</h3>
-<pre><code class="language-bash">sudo pacman -S curl jq
+<p>Neste caso:</p>
+<ul>
+<li>A porta <code>3308</code> será aberta na máquina local.</li>
+<li>Qualquer solicitação para <code>localhost:3308</code> será encaminhada via SSH para <code>db.example.net</code>, e a solicitação será encaminhada para <code>127.0.0.1:3306</code>.</li>
+</ul>
+<h3 id="teste-de-acesso">Teste de Acesso</h3>
+<p>No cliente MySQL, use o seguinte endereço <code>localhost:3308</code> :</p>
+<p>Exemplo:</p>
+<pre><code>telnet localhost 3308
 </code></pre>
-<h2 id="ollama">Ollama</h2>
-<p>Instale o Ollama pelo procedimento oficial adequado à distribuição. Depois, confirme o serviço:</p>
-<pre><code class="language-bash">systemctl status ollama
+<p>Isso redirecionará automaticamente para o serviço na máquina onde o BD responde apenas localmente.</p>
+<h2 id="port-forwarding-local-para-maquina-e-porta-remota">Port Forwarding local para máquina e porta remota</h2>
+<p>Muito útil quando se necessita passar por alguma restrição. Imaginemos o caso de uma maquina local sem acesso a uma rede restrita e que precisa acessar uma página em uma máquina nessa rede restrita. Você pode usar uma máquina intermediária com acesso a essa rede.</p>
+<h3 id="exemplo-de-uso_1">Exemplo de Uso</h3>
+<p>Se você possui um serviço web rodando em uma máquina na porta 80, mas essa máquina não é diretamente acessível, você pode usar um túnel SSH para acessar o serviço via uma máquina intermediária (bastion host).</p>
+<p><img alt="" src="../imagens/ssh_local_remoto.png" /></p>
+<h3 id="sintaxe-do-comando_1">Sintaxe do Comando</h3>
+<p>O mesmo que para port forward local para remoto, com a diferença do detalhe que especificaremos a maquina remota</p>
+<h3 id="exemplo-pratico_1">Exemplo Prático</h3>
+<p>Acesse um servidor web protegido em <code>198.51.100.10</code> pela porta 80 através do servidor SSH intermediário <code>bastion.example.net</code>:</p>
+<pre><code>ssh -L 8080:198.51.100.10:80 usuario@bastion.example.net
 </code></pre>
-<p>Valide a API local:</p>
-<pre><code class="language-bash">curl -fsS http://localhost:11434/api/tags | jq
+<p>Neste caso:</p>
+<ul>
+<li>A porta <code>8080</code> será aberta na máquina local.</li>
+<li>Qualquer solicitação para <code>localhost:8080</code> será encaminhada via SSH para <code>198.51.100.10:80</code>.</li>
+</ul>
+<h3 id="teste-de-acesso_1">Teste de Acesso</h3>
+<p>Abra um navegador e acesse:</p>
+<pre><code>http://localhost:8080
 </code></pre>
-<p>Também é possível verificar a porta:</p>
-<pre><code class="language-bash">ss -lntp | grep 11434
+<p>Isso redirecionará automaticamente para o serviço na máquina protegida.</p>
+<h2 id="port-forward-remoto-para-local">Port Forward Remoto para Local</h2>
+<p>O encaminhamento remoto para local permite que conexões realizadas em um servidor remoto sejam redirecionadas para um cliente local. Isso é especialmente útil para acessar serviços locais de uma máquina remota que, de outra forma, não estariam acessíveis. </p>
+<h3 id="exemplo-de-uso_2">Exemplo de Uso</h3>
+<p>Imagine que você esteja em um ambiente remoto e precisa acessar um servidor web ou serviço rodando em sua máquina local (cliente SSH). Para isso, você cria um túnel para redirecionar as conexões.</p>
+<p><img alt="" src="../imagens/ssh_remoto_local.png" /></p>
+<h3 id="sintaxe-do-comando_2">Sintaxe do Comando</h3>
+<pre><code>ssh -R [porta_remota]:[host_local]:[porta_local] [usuario]@[servidor]
 </code></pre>
-<h2 id="modelos">Modelos</h2>
-<p>A versão documentada usa:</p>
-<pre><code class="language-bash">ollama pull llama3:latest
-ollama pull qwen3.5:latest
-ollama pull qwen3-coder:latest
+<h4 id="parametros_1">Parâmetros:</h4>
+<ul>
+<li><code>-R</code>: Indica que é um túnel remoto.</li>
+<li><code>[porta_remota]</code>:Porta aberta no servidor remoto para escutar conexões</li>
+<li><code>[host_local]</code>:Endereço do destino final no cliente local.</li>
+<li><code>[porta_local]</code>:Porta no cliente local que será acessada.</li>
+<li><code>[usuario]@[servidor]</code>: Credenciais e endereço do servidor SSH intermediário.</li>
+</ul>
+<h3 id="exemplo-pratico_2">Exemplo Prático</h3>
+<p>Redirecionando conexões para sua máquina local através de um servidor remoto:</p>
+<pre><code>ssh -R 8080:127.0.0.1:80 usuario@servidor.example.net
 </code></pre>
-<p>Confira a instalação:</p>
-<pre><code class="language-bash">ollama list
+<p>Neste caso:</p>
+<ul>
+<li>
+<p>A porta 8080 será aberta no servidor remoto. </p>
+</li>
+<li>
+<p>Qualquer solicitação feita ao servidor remoto na porta 8080 será redirecionada para localhost:80 na máquina local.</p>
+</li>
+</ul>
+<h3 id="teste-de-acesso_2">Teste de Acesso</h3>
+<p>No ambiente remoto, abra um navegador e acesse:</p>
+<pre><code>http://servidor\_remoto:8080
 </code></pre>
-<p>Mapeamento padrão:</p>
-<table>
-<thead>
-<tr>
-<th>Modo</th>
-<th>Modelo</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>generic</code></td>
-<td><code>llama3:latest</code></td>
-</tr>
-<tr>
-<td><code>assist</code></td>
-<td><code>qwen3.5:latest</code></td>
-</tr>
-<tr>
-<td><code>code</code></td>
-<td><code>qwen3-coder:latest</code></td>
-</tr>
-</tbody>
-</table>
-<p>O modelo <code>embeddinggemma:latest</code> é apenas uma reserva para futuras funções de embeddings, RAG ou memória semântica. O código atual não o utiliza.</p>
-<h2 id="instalacao-do-nexus">Instalação do Nexus</h2>
-<p>O arquivo distribuído contém apenas a função e seus comentários. Ele deve ser mantido separado do arquivo principal de configuração do shell.</p>
-<h3 id="zsh">Zsh</h3>
-<pre><code class="language-bash">mkdir -p ~/.config/nexus
-cp nexus.sh ~/.config/nexus/nexus.zsh
-chmod 600 ~/.config/nexus/nexus.zsh
+<p>Isso redirecionará automaticamente para o serviço rodando em sua máquina local na porta 80.</p>
+<h2 id="port-forward-remoto-para-local-usando-maquina-local-como-bastion">Port Forward Remoto para Local usando Máquina Local como Bastion</h2>
+<p>Este cenário combina o uso de um túnel remoto com a máquina local agindo como bastion host. Ele é útil quando você deseja disponibilizar um serviço local para acesso externo por meio de um servidor intermediário.</p>
+<h3 id="exemplo-de-uso_3">Exemplo de Uso</h3>
+<p>Imagine que você tenha um servidor web local na porta 80 e deseja disponibilizá-lo para acesso remoto por meio de um servidor SSH intermediário, que responderá como um servidor web na porta 8080.</p>
+<p><img alt="" src="../imagens/ssh_remoto_local_bastion.png" /></p>
+<h3 id="sintaxe-do-comando_3">Sintaxe do Comando</h3>
+<pre><code>ssh -R [porta_remota]:[host_local]:[porta_local] [usuario]@[servidor]
 </code></pre>
-<p>Acrescente ao <code>~/.zshrc</code>:</p>
-<pre><code class="language-bash">source ~/.config/nexus/nexus.zsh
+<p>Configuração do <code>/etc/ssh/sshd_config</code> da máquina que receberá a conexão SSH e ficará exposta ao serviço para outros:</p>
+<pre><code>GatewayPorts yes
+GatewayPorts clientspecified
 </code></pre>
-<p>Recarregue:</p>
-<pre><code class="language-bash">source ~/.zshrc
+<p>Após a alteração, reinicie o serviço SSH para aplicar as mudanças:</p>
+<pre><code>sudo systemctl restart sshd
 </code></pre>
-<h3 id="bash">Bash</h3>
-<pre><code class="language-bash">mkdir -p ~/.config/nexus
-cp nexus.sh ~/.config/nexus/nexus.sh
-chmod 600 ~/.config/nexus/nexus.sh
+<h3 id="exemplo-pratico_3">Exemplo Prático</h3>
+<pre><code>ssh -R 9000:127.0.0.1:8080 usuario@servidor.example.net
 </code></pre>
-<p>Acrescente ao <code>~/.bashrc</code>:</p>
-<pre><code class="language-bash">source ~/.config/nexus/nexus.sh
+<p>Neste caso:</p>
+<ul>
+<li>A porta 9000 será aberta no servidor remoto.</li>
+<li>Qualquer solicitação feita ao servidor remoto na porta 8080 será redirecionada para <code>localhost:80</code> na máquina local.</li>
+</ul>
+<h3 id="teste-de-acesso_3">Teste de Acesso</h3>
+<p>No ambiente remoto, acesse:</p>
+<pre><code>http://servidor_remoto:8080
 </code></pre>
-<p>Recarregue:</p>
-<pre><code class="language-bash">source ~/.bashrc
-</code></pre>
-<h2 id="validacao">Validação</h2>
-<p>Confirme que a função foi carregada:</p>
-<pre><code class="language-bash">type Nexus
-</code></pre>
-<p>Exiba a ajuda:</p>
-<pre><code class="language-bash">Nexus --help
-</code></pre>
-<p>Teste uma chamada simples:</p>
-<pre><code class="language-bash">Nexus --mode generic &quot;responda apenas: Nexus operacional&quot;
-</code></pre>
-<h2 id="codex-cli">Codex CLI</h2>
-<p>A integração com Codex é opcional. Sem ela, os modos locais continuam operacionais.</p>
-<p>Valide uma instalação existente:</p>
-<pre><code class="language-bash">command -v codex
-codex --version
-</code></pre>
-<p>A autenticação e o provedor usados pelo Codex são administrados pela própria ferramenta. Não se deve assumir que essa rota processa tudo localmente.</p>
-<h2 id="arquivos-criados-em-tempo-de-execucao">Arquivos criados em tempo de execução</h2>
-<p>Na primeira chamada, o Nexus cria:</p>
-<pre><code class="language-text">~/.nexus/
-└── sessions/
-    └── default.json
-</code></pre>
-<p>As permissões esperadas são:</p>
-<pre><code class="language-bash">stat -c '%a %n' ~/.nexus ~/.nexus/sessions ~/.nexus/sessions/default.json
-</code></pre>
-<p>Resultado esperado:</p>
-<pre><code class="language-text">700 ~/.nexus
-700 ~/.nexus/sessions
-600 ~/.nexus/sessions/default.json
-</code></pre>
-<h2 id="ajustes-de-configuracao">Ajustes de configuração</h2>
-<p>Na versão 0.1, a configuração permanece no início da função:</p>
-<pre><code class="language-bash">local MAX_HISTORY_MESSAGES=20
-local OLLAMA_BASE_URL=&quot;http://localhost:11434&quot;
-local MODEL_ASSIST=&quot;qwen3.5:latest&quot;
-local MODEL_GENERIC=&quot;llama3:latest&quot;
-local MODEL_CODE=&quot;qwen3-coder:latest&quot;
-</code></pre>
-<p>Após qualquer alteração, recarregue o arquivo do shell.</p>
-<h2 id="diagnostico-de-instalacao">Diagnóstico de instalação</h2>
-<h3 id="jq-nao-encontrado"><code>jq</code> não encontrado</h3>
-<pre><code class="language-bash">command -v jq
-jq --version
-</code></pre>
-<h3 id="curl-nao-encontrado"><code>curl</code> não encontrado</h3>
-<pre><code class="language-bash">command -v curl
-curl --version
-</code></pre>
-<h3 id="ollama-nao-encontrado">Ollama não encontrado</h3>
-<pre><code class="language-bash">command -v ollama
-ollama --version
-</code></pre>
-<h3 id="api-indisponivel">API indisponível</h3>
-<pre><code class="language-bash">systemctl status ollama
-ss -lntp | grep 11434
-curl -v http://localhost:11434/api/tags
-</code></pre>
-<h3 id="modelo-ausente">Modelo ausente</h3>
-<pre><code class="language-bash">ollama list
-ollama pull NOME_DO_MODELO
-</code></pre>
-<h3 id="sessao-invalida">Sessão inválida</h3>
-<pre><code class="language-bash">jq . ~/.nexus/sessions/default.json
-</code></pre>
-<p>Para descartá-la e iniciar novamente:</p>
-<pre><code class="language-bash">Nexus --new --session default &quot;inicie uma nova conversa&quot;
-</code></pre>
+<p>Isso conectará ao serviço local rodando em sua máquina na porta 8080.</p>
+<h2 id="consideracoes-de-seguranca">Considerações de Segurança</h2>
+<ul>
+<li>Certifique-se de que o encaminhamento remoto esteja habilitado no servidor SSH, verificando a diretiva "AllowTcpForwarding" no arquivo sshd_config.</li>
+<li>Use regras de firewall para limitar o acesso às portas abertas.</li>
+<li>Sempre prefira usar chaves SSH em vez de senhas para autenticação.</li>
+</ul>
+<h2 id="conclusao">Conclusão</h2>
+<p>Os diferentes tipos de port forwarding oferecidos pelo SSH são ferramentas poderosas para acessar serviços de forma segura e eficiente, mesmo em ambientes protegidos ou restritos. Combine essas técnicas com boas práticas de segurança para garantir a integridade e confidencialidade dos dados.</p>
 
 
 

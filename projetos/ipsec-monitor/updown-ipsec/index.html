@@ -451,6 +451,62 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../artigos/ssh/ssh-port_forwarding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SSH Port Forwarding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../artigos/ssh/ssh-git_port_forwarding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Git via túnel SSH
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -2298,9 +2354,9 @@
 
 
 <h1 id="script-updown-ipsecsh">Script updown-ipsec.sh</h1>
-<blockquote>
-<p>Esta página documenta o comportamento do script. Antes de reutilizar o arquivo em outro ambiente, revise valores fixos, rotas, DNS, validação TLS e política de logs.</p>
-</blockquote>
+<ul>
+<li><a href="https://raw.githubusercontent.com/jemorenojr/ipsec-monitor/refs/heads/main/src/etc/ipsec.d/updown-ipsec.sh">Download updown-ipsec.sh</a></li>
+</ul>
 <h2 id="objetivo">Objetivo</h2>
 <p>O <code>updown-ipsec.sh</code> é um script de integração com StrongSwan executado pelo mecanismo <code>leftupdown</code> durante a subida e a queda de um túnel IPsec.</p>
 <p>Sua responsabilidade é preparar o ambiente de rede local depois que o StrongSwan recebe os parâmetros do túnel, criando uma interface lógica <code>ipsec0</code>, carregando rotas em uma tabela de roteamento separada e ajustando a resolução DNS durante a conexão.</p>
@@ -2386,8 +2442,8 @@ ip rule add to ${PLUTO_MY_SOURCEIP} lookup ipsec
 <p>Na desconexão, essas regras são removidas e a tabela separada é esvaziada.</p>
 <h2 id="fonte-externa-de-rotas">Fonte externa de rotas</h2>
 <p>Além da rota inicial, o script consulta um servidor HTTPS definido na variável <code>SRVROTAS</code>.</p>
-<p>No código analisado, esse servidor é um valor operacional fixo. Na versão pública, o endereço real foi omitido e representado pelo exemplo abaixo:</p>
-<pre><code class="language-text">198.51.100.36
+<p>No código atual, o valor é:</p>
+<pre><code class="language-text">10.16.144.36
 </code></pre>
 <p>Antes de carregar rotas, o script testa conectividade TCP na porta <code>443</code>:</p>
 <pre><code class="language-bash">nc -z -w3 &quot;${SRVROTAS}&quot; &quot;443&quot;
@@ -2402,9 +2458,9 @@ ip rule add to ${PLUTO_MY_SOURCEIP} lookup ipsec
 <h2 id="formato-esperado-das-rotas">Formato esperado das rotas</h2>
 <p>O endpoint de rotas deve retornar uma lista simples, consumível por expansão de shell no laço <code>for</code>.</p>
 <p>Exemplo esperado:</p>
-<pre><code class="language-text">198.51.100.0/24
-203.0.113.0/24
-192.0.2.10/32
+<pre><code class="language-text">10.10.0.0/16
+172.16.20.0/24
+192.168.50.10/32
 </code></pre>
 <p>Cada linha ou item deve ser aceito pelo comando <code>ip route add</code>.</p>
 <p>O script não valida o conteúdo antes de executar o comando <code>ip route add</code>; portanto, a fonte de rotas deve ser considerada parte confiável da operação.</p>
@@ -2478,12 +2534,12 @@ ip rule add to ${PLUTO_MY_SOURCEIP} lookup ipsec
 <p>O uso do ID <code>220</code> como fallback mantém compatibilidade com ambientes em que o alias da tabela ainda não foi registrado.</p>
 <p>A fonte externa de rotas permite alterar redes acessíveis pela VPN sem reconstruir o pacote e sem editar manualmente cada estação. Essa decisão exige que o servidor de rotas seja confiável e disponível durante a subida do túnel.</p>
 <blockquote>
-<p>Motivo da decisão ainda não documentado: uso de um endereço padrão fixo como servidor de rotas.</p>
+<p>Motivo da decisão ainda não documentado: uso do endereço padrão <code>10.16.144.36</code> como servidor de rotas.</p>
 </blockquote>
 <h2 id="limitacoes-conhecidas">Limitações conhecidas</h2>
 <p>O script possui valores operacionais fixos, como <code>SRVROTAS</code>, <code>IPSEC_IF</code>, <code>IPSEC_TABLE_ID</code> e <code>IPSEC_TABLE_NAME</code>.</p>
 <p>O valor inicial de <code>PLUTO_PEER_CLIENT</code> é sobrescrito no código por:</p>
-<pre><code class="language-bash">IPSEC_ROUTE=&quot;198.51.100.0/24&quot;
+<pre><code class="language-bash">IPSEC_ROUTE=&quot;10.16.144.0/24&quot;
 </code></pre>
 <p>Portanto, a rota inicial documentada pelo StrongSwan não é usada diretamente no comportamento atual.</p>
 <p>O script calcula a variável <code>grupo_vpn</code> a partir de <code>PLUTO_MY_ID</code>, mas a URL de rotas usa <code>${grupo_vpnx:-}</code>. Como <code>grupo_vpnx</code> não é definida no script, o sufixo por grupo não é aplicado no carregamento atual das rotas.</p>
