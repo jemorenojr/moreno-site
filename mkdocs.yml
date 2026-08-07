@@ -8,6 +8,9 @@ theme:
 
 nav:
   - Início: index.md
+  - Quem sou: quem-sou.md
+  - Serviços: servicos.md
+
   - Base de Conhecimento:
       - Linux:
           - Linux Módulo 1: artigos/linux/Linux_Modulo_1.md
@@ -19,17 +22,19 @@ nav:
       - Storage:
           - LVM na prática: artigos/storage/LVM/LVM_na_pratica.md
           - Storage iSCSI em Linux: artigos/storage/iSCSI/Storage_iSCSI_Linux.md
+
   - Casos Reais:
       - PostgreSQL:
           - Erro pg_hba.conf em acesso remoto: casos/postgresql/postgresql-erro-acesso-remoto/index.md
       - systemd:
           - Status 127 após instalação do Zabbix Agent 2: casos/systemd/troubleshooting/status-127-zabbix-agent2-systemd.md
-      - backup:
+      - Backup:
           - Backup Linux com rsync e hardlink: casos/backup/backup_sistemas.md
       - Containers:
           - Backup de MariaDB em Docker: casos/containers/docker/mariadb/configurando_backup_mariadb_docker.md
       - Migração:
           - Kubernetes de RAID1 SATA para RAID1 SSD: casos/migracao/migracao_k8s_raid_ssd/Estudo_de_Caso_Migracao_Kubernetes_RAID_SSD_v4.md
+
   - Projetos:
       - Nexus:
           - Visão geral: projetos/nexus/index.md
@@ -48,6 +53,8 @@ nav:
           - Operação e diagnóstico: projetos/ssh-mfa-chroot/operacao-diagnostico.md
           - Segurança e limitações: projetos/ssh-mfa-chroot/seguranca-limitacoes.md
           - Scripts: projetos/ssh-mfa-chroot/scripts/index.md
-      - ipsec-monitor:
+      - IPsec Monitor:
           - Visão geral: projetos/ipsec-monitor/index.md
           - updown-ipsec.sh: projetos/ipsec-monitor/updown-ipsec.md
+
+  - Contato: contato.md

@@ -614,11 +614,11 @@ O serviço kubelet foi interrompido para impedir novas operações do Kubernetes
 
 Mesmo após a interrupção das aplicações, ainda existiam tarefas ativas no containerd.
 
-![Encerramento das tasks](imagens/Forçando_enceramento_containers.png)
+![Encerramento das tasks](imagens/Forcando_enceramento_containers.png)
 
 Realizou-se a finalização controlada das tarefas remanescentes.
 
-![Finalização com kill](imagens/Forçando_enceramento_containers_com_kill.png)
+![Finalização com kill](imagens/Forcando_enceramento_containers_com_kill.png)
 
 Os processos que permaneceram ativos foram encerrados manualmente, garantindo que não existissem containers em execução.
 
