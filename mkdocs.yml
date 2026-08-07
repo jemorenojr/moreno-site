@@ -56,5 +56,16 @@ nav:
       - IPsec Monitor:
           - Visão geral: projetos/ipsec-monitor/index.md
           - updown-ipsec.sh: projetos/ipsec-monitor/updown-ipsec.md
+      - Samba Auditlog:
+          - Visão geral: projetos/samba_auditlog/index.md
+          - Origem e problema: projetos/samba_auditlog/01-origem-e-problema.md
+          - Coleta e transporte: projetos/samba_auditlog/02-coleta-e-transporte.md
+          - Parser e normalização: projetos/samba_auditlog/03-parser-e-normalizacao.md
+          - Persistência e histórico: projetos/samba_auditlog/04-persistencia-e-historico.md
+          - Consulta e investigação: projetos/samba_auditlog/05-consulta-e-investigacao.md
+          - Histórico e estado atual: projetos/samba_auditlog/06-historico-e-estado-atual.md
+          - Autenticação e autorização: projetos/samba_auditlog/07-autenticacao-e-autorizacao.md
+          - Alertas: projetos/samba_auditlog/08-alertas.md
+          - Operação dos serviços: projetos/samba_auditlog/09-operacao-dos-servicos.md
 
   - Contato: contato.md
