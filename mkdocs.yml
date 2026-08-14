@@ -34,6 +34,12 @@ nav:
           - Backup de MariaDB em Docker: casos/containers/docker/mariadb/configurando_backup_mariadb_docker.md
       - Migração:
           - Kubernetes de RAID1 SATA para RAID1 SSD: casos/migracao/migracao_k8s_raid_ssd/Estudo_de_Caso_Migracao_Kubernetes_RAID_SSD_v4.md
+          - Ubuntu 20.04 para Debian 13:
+              - Visão geral: casos/migracao/ubuntu20_debian13/index.md
+              - Levantamento e preparação: casos/migracao/ubuntu20_debian13/01-levantamento-e-preparacao.md
+              - Instalação e configuração: casos/migracao/ubuntu20_debian13/02-instalacao-e-configuracao.md
+              - Boot, GRUB e rollback: casos/migracao/ubuntu20_debian13/03-boot-grub-e-rollback.md
+              - Resultado e lições aprendidas: casos/migracao/ubuntu20_debian13/04-resultado-e-licoes.md
 
   - Projetos:
       - Nexus:

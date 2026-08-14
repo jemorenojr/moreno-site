@@ -90,6 +90,23 @@ Como systemd, Supervisor, Gunicorn, Nginx e cron mantêm as responsabilidades op
 
 [Operação dos serviços](09-operacao-dos-servicos.md)
 
+## Interface Web
+
+A aplicação possui módulos para operações como:
+
+- dashboard;
+- pesquisa por usuário;
+- pesquisa por arquivo;
+- pesquisa de itens removidos;
+- acompanhamento dos compartilhamentos;
+- monitoramento;
+- configuração de alertas;
+- integração com Telegram.
+
+O objetivo da interface não é substituir as ferramentas administrativas do Samba.
+
+Ela funciona como uma camada específica para consulta e exploração das informações de auditoria coletadas pelo sistema.
+
 ## Tecnologias utilizadas
 
 O projeto reúne componentes bastante tradicionais de uma infraestrutura Linux:
