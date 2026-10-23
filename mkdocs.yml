@@ -74,5 +74,6 @@ nav:
           - Autenticação e autorização: projetos/samba_auditlog/07-autenticacao-e-autorizacao.md
           - Alertas: projetos/samba_auditlog/08-alertas.md
           - Operação dos serviços: projetos/samba_auditlog/09-operacao-dos-servicos.md
+      - Exposure Audit: projetos/exposure-audit/index.md
 
   - Contato: contato.md
