@@ -32,6 +32,7 @@ nav:
           - Backup Linux com rsync e hardlink: casos/backup/backup_sistemas.md
       - Containers:
           - Backup de MariaDB em Docker: casos/containers/docker/mariadb/configurando_backup_mariadb_docker.md
+          - Samplicator em Debian 12: casos/containers/samplicator-debian12-namespace/index.md
       - Migração:
           - Kubernetes de RAID1 SATA para RAID1 SSD: casos/migracao/migracao_k8s_raid_ssd/Estudo_de_Caso_Migracao_Kubernetes_RAID_SSD_v4.md
           - Ubuntu 20.04 para Debian 13:
